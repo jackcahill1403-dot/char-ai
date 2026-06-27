@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>char.ai — Characters</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>char.ai</h1>
+      <nav>
+        <a href="/characters.html">Characters</a>
+        <a href="/settings.html">Settings</a>
+        <span id="user-area" class="user-area"></span>
+      </nav>
+    </header>
+
+    <main>
+      <div id="error" class="error-banner" role="alert"></div>
+      <div id="success" class="error-banner success-banner" role="status"></div>
+
+      <section class="marquee-hero">
+        <p class="marquee-label">Now playing</p>
+        <h2 class="marquee-title">Pick a character.<br />Start the scene.</h2>
+        <p class="marquee-meta">Real people, game casts, anime legends — or make your own. The more you talk, the better char.ai learns your taste.</p>
+      </section>
+
+      <div class="char-toolbar">
+        <input
+          type="search"
+          id="search-input"
+          placeholder="Search your most-used characters..."
+          autocomplete="off"
+        />
+        <button type="button" id="new-char-btn">+ New character</button>
+      </div>
+
+      <div id="filter-chips" class="filter-chips"></div>
+
+      <section id="recommended-section" class="char-section" style="display: none">
+        <h2 class="section-title">✨ Recommended for you</h2>
+        <p class="hint" id="recommended-reason"></p>
+        <div id="recommended-grid" class="char-grid"></div>
+      </section>
+
+      <section id="most-used-section" class="char-section" style="display: none">
+        <h2 class="section-title">🔥 Most used</h2>
+        <div id="most-used-grid" class="char-grid"></div>
+      </section>
+
+      <section id="search-results-section" class="char-section" style="display: none">
+        <h2 class="section-title">🔎 Search results</h2>
+        <div id="search-grid" class="char-grid"></div>
+      </section>
+
+      <section class="char-section">
+        <h2 class="section-title">All cast</h2>
+        <div id="char-grid" class="char-grid"></div>
+      </section>
+
+      <div id="editor-modal" class="modal" style="display: none">
+        <div class="modal-card">
+          <h2 class="section-title" id="editor-title">New character</h2>
+          <form id="char-form" class="stack-form">
+            <label>
+              Name
+              <input type="text" id="char-name" maxlength="60" required />
+            </label>
+            <label>
+              Avatar (emoji or short text)
+              <input type="text" id="char-avatar" maxlength="8" value="🧑" />
+            </label>
+            <label>
+              Profile picture (optional — replaces the emoji)
+              <input type="file" id="char-image" accept="image/png,image/jpeg,image/webp,image/gif" />
+              <span class="hint" id="char-image-hint">Used as the character's portrait on cards and in chat. Pick a square image for best results.</span>
+              <div class="char-image-preview-row">
+                <div class="char-image-preview" id="char-image-preview"></div>
+                <button type="button" id="char-image-clear" class="btn-secondary" style="display:none">Remove picture</button>
+              </div>
+            </label>
+            <label>
+              Tagline
+              <input type="text" id="char-tagline" maxlength="120" placeholder="A short one-line description" />
+            </label>
+            <label>
+              Description (persona)
+              <textarea id="char-description" rows="4" maxlength="2000" placeholder="Who they are, how they talk, their personality..."></textarea>
+            </label>
+            <label>
+              Scenario (opening scene)
+              <textarea id="char-scenario" rows="2" maxlength="1000" placeholder="Where and when the roleplay starts"></textarea>
+            </label>
+            <label>
+              Greeting (their first message)
+              <textarea id="char-greeting" rows="3" maxlength="1000" placeholder="*action* Hello there..."></textarea>
+            </label>
+            <label>
+              Tags (comma-separated — used for recommendations)
+              <input type="text" id="char-tags" maxlength="120" placeholder="anime, hero, fantasy" />
+            </label>
+            <div class="button-row">
+              <button type="submit">Save</button>
+              <button type="button" id="editor-cancel" class="btn-secondary">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <footer class="site-footer">DM yofirsmik on Discord for any issues</footer>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/header.js"></script>
+    <script src="/js/characters-api.js"></script>
+    <script src="/js/characters.js"></script>
+  </body>
+</html>

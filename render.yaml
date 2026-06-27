@@ -1,0 +1,29 @@
+# Render blueprint — deploy at https://dashboard.render.com/blueprints
+# Connect your GitHub repo, then Render reads this file automatically.
+services:
+  - type: web
+    name: char-ai
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: LLM_API_KEY
+        sync: false
+      - key: LLM_MODEL
+        value: gemini-3.5-flash
+      - key: LLM_API_URL
+        value: https://generativelanguage.googleapis.com/v1beta/openai/chat/completions
+      - key: FALLBACK_API_KEY
+        sync: false
+      - key: FALLBACK_MODEL
+        value: meta-llama/llama-3.3-70b-instruct:free
+      - key: FALLBACK_API_URL
+        value: https://openrouter.ai/api/v1/chat/completions
+      - key: RATE_LIMIT_PER_HOUR
+        value: "20"
+      - key: RATE_LIMIT_PER_DAY
+        value: "50"

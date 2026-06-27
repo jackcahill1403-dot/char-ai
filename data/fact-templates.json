@@ -1,0 +1,99 @@
+{
+  "cooking": {
+    "templates": [
+      "Cooking tip: {action} {ingredient} for better {outcome}",
+      "Always {action} {ingredient} before {step}",
+      "For {outcome}, {action} {ingredient} at the end",
+      "{ingredient} pairs well with {ingredient2}",
+      "Add {ingredient} to enhance {outcome} in {dish}"
+    ],
+    "action": ["salt", "rest", "toast", "soak", "marinate", "blanch", "sear", "reduce", "whisk", "fold", "knead", "bake", "grill", "roast", "simmer", "braise", "caramelize", "deglaze", "mince", "julienne"],
+    "ingredient": ["garlic", "butter", "olive oil", "lemon", "vinegar", "salt", "pepper", "fresh herbs", "onions", "tomatoes", "eggs", "cheese", "chicken", "rice", "pasta", "soy sauce", "honey", "mustard", "ginger", "chili"],
+    "ingredient2": ["basil", "thyme", "rosemary", "parmesan", "mozzarella", "mushrooms", "spinach", "lemon zest", "garlic", "olive oil", "butter", "cream", "white wine", "smoked paprika", "cumin", "coriander"],
+    "outcome": ["flavor", "texture", "color", "crispness", "tenderness", "depth", "balance", "aroma", "browning", "rise"],
+    "step": ["serving", "plating", "sauce making", "roasting", "baking", "grilling", "simmering", "frying"],
+    "dish": ["soups", "stews", "pasta", "salads", "stir-fries", "curries", "roasts", "sandwiches"]
+  },
+  "coding": {
+    "templates": [
+      "In {language}, {concept} requires careful handling",
+      "{language} tip: {action} to avoid {issue}",
+      "Use {tool} when {condition}",
+      "Always {action} before {step} to prevent {issue}",
+      "Prefer {approach} over {approach2} for {outcome}"
+    ],
+    "language": ["Python", "JavaScript", "TypeScript", "Rust", "Go", "Java", "C", "C++", "Ruby", "Kotlin", "Swift", "PHP", "Haskell", "Elixir", "Scala", "C#", "Bash", "SQL", "HTML", "CSS"],
+    "concept": ["memory management", "concurrency", "error handling", "type safety", "null checks", "iteration", "recursion", "string handling", "asynchronous code", "state management"],
+    "action": ["validate input", "cache results", "log errors", "test assumptions", "name things clearly", "use pure functions", "prefer immutability", "handle edge cases", "release resources", "rate limit"],
+    "tool": ["a linter", "a formatter", "unit tests", "integration tests", "code review", "version control", "CI", "feature flags", "monitoring", "type checking"],
+    "condition": ["deploying to production", "refactoring", "scaling", "debugging", "writing a new feature", "fixing a bug", "onboarding", "auditing security"],
+    "issue": ["silent failures", "memory leaks", "race conditions", "off-by-one errors", "null reference exceptions", "infinite loops", "SQL injection", "XSS", "regression", "performance bottlenecks"],
+    "step": ["merging", "deploying", "shipping", "release", "scaling", "publishing"],
+    "approach": ["composition", "small functions", "explicit returns", "early returns", "early validation", "explicit types", "pure functions", "immutability"],
+    "approach2": ["inheritance", "large functions", "nested conditionals", "deep callbacks", "late validation", "implicit types", "side effects", "mutation"],
+    "outcome": ["readability", "testability", "maintainability", "performance", "safety", "clarity", "scalability"]
+  },
+  "science": {
+    "templates": [
+      "{subject} {verb} {object} due to {cause}",
+      "In {field}, {subject} {verb} {object}",
+      "Scientists found that {subject} {verb} {object}",
+      "Because of {cause}, {subject} {verb} {object}",
+      "{subject} can {verb} {object} more than you'd expect"
+    ],
+    "subject": ["water", "light", "gravity", "cells", "plants", "animals", "stars", "atoms", "DNA", "the brain", "the ocean", "insects", "birds", "fungi", "bacteria", "volcanoes", "glaciers", "clouds"],
+    "verb": ["expands", "contracts", "bonds", "reacts", "absorbs", "reflects", "transmits", "converts", "stores", "releases", "consumes", "produces", "interacts with", "shapes", "preserves", "destroys"],
+    "object": ["energy", "heat", "light", "nutrients", "carbon", "oxygen", "water", "minerals", "information", "signals", "matter", "radiation", "electricity"],
+    "cause": ["surface tension", "evaporation", "gravity", "molecular bonds", "electromagnetism", "osmosis", "photosynthesis", "friction", "pressure", "temperature", "chemical reactions", "natural selection"],
+    "field": ["biology", "physics", "chemistry", "astronomy", "geology", "ecology", "neuroscience", "genetics", "meteorology", "oceanography"]
+  },
+  "history": {
+    "templates": [
+      "In {year}, {event} changed {aspect}",
+      "{figure} {action} around {year}",
+      "The {invention} emerged in the {era}",
+      "{civilization} {action} centuries before {invention2}",
+      "Historians note that {event} took {duration}"
+    ],
+    "year": ["1215", "1492", "1776", "1789", "1865", "1903", "1945", "1969", "1989", "1440", "1804", "1879"],
+    "event": ["the Magna Carta", "Columbus's voyage", "the Declaration of Independence", "the French Revolution", "the end of the US Civil War", "the Wright Brothers' flight", "the end of WWII", "the Moon landing", "the fall of the Berlin Wall", "the printing press", "the steam locomotive", "the lightbulb"],
+    "aspect": ["governance", "exploration", "politics", "society", "transport", "aviation", "global relations", "space exploration", "Europe", "communication", "industry", "daily life"],
+    "figure": ["Aristotle", "Confucius", "Da Vinci", "Newton", "Curie", "Edison", "Tesla", "Einstein", "Turing", "Lovelace"],
+    "action": ["laid foundational ideas", "sketched inventions", "formulated laws", "discovered elements", "patented devices", "developed theories", "wrote influential papers", "pioneered computing"],
+    "invention": ["printing press", "steam engine", "telegraph", "telephone", "lightbulb", "airplane", "computer", "internet", "antibiotics", "vaccine"],
+    "invention2": ["modern times", "the industrial age", "electricity", "the digital era"],
+    "era": ["Renaissance", "Enlightenment", "Industrial Revolution", "Middle Ages", "Bronze Age", "Iron Age", "Cold War", "Space Age"],
+    "civilization": ["Romans", "Greeks", "Egyptians", "Mayans", "Chinese", "Persians", "Indus Valley people", "Babylonians"],
+    "duration": ["decades", "centuries", "generations", "thousands of years", "many years"]
+  },
+  "nature": {
+    "templates": [
+      "{animal} {ability} in {habitat}",
+      "{animal} can {ability} thanks to {feature}",
+      "In {habitat}, {animal} {behavior}",
+      "{plant} {trait} to survive {condition}",
+      "Many {animal} {behavior} together"
+    ],
+    "animal": ["octopuses", "penguins", "sloths", "fireflies", "hummingbirds", "elephants", "dolphins", "owls", "bats", "salmon", "sea turtles", "arctic foxes", "chameleons", "honeybees", "whales"],
+    "ability": ["change color", "navigate by stars", "glow in the dark", "fly backwards", "remember human faces", "use tools", "communicate over long distances", "hibernate for months", "regrow limbs"],
+    "habitat": ["the deep sea", "rainforests", "the Arctic", "deserts", "coral reefs", "mountains", "savannas", "wetlands", "tundra", "caves"],
+    "feature": ["specialized skin cells", "echolocation", "sensitive whiskers", "compound eyes", "thick blubber", "echolocation", "memory centers", "color-changing cells", "acute hearing"],
+    "plant": ["cacti", "bamboo", "moss", "sunflowers", "venus flytraps", "pitcher plants", "redwoods", "algae", "orchids", "succulents"],
+    "trait": ["store water", "grow fast", "tolerate shade", "track the sun", "trap insects", "filter air", "resist fire", "spread by wind"],
+    "condition": ["drought", "frost", "shade", "poor soil", "wildfire", "cold", "heat", "competition"],
+    "behavior": ["migrate", "hunt cooperatively", "raise young together", "defend territories", "communicate", "forage", "build nests", "form hierarchies"]
+  },
+  "general": {
+    "templates": [
+      "Try {action} for better {outcome}",
+      "Most people underestimate the value of {concept}",
+      "Small {concept} repeated daily compound into {outcome}",
+      "When {condition}, the best move is often {action}",
+      "{concept} is a skill anyone can learn with practice"
+    ],
+    "action": ["journaling for 5 minutes", "taking a short walk", "drinking water first thing", "saying no", "writing down goals", "tracking your spending", "single-tasking", "sleeping 8 hours", "reviewing your week", "doing one hard thing"],
+    "outcome": ["clarity", "focus", "energy", "mood", "productivity", "savings", "wellbeing", "consistency", "progress", "decisions"],
+    "concept": ["consistency", "deliberate practice", "good defaults", "feedback loops", "rest", "habit stacking", "small wins", "deep work", "asymmetric bets", "compounding"],
+    "condition": ["overwhelmed", "stuck", "tired", "uncertain", "starting out", "bored", "distracted", "behind schedule"]
+  }
+}

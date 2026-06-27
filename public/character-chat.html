@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>char.ai — Roleplay</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>char.ai</h1>
+      <nav>
+        <a href="/characters.html">Characters</a>
+        <a href="/settings.html">Settings</a>
+        <span id="user-area" class="user-area"></span>
+      </nav>
+    </header>
+
+    <main>
+      <div id="error" class="error-banner" role="alert"></div>
+
+      <div class="scene-header">
+        <div class="scene-avatar" id="char-scene-avatar" aria-hidden="true"></div>
+        <div class="scene-title-block">
+          <p class="scene-label" id="char-scene-label">Now playing</p>
+          <h2 id="char-title" class="scene-title">char.ai</h2>
+          <p class="hint" id="char-scenario-display"></p>
+        </div>
+      </div>
+
+      <div class="chat-toolbar">
+        <button type="button" id="chat-drawer-toggle" class="btn-secondary">☰ Chats</button>
+      </div>
+
+      <div class="chat-layout">
+        <aside id="chat-drawer" class="chat-drawer" aria-label="Chat sessions">
+          <p class="drawer-label">Chats</p>
+          <div class="session-controls">
+            <select id="session-select" title="Switch chat"></select>
+            <button type="button" id="new-chat-btn" class="btn-secondary">+ New chat</button>
+            <button type="button" id="rename-btn" class="btn-secondary">Rename</button>
+            <button type="button" id="delete-btn" class="btn-secondary danger">Delete</button>
+          </div>
+        </aside>
+
+        <div class="chat-main">
+          <ul id="messages" aria-live="polite"></ul>
+
+          <form id="chat-form" class="chat-form">
+            <input
+              type="text"
+              id="input"
+              placeholder="Say something to the character..."
+              autocomplete="off"
+              required
+            />
+            <button type="submit" id="send-btn">Send</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="edit-modal" class="modal" style="display: none">
+        <div class="modal-card">
+          <h2 class="section-title" id="edit-modal-title">Edit message</h2>
+          <form id="edit-form" class="stack-form">
+            <textarea id="edit-textarea" rows="4" required></textarea>
+            <div class="button-row">
+              <button type="submit">Save &amp; regenerate</button>
+              <button type="button" id="edit-cancel" class="btn-secondary">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </main>
+    <script src="/js/api.js"></script>
+    <script src="/js/header.js"></script>
+    <script src="/js/characters-api.js"></script>
+    <script src="/js/character-chat.js"></script>
+  </body>
+</html>

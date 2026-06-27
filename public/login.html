@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>char.ai — Login</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body class="login-body">
+    <main class="login-main">
+      <div class="login-card">
+        <h1 class="login-title">🎭 char.ai</h1>
+        <p class="login-subtitle">Talk, roleplay, and teach your AI what matters.</p>
+
+        <div id="error" class="error-banner" role="alert"></div>
+
+        <div class="login-tabs">
+          <button type="button" id="tab-login" class="login-tab active">Log in</button>
+          <button type="button" id="tab-register" class="login-tab">Create account</button>
+        </div>
+
+        <form id="auth-form" class="stack-form">
+          <label>
+            Username
+            <input type="text" id="username" autocomplete="username" required minlength="2" maxlength="40" />
+          </label>
+
+          <label id="display-name-wrap" style="display: none">
+            Display name (optional)
+            <input type="text" id="display-name" maxlength="40" placeholder="How you'll appear" />
+          </label>
+
+          <label>
+            Password
+            <input type="password" id="password" autocomplete="current-password" required minlength="4" />
+          </label>
+
+          <button type="submit" id="auth-submit">Log in</button>
+        </form>
+
+        <p class="site-footer login-footer">DM yofirsmik on Discord for any issues</p>
+      </div>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/login.js"></script>
+  </body>
+</html>

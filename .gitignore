@@ -1,0 +1,9 @@
+node_modules/
+.env
+data/chat.json
+data/memory.json
+data/users/
+data/accounts/
+data/feed-queue.json
+data/feed-config.json
+data/reflection-state.json

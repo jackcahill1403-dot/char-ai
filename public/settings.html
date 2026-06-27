@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>char.ai — Settings</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>char.ai</h1>
+      <nav>
+        <a href="/characters.html">Characters</a>
+        <a href="/settings.html" aria-current="page">Settings</a>
+        <span id="user-area" class="user-area"></span>
+      </nav>
+    </header>
+
+    <main>
+      <div id="error" class="error-banner" role="alert"></div>
+      <div id="success" class="error-banner" style="background: #ecfdf3; color: #027a48; display: none"></div>
+
+      <div class="settings-card">
+        <h2 class="section-title">Profile</h2>
+        <p class="hint">Your display name and profile picture show up in the header.</p>
+
+        <div class="profile-row">
+          <div id="profile-avatar-preview" class="profile-avatar-preview"></div>
+          <div class="profile-form-col">
+            <label>
+              Display name
+              <input type="text" id="display-name" maxlength="40" placeholder="User" />
+            </label>
+            <label>
+              Profile picture (emoji or upload)
+              <div class="avatar-inputs">
+                <input type="text" id="profile-emoji" maxlength="8" placeholder="🙂" />
+                <input type="file" id="profile-file" accept="image/*" />
+              </div>
+            </label>
+            <button type="button" id="save-profile-btn">Save profile</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-card" style="margin-top: 1rem">
+        <h2 class="section-title">Message limit</h2>
+        <p class="hint usage-display" id="usage-display">Loading…</p>
+      </div>
+
+      <div class="settings-card" style="margin-top: 1rem">
+        <h2 class="section-title">Security</h2>
+        <form id="password-form">
+          <label>
+            New password (min 4 chars)
+            <input type="password" id="new-password" autocomplete="new-password" minlength="4" />
+          </label>
+          <button type="submit">Change password</button>
+        </form>
+      </div>
+
+      <footer class="site-footer">DM yofirsmik on Discord for any issues</footer>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/header.js"></script>
+    <script src="/js/settings.js"></script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+[
+  { "fact": "User prefers concise answers over long ones", "category": "preference", "confidence": 0.9 },
+  { "fact": "User likes examples before explanations", "category": "preference", "confidence": 0.85 },
+  { "fact": "User prefers plain language, not jargon", "category": "preference", "confidence": 0.85 },
+  { "fact": "User likes code snippets when relevant", "category": "preference", "confidence": 0.8 },
+  { "fact": "User dislikes being told things they already said", "category": "preference", "confidence": 0.85 },
+
+  { "fact": "Always confirm before deleting data", "category": "rule", "confidence": 0.95 },
+  { "fact": "Never assume the user's name; ask or use saved memory", "category": "rule", "confidence": 0.9 },
+  { "fact": "When unsure, ask a clarifying question instead of guessing", "category": "rule", "confidence": 0.9 },
+  { "fact": "Keep replies under 4 sentences unless asked for detail", "category": "rule", "confidence": 0.85 },
+  { "fact": "Don't repeat the user's question back verbatim", "category": "rule", "confidence": 0.8 },
+  { "fact": "Use saved memory to personalize greetings", "category": "rule", "confidence": 0.85 },
+
+  { "fact": "char.ai is a small test chat app, not a production AI", "category": "fact", "confidence": 1.0 },
+  { "fact": "char.ai stores memory in data/users/<userId>/memory.json", "category": "fact", "confidence": 1.0 },
+  { "fact": "char.ai stores chat history in data/users/<userId>/chat.json", "category": "fact", "confidence": 1.0 },
+  { "fact": "char.ai has three modes: normal, silly, serious", "category": "fact", "confidence": 1.0 },
+  { "fact": "char.ai runs on port 3847 by default", "category": "fact", "confidence": 1.0 },
+  { "fact": "char.ai is built with Node.js and Express", "category": "fact", "confidence": 1.0 },
+  { "fact": "char.ai's name is char.ai", "category": "fact", "confidence": 1.0 },
+  { "fact": "char.ai supports character roleplay with preset and custom personas", "category": "fact", "confidence": 1.0 },
+
+  { "fact": "JavaScript uses async/await for asynchronous flow", "category": "fact", "confidence": 0.8 },
+  { "fact": "Node.js packages are managed with npm", "category": "fact", "confidence": 0.8 },
+  { "fact": "JSON files must be valid UTF-8 text", "category": "fact", "confidence": 0.8 },
+  { "fact": "REST APIs use HTTP methods like GET, POST, PUT, DELETE", "category": "fact", "confidence": 0.8 },
+  { "fact": "Git commits should have clear, descriptive messages", "category": "fact", "confidence": 0.75 },
+  { "fact": "Local storage in browsers persists across sessions", "category": "fact", "confidence": 0.75 },
+
+  { "fact": "User is learning how AI memory works", "category": "fact", "confidence": 0.7 },
+  { "fact": "User is testing char.ai as a side project", "category": "fact", "confidence": 0.7 },
+  { "fact": "User calls the assistant 'char.ai'", "category": "fact", "confidence": 0.9 }
+]
