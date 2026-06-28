@@ -46,13 +46,18 @@ header h1 {
   width: 36px;
   height: 36px;
   object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+html[data-theme="light"] .brand-logo {
+  filter: none;
 }
 
 .brand-name {
   font-size: 1.2rem;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: var(--brand, #7c6dfa);
+  color: var(--text);
 }
 
 nav {
@@ -79,7 +84,7 @@ nav a:hover {
 }
 
 nav a[aria-current="page"] {
-  color: #ffffff;
+  color: var(--on-accent, #fff);
   background: var(--accent);
   font-weight: 600;
   text-decoration: none;
@@ -375,7 +380,7 @@ button {
   gap: 0.35rem;
   padding: 0.58rem 1.15rem;
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent, #fff);
   border: none;
   border-radius: 8px;
   font-size: 0.925rem;
@@ -828,11 +833,12 @@ code {
   --muted: #888;
   --border: #262626;
   --hover: rgba(255, 255, 255, 0.05);
-  --accent: #7c6dfa;
-  --accent-hover: #9180fb;
-  --accent-soft: rgba(124, 109, 250, 0.12);
-  --accent-glow: rgba(124, 109, 250, 0.25);
-  --brand: #7c6dfa;
+  --accent: #ffffff;
+  --accent-hover: #e0e0e0;
+  --accent-soft: rgba(255, 255, 255, 0.07);
+  --accent-glow: rgba(255, 255, 255, 0.12);
+  --brand: #ffffff;
+  --on-accent: #141414;
   --user-bg: #252525;
   --user-border: #333;
   --card: #1f1f1f;
@@ -855,11 +861,12 @@ html[data-theme="light"] {
   --muted: #6b6b6b;
   --border: #e0e0e0;
   --hover: #e8e8e8;
-  --accent: #6355e8;
-  --accent-hover: #5044d6;
-  --accent-soft: rgba(99, 85, 232, 0.08);
-  --accent-glow: rgba(99, 85, 232, 0.2);
-  --brand: #6355e8;
+  --accent: #1a1a1a;
+  --accent-hover: #333;
+  --accent-soft: rgba(0, 0, 0, 0.06);
+  --accent-glow: rgba(0, 0, 0, 0.12);
+  --brand: #1a1a1a;
+  --on-accent: #ffffff;
   --user-bg: #f0f0f0;
   --user-border: #e0e0e0;
   --card: #ffffff;
@@ -2163,7 +2170,7 @@ body.chat-layout #messages {
   border: none;
   border-radius: var(--radius-sm);
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent, #fff);
   cursor: pointer;
   flex-shrink: 0;
   transition: background 0.15s ease, transform 0.1s ease;
