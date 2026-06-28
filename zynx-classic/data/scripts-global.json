@@ -1,0 +1,22 @@
+{
+  "scripts": [
+    {
+      "id": "global-hello-py",
+      "slug": "hello-python",
+      "name": "Hello Python",
+      "description": "Tiny Python hello script — free to run, no AI cost.",
+      "author": "mini-zynx",
+      "content": "```python\n#!/usr/bin/env python3\nprint('hello from mini-zynx script vault')\n```",
+      "createdAt": "2026-06-27T23:57:42.982Z"
+    },
+    {
+      "id": "global-backup-reminder",
+      "slug": "backup-checklist",
+      "name": "Backup checklist",
+      "description": "Caveman backup steps before deploy.",
+      "author": "mini-zynx",
+      "content": "1) export .env keys safe\n2) git commit\n3) test !run hello-python\n4) deploy\n5) smoke test /api/health",
+      "createdAt": "2026-06-27T23:57:42.983Z"
+    }
+  ]
+}

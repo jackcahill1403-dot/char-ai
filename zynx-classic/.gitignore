@@ -1,0 +1,5 @@
+node_modules/
+.env
+data/memory.json
+data/users/
+data/response-cache.json

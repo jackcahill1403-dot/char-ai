@@ -1,0 +1,26 @@
+[
+  {
+    "id": "webapp",
+    "name": "Web app",
+    "description": "Qwen plan → Kimi+GLM code → GPT-OSS+Kimi test (1 message)",
+    "agents": [
+      { "id": "planner", "name": "Planner", "model": "hf-qwen36", "role": "Plan HTML/CSS/JS feature. Steps + acceptance criteria. No code." },
+      { "id": "coder-kimi", "name": "Coder (Kimi 2.7)", "model": "hf-kimi-code", "role": "Build from plan. Working files in fenced blocks." },
+      { "id": "coder-glm", "name": "Coder (GLM 5.2)", "model": "glm", "role": "Alternate implementation from plan. Fenced blocks." },
+      { "id": "tester-gpt", "name": "Tester (GPT-OSS)", "model": "hf-gpt-oss", "role": "QA both implementations. Bugs + test cases." },
+      { "id": "tester-kimi", "name": "Tester (Kimi 2.6)", "model": "hf-kimi", "role": "Final QA. Ship/no-ship verdict." }
+    ]
+  },
+  {
+    "id": "python",
+    "name": "Python script",
+    "description": "Full 5-agent HF team",
+    "agents": [
+      { "id": "planner", "name": "Planner", "model": "hf-qwen36", "role": "Plan Python script structure and edge cases." },
+      { "id": "coder-kimi", "name": "Coder (Kimi 2.7)", "model": "hf-kimi-code", "role": "Write Python script." },
+      { "id": "coder-glm", "name": "Coder (GLM 5.2)", "model": "glm", "role": "Alternate Python implementation." },
+      { "id": "tester-gpt", "name": "Tester (GPT-OSS)", "model": "hf-gpt-oss", "role": "Review for bugs and security." },
+      { "id": "tester-kimi", "name": "Tester (Kimi 2.6)", "model": "hf-kimi", "role": "Final test verdict." }
+    ]
+  }
+]

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/img/atlas-logo.png" type="image/png" />
+    <title>Atlas — Status</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/" class="brand-mark" aria-label="Atlas home">
+        <img src="/img/atlas-logo.png" alt="" width="36" height="36" class="brand-logo" />
+        <span class="brand-name">Atlas</span>
+      </a>
+      <nav>
+        <a href="/">Chat</a>
+        <a href="/agents.html">Agents</a>
+        <a href="/plugins.html">Plugins</a>
+        <a href="/scripts.html">Scripts</a>
+        <a href="/settings.html">Settings</a>
+        <a href="/status.html" aria-current="page">Status</a>
+      </nav>
+    </header>
+
+    <div id="global-usage-bar" class="usage-bar">
+      <span class="usage-bar-label">Model limit</span>
+      <div class="usage-bar-track"><div id="global-usage-bar-fill" class="usage-bar-fill"></div></div>
+      <span id="global-usage-bar-text" class="usage-bar-text">Loading…</span>
+    </div>
+
+    <main>
+      <div id="error" class="error-banner" role="alert"></div>
+      <div id="hf-account-banner" class="hf-account-banner" hidden></div>
+      <div id="or-account-banner" class="hf-account-banner" hidden></div>
+      <section class="card" id="model-graph-section">
+        <h2>OpenRouter models</h2>
+        <p class="hint">Live health checks for Kimi, GLM, Qwen, GPT-OSS, and DeepSeek via your OpenRouter key.</p>
+        <div id="model-graph" class="model-graph" aria-live="polite">
+          <p class="hint">Loading probes…</p>
+        </div>
+      </section>
+
+      <section class="card" id="or-keys-section">
+        <h2>OpenRouter keys per model</h2>
+        <p class="hint">Each model can have its own key in <code>.env</code>. Status shows dedicated vs global fallback.</p>
+        <div id="or-model-keys" class="model-pools" aria-live="polite">
+          <p class="hint">Loading…</p>
+        </div>
+      </section>
+
+      <section class="card" id="model-pools-section">
+        <h2>App usage limits</h2>
+        <p class="hint">Your quotas per OpenRouter model — full reset every hour on the clock (:00) and at midnight for the daily cap.</p>
+        <div id="model-pools-notice" class="model-pools-notice" hidden></div>
+        <div id="model-pools" class="model-pools" aria-live="polite">
+          <p class="hint">Loading…</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>OpenRouter catalog</h2>
+        <p class="hint">All models routed through OpenRouter — pick any in Settings.</p>
+        <div class="card-actions card-actions--inline">
+          <button type="button" id="refresh-btn" class="btn-secondary">Refresh</button>
+        </div>
+        <div id="provider-list"></div>
+      </section>
+      <section class="card">
+        <h2>Server</h2>
+        <pre id="server-info" class="script-preview"></pre>
+      </section>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/motion.js"></script>
+    <script src="/js/usage-bar.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/status-page.js"></script>
+  </body>
+</html>

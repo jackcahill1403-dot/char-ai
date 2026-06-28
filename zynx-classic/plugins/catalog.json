@@ -1,0 +1,119 @@
+[
+  {
+    "id": "code-expert",
+    "name": "Code Expert",
+    "description": "Sharper coding rules for the Coder agent — tests, edge cases, clean structure.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "high",
+    "tags": ["code", "dev-team"]
+  },
+  {
+    "id": "plan-master",
+    "name": "Plan Master",
+    "description": "Forces numbered plans, acceptance criteria, and risk notes for the Planner.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "medium",
+    "tags": ["planning", "dev-team"]
+  },
+  {
+    "id": "security-shield",
+    "name": "Security Shield",
+    "description": "Adds OWASP-style security checks to tester/reviewer agents.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "high",
+    "tags": ["security", "dev-team"]
+  },
+  {
+    "id": "memory-boost",
+    "name": "Memory Boost",
+    "description": "Injects recent chat history into every agent step for better context.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "medium",
+    "tags": ["context"]
+  },
+  {
+    "id": "caveman-turbo",
+    "name": "Caveman Turbo",
+    "description": "Extra-compresses final replies while keeping code blocks intact.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "low",
+    "tags": ["caveman"]
+  },
+  {
+    "id": "test-driver",
+    "name": "Test Driver",
+    "description": "Coder agent must include runnable tests or test instructions.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "medium",
+    "tags": ["code", "testing"]
+  },
+  {
+    "id": "script-vault",
+    "name": "Script Saver",
+    "description": "Auto-saves every AI reply as a script. !run replays FREE.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "high",
+    "tags": ["scripts", "save", "global"]
+  },
+  {
+    "id": "api-builder",
+    "name": "API Builder",
+    "description": "REST API planning + implementation patterns for Planner and Coders.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "high",
+    "tags": ["api", "backend", "dev-team"]
+  },
+  {
+    "id": "doc-writer",
+    "name": "Doc Writer",
+    "description": "Structured docs with TL;DR, headings, and readable formatting.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "low",
+    "tags": ["docs", "formatting"]
+  },
+  {
+    "id": "pr-format",
+    "name": "PR Format",
+    "description": "Wraps dev team output in a PR-style summary header.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "low",
+    "tags": ["git", "formatting"]
+  },
+  {
+    "id": "token-saver",
+    "name": "Token Saver",
+    "description": "Agents stay concise to burn fewer tokens inside the 1-message pipeline.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "medium",
+    "tags": ["caveman", "efficiency"]
+  },
+  {
+    "id": "json-forge",
+    "name": "JSON Forge",
+    "description": "Better JSON/data examples in plans and code.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "low",
+    "tags": ["data", "api"]
+  },
+  {
+    "id": "test-driver-plus",
+    "name": "Test Driver Plus",
+    "description": "Testers output numbered steps + PASS/FAIL table.",
+    "version": "1.0.0",
+    "author": "Atlas",
+    "power": "medium",
+    "tags": ["testing", "dev-team"]
+  }
+]

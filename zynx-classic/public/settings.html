@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/img/atlas-logo.png" type="image/png" />
+    <title>Atlas — Settings</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/" class="brand-mark" aria-label="Atlas home">
+        <img src="/img/atlas-logo.png" alt="" width="36" height="36" class="brand-logo" />
+        <span class="brand-name">Atlas</span>
+      </a>
+      <nav>
+        <a href="/">Chat</a>
+        <a href="/agents.html">Agents</a>
+        <a href="/plugins.html">Plugins</a>
+        <a href="/scripts.html">Scripts</a>
+        <a href="/settings.html" aria-current="page">Settings</a>
+        <a href="/status.html">Status</a>
+      </nav>
+    </header>
+
+    <div id="global-usage-bar" class="usage-bar">
+      <span class="usage-bar-label">Model limit</span>
+      <div class="usage-bar-track"><div id="global-usage-bar-fill" class="usage-bar-fill"></div></div>
+      <span id="global-usage-bar-text" class="usage-bar-text">Loading…</span>
+    </div>
+
+    <main>
+      <div id="error" class="error-banner" role="alert"></div>
+      <div id="success" class="success-banner" role="status"></div>
+
+      <section class="card">
+        <h2>Share with friends</h2>
+        <p class="hint">Each person gets their own chat + limits. Send them your site link — they pick a name below (or use a random guest id automatically).</p>
+        <label>
+          Your space name
+          <input type="text" id="user-space" maxlength="40" placeholder="e.g. jack or sam" />
+        </label>
+        <p class="hint">Friend's link (they replace the name):</p>
+        <p><code id="share-link" class="share-link"></code></p>
+        <p class="hint">For remote friends: deploy on Render with a free <strong>OpenRouter</strong> or <strong>Gemini</strong> key in env — Ollama only works on your PC.</p>
+      </section>
+
+      <section class="card">
+        <h2>Profile</h2>
+        <label>
+          Display name
+          <input type="text" id="display-name" maxlength="40" />
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Mode</h2>
+        <p class="hint"><strong>Caveman ultra</strong> is always on. Every model gets <strong>20 per clock hour</strong> and <strong>50 per calendar day</strong> (full reset at :00 and midnight, server time).</p>
+        <p class="hint">Dev team with OpenRouter: <strong>Qwen 3.6</strong> plan · <strong>Kimi 2.7 + GLM 5.2</strong> code · <strong>GPT-OSS + Kimi 2.6</strong> test — <strong>1 message</strong>.</p>
+      </section>
+
+      <section class="card">
+        <h2>Caveman dictionary</h2>
+        <p class="hint">One replacement per line: <code>because=→</code> <code>database=DB</code></p>
+        <textarea id="caveman-dict" rows="6" placeholder="because=→&#10;database=DB"></textarea>
+      </section>
+
+      <section class="card">
+        <h2>Save messages</h2>
+        <p class="hint">
+          Install <strong>Script Saver</strong> on <a href="/plugins.html">Plugins</a> to auto-save every AI reply.
+        </p>
+        <label class="toggle-row">
+          <input type="checkbox" id="use-response-cache" checked />
+          Cache identical prompts — replay FREE without using a message
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Free options (no HF credits needed)</h2>
+        <p class="hint">
+          HF billing is optional. Pick one of these on <strong>Model</strong> below and turn off <strong>dev team</strong> on
+          <a href="/agents.html">Agents</a> (dev team still uses HF models).
+        </p>
+        <ul class="hint free-options-list">
+          <li><strong>OpenRouter</strong> — one key per model in <code>.env</code> (<code>OPENROUTER_KEY_OR_KIMI</code>, etc.) or global <code>OPENROUTER_API_KEYS</code>. Each model: 20/hr · 50/day.</li>
+          <li><strong>Gemini</strong> — <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>, Gmail works. Add <code>GEMINI_API_KEY=</code> to <code>.env</code>.</li>
+          <li><strong>Ollama</strong> — local only (<a href="https://ollama.com" target="_blank" rel="noopener">ollama.com</a>). Friends need a deployed server with OpenRouter/Gemini instead.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Hugging Face</h2>
+        <p class="hint">
+          One <code>HF_TOKEN</code> in <code>.env</code> powers every model marked <strong>(HF)</strong> below.
+          Pick different HF models per agent on the <a href="/agents.html">Agents</a> page.
+        </p>
+        <label>
+          Custom HF model ID
+          <input type="text" id="hf-custom-model" maxlength="120" placeholder="e.g. meta-llama/Llama-3.3-70B-Instruct" />
+        </label>
+        <p class="hint">Used when you select <strong>Custom HF model</strong>. Copy the ID from the model page on huggingface.co</p>
+      </section>
+
+      <section class="card">
+        <h2>Model</h2>
+        <p class="hint">Used when dev team is off. HF models need paid credits; OpenRouter/Gemini/Ollama are free.</p>
+        <div id="model-list" class="model-list"></div>
+      </section>
+
+      <div class="page-actions">
+        <button type="button" id="save-btn" class="btn">Save settings</button>
+      </div>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/motion.js"></script>
+    <script src="/js/usage-bar.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/settings.js"></script>
+  </body>
+</html>

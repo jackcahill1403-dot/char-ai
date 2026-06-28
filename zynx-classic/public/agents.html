@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/img/atlas-logo.png" type="image/png" />
+    <title>Atlas — Agents</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/" class="brand-mark" aria-label="Atlas home">
+        <img src="/img/atlas-logo.png" alt="" width="36" height="36" class="brand-logo" />
+        <span class="brand-name">Atlas</span>
+      </a>
+      <nav>
+        <a href="/">Chat</a>
+        <a href="/agents.html" aria-current="page">Agents</a>
+        <a href="/plugins.html">Plugins</a>
+        <a href="/scripts.html">Scripts</a>
+        <a href="/settings.html">Settings</a>
+        <a href="/status.html">Status</a>
+      </nav>
+    </header>
+
+    <div id="global-usage-bar" class="usage-bar">
+      <span class="usage-bar-label">Model limit</span>
+      <div class="usage-bar-track"><div id="global-usage-bar-fill" class="usage-bar-fill"></div></div>
+      <span id="global-usage-bar-text" class="usage-bar-text">Loading…</span>
+    </div>
+
+    <main>
+      <div id="error" class="error-banner" role="alert"></div>
+      <div id="success" class="success-banner" role="status"></div>
+
+      <section class="card">
+        <h2>Agent pipeline</h2>
+        <p class="hint">
+          <strong>1 message total</strong> — Qwen 3.6 (plan) → Kimi 2.7 + GLM 5.2 (code, parallel) → GPT-OSS + Kimi 2.6 (test, parallel).
+        </p>
+        <label class="toggle-row">
+          <input type="checkbox" id="agents-enabled" checked />
+          Use agent pipeline (when off, single model from Settings runs)
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Presets</h2>
+        <p class="hint">One-click dev team setups.</p>
+        <div id="preset-list" class="preset-row"></div>
+      </section>
+
+      <section class="card">
+        <h2>Your agents</h2>
+        <div id="agent-list" class="agent-list"></div>
+        <div class="card-actions">
+          <button type="button" id="add-agent-btn" class="btn-secondary">Add agent</button>
+        </div>
+      </section>
+
+      <div class="page-actions">
+        <button type="button" id="save-btn" class="btn">Save agents</button>
+      </div>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/motion.js"></script>
+    <script src="/js/usage-bar.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/agents.js"></script>
+  </body>
+</html>

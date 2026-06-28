@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/img/atlas-logo.png" type="image/png" />
+    <title>Atlas</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body class="chat-layout">
+    <header>
+      <a href="/" class="brand-mark" aria-label="Atlas home">
+        <img src="/img/atlas-logo.png" alt="" width="36" height="36" class="brand-logo" />
+        <span class="brand-name">Atlas</span>
+      </a>
+      <nav>
+        <a href="/" aria-current="page">Chat</a>
+        <a href="/agents.html">Agents</a>
+        <a href="/plugins.html">Plugins</a>
+        <a href="/scripts.html">Scripts</a>
+        <a href="/settings.html">Settings</a>
+        <a href="/status.html">Status</a>
+      </nav>
+    </header>
+
+    <div id="global-usage-bar" class="usage-bar">
+      <span class="usage-bar-label">Model limit</span>
+      <div class="usage-bar-track"><div id="global-usage-bar-fill" class="usage-bar-fill"></div></div>
+      <span id="global-usage-bar-text" class="usage-bar-text">Loading…</span>
+    </div>
+
+    <div class="chat-shell">
+      <aside class="chat-sidebar" aria-label="Conversations">
+        <div class="chat-sidebar-head">
+          <strong>Chats</strong>
+          <button type="button" id="new-chat-btn" class="btn-secondary btn-sm" title="New chat">+</button>
+        </div>
+        <ul id="conversation-list" class="conversation-list"></ul>
+      </aside>
+
+      <main class="chat-main">
+        <div id="error" class="error-banner" role="alert"></div>
+
+        <p class="hint" id="greeting">Atlas</p>
+        <p id="status-line"></p>
+
+        <ul id="messages" aria-live="polite"></ul>
+
+        <form id="chat-form" class="chat-form">
+          <select id="chat-model" class="chat-model-select" title="Model" aria-label="Model">
+            <option value="auto">Auto</option>
+          </select>
+          <div class="chat-input-wrap">
+            <textarea
+              id="input"
+              rows="1"
+              placeholder="Message Atlas…  Enter to send · Shift+Enter new line · ! commands"
+              autocomplete="off"
+              required
+            ></textarea>
+            <div id="attach-chip" class="attach-chip" hidden></div>
+            <div id="command-palette" class="command-palette" hidden></div>
+          </div>
+          <input type="file" id="file-input" accept=".txt,.md,.js,.ts,.json,.py,.html,.css,.env,.yml,.yaml,.xml,.csv" hidden />
+          <button type="button" id="attach-btn" class="btn-secondary btn-icon" title="Attach file">📎</button>
+          <button type="button" id="stop-btn" class="btn-secondary" hidden>Stop</button>
+          <button type="submit" id="send-btn">Send</button>
+        </form>
+        <div class="btn-group chat-actions">
+          <button type="button" id="export-btn" class="btn-secondary">Export markdown</button>
+        </div>
+      </main>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/motion.js"></script>
+    <script src="/js/usage-bar.js"></script>
+    <script src="/js/format.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/chat.js"></script>
+  </body>
+</html>

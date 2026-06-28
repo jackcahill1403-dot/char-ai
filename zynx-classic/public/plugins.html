@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/img/atlas-logo.png" type="image/png" />
+    <title>Atlas — Plugins</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/" class="brand-mark" aria-label="Atlas home">
+        <img src="/img/atlas-logo.png" alt="" width="36" height="36" class="brand-logo" />
+        <span class="brand-name">Atlas</span>
+      </a>
+      <nav>
+        <a href="/">Chat</a>
+        <a href="/agents.html">Agents</a>
+        <a href="/plugins.html" aria-current="page">Plugins</a>
+        <a href="/scripts.html">Scripts</a>
+        <a href="/settings.html">Settings</a>
+        <a href="/status.html">Status</a>
+      </nav>
+    </header>
+
+    <div id="global-usage-bar" class="usage-bar">
+      <span class="usage-bar-label">Model limit</span>
+      <div class="usage-bar-track"><div id="global-usage-bar-fill" class="usage-bar-fill"></div></div>
+      <span id="global-usage-bar-text" class="usage-bar-text">Loading…</span>
+    </div>
+
+    <main>
+      <div id="error" class="error-banner" role="alert"></div>
+      <div id="success" class="success-banner" role="status"></div>
+
+      <section class="card">
+        <h2>Plugin store</h2>
+        <p class="hint">Download = install bundled power-ups. Enabled plugins boost dev team + chat (still 1 message per pipeline).</p>
+        <div id="plugin-list" class="plugin-list"></div>
+      </section>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/motion.js"></script>
+    <script src="/js/usage-bar.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/plugins-page.js"></script>
+  </body>
+</html>

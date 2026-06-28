@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: atlas
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "20"
+      - key: OPENROUTER_APP_TITLE
+        value: Atlas
+      - key: RATE_LIMIT_PER_HOUR
+        value: "20"
+      - key: RATE_LIMIT_PER_DAY
+        value: "50"
+      - key: OPENROUTER_KEY_OR_KIMI
+        sync: false
+      - key: OPENROUTER_KEY_OR_KIMI_CODE
+        sync: false
+      - key: OPENROUTER_KEY_OR_QWEN36
+        sync: false
+      - key: OPENROUTER_KEY_OR_GLM
+        sync: false
+      - key: OPENROUTER_KEY_OR_GPT_OSS
+        sync: false
+      - key: OPENROUTER_KEY_OR_DEEPSEEK_V4
+        sync: false
+      - key: OPENROUTER_KEY_OR_FLASH
+        sync: false
+      - key: OPENROUTER_API_KEYS
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
