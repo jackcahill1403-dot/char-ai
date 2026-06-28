@@ -42,7 +42,13 @@ function renderMessages(messages, { animate = false } = {}) {
   currentMessages = messages || [];
   messagesEl.innerHTML = "";
   if (!currentMessages.length) {
-    messagesEl.innerHTML = '<li class="empty-state">Say hello — Atlas listening.</li>';
+    messagesEl.innerHTML = `<li class="empty-state">
+      <div class="empty-state-inner">
+        <span class="empty-mark" aria-hidden="true"></span>
+        <p class="empty-title">Where should we go?</p>
+        <p class="empty-hint">Ask anything — type <code>!</code> for commands</p>
+      </div>
+    </li>`;
     return;
   }
 

@@ -4,23 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Atlas — AI chat with OpenRouter models" />
-    <meta name="theme-color" content="#181818" />
+    <meta name="theme-color" content="#0d0d0d" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Atlas" />
     <link rel="icon" href="/img/atlas-logo.png" type="image/png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/img/atlas-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <title>Atlas — Settings</title>
-    <link rel="stylesheet" href="/css/style.css?v=5" />
+    <link rel="stylesheet" href="/css/style.css?v=6" />
   </head>
-  <body>
-    <header>
+  <body class="app-page">
+    <header class="app-header">
       <a href="/" class="brand-mark" aria-label="Atlas home">
-        <img src="/img/atlas-logo.png" alt="" width="36" height="36" class="brand-logo" />
+        <img src="/img/atlas-logo.png" alt="" width="28" height="28" class="brand-logo" />
         <span class="brand-name">Atlas</span>
       </a>
-      <nav>
+      <nav class="app-nav" aria-label="Main">
         <a href="/">Chat</a>
         <a href="/agents.html">Agents</a>
         <a href="/plugins.html">Plugins</a>
@@ -30,8 +36,8 @@
       </nav>
     </header>
 
-    <div id="global-usage-bar" class="usage-bar">
-      <span class="usage-bar-label">Model limit</span>
+    <div id="global-usage-bar" class="usage-bar usage-bar--slim">
+      <span class="usage-bar-label">Quota</span>
       <div class="usage-bar-track"><div id="global-usage-bar-fill" class="usage-bar-fill"></div></div>
       <span id="global-usage-bar-text" class="usage-bar-text">Loading…</span>
     </div>

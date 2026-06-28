@@ -4,37 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Atlas — AI chat with OpenRouter models" />
-    <meta name="theme-color" content="#181818" />
+    <meta name="theme-color" content="#0d0d0d" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Atlas" />
     <link rel="icon" href="/img/atlas-logo.png" type="image/png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/img/atlas-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <title>Atlas</title>
-    <link rel="stylesheet" href="/css/style.css?v=5" />
+    <link rel="stylesheet" href="/css/style.css?v=6" />
   </head>
-  <body class="chat-layout">
-    <header>
+  <body class="chat-layout app-shell">
+    <header class="app-header">
       <a href="/" class="brand-mark" aria-label="Atlas home">
-        <img src="/img/atlas-logo.png" alt="" width="36" height="36" class="brand-logo" />
+        <img src="/img/atlas-logo.png" alt="" width="28" height="28" class="brand-logo" />
         <span class="brand-name">Atlas</span>
       </a>
-      <nav>
+      <nav class="app-nav" aria-label="Main">
         <a href="/" aria-current="page">Chat</a>
         <a href="/agents.html">Agents</a>
         <a href="/plugins.html">Plugins</a>
         <a href="/scripts.html">Scripts</a>
         <a href="/settings.html">Settings</a>
         <a href="/status.html">Status</a>
-        <button type="button" id="install-app-btn" class="btn-secondary btn-sm install-app-btn" hidden>
-          Install app
-        </button>
       </nav>
+      <div class="app-header-actions">
+        <button type="button" id="install-app-btn" class="btn-ghost btn-sm install-app-btn" hidden>
+          Install
+        </button>
+      </div>
     </header>
 
-    <div id="global-usage-bar" class="usage-bar">
-      <span class="usage-bar-label">Model limit</span>
+    <div id="global-usage-bar" class="usage-bar usage-bar--slim">
+      <span class="usage-bar-label">Quota</span>
       <div class="usage-bar-track"><div id="global-usage-bar-fill" class="usage-bar-fill"></div></div>
       <span id="global-usage-bar-text" class="usage-bar-text">Loading…</span>
     </div>
@@ -42,8 +50,8 @@
     <div class="chat-shell">
       <aside class="chat-sidebar" aria-label="Conversations">
         <div class="chat-sidebar-head">
-          <strong>Chats</strong>
-          <button type="button" id="new-chat-btn" class="btn-secondary btn-sm" title="New chat">+</button>
+          <span class="sidebar-label">Threads</span>
+          <button type="button" id="new-chat-btn" class="btn-icon btn-sm" title="New chat" aria-label="New chat">+</button>
         </div>
         <ul id="conversation-list" class="conversation-list"></ul>
       </aside>
@@ -52,39 +60,51 @@
         <div id="error" class="error-banner" role="alert"></div>
 
         <div class="chat-top">
-          <p class="hint" id="greeting">Atlas</p>
-          <p id="status-line"></p>
+          <p class="chat-greeting" id="greeting">Atlas</p>
+          <p id="status-line" class="chat-status"></p>
         </div>
 
         <div class="chat-messages-pane">
-          <ul id="messages" aria-live="polite"></ul>
+          <ul id="messages" class="message-list" aria-live="polite"></ul>
         </div>
 
         <div class="chat-composer">
           <div class="composer-toolbar">
+            <label class="field-label" for="chat-model">Model</label>
             <select id="chat-model" class="chat-model-select" title="Model" aria-label="Model">
-              <option value="auto">Auto</option>
+              <option value="auto">Auto route</option>
             </select>
-            <button type="button" id="export-btn" class="btn-secondary btn-sm">Export markdown</button>
+            <button type="button" id="export-btn" class="btn-ghost btn-sm">Export</button>
           </div>
           <form id="chat-form" class="chat-form">
-            <div class="chat-input-wrap">
-              <textarea
-                id="input"
-                rows="1"
-                placeholder="Message Atlas…"
-                title="Enter to send · Shift+Enter new line · ! for commands"
-                autocomplete="off"
-                required
-              ></textarea>
-              <div id="attach-chip" class="attach-chip" hidden></div>
-              <div id="command-palette" class="command-palette" hidden></div>
-            </div>
-            <div class="composer-actions">
-              <input type="file" id="file-input" accept=".txt,.md,.js,.ts,.json,.py,.html,.css,.env,.yml,.yaml,.xml,.csv" hidden />
-              <button type="button" id="attach-btn" class="btn-secondary btn-icon" title="Attach file">📎</button>
-              <button type="button" id="stop-btn" class="btn-secondary" hidden>Stop</button>
-              <button type="submit" id="send-btn">Send</button>
+            <div class="composer-box">
+              <div class="chat-input-wrap">
+                <textarea
+                  id="input"
+                  rows="1"
+                  placeholder="Message Atlas…  (! for commands)"
+                  title="Enter to send · Shift+Enter new line · ! for commands"
+                  autocomplete="off"
+                  required
+                ></textarea>
+                <div id="attach-chip" class="attach-chip" hidden></div>
+                <div id="command-palette" class="command-palette" hidden></div>
+              </div>
+              <div class="composer-actions">
+                <input
+                  type="file"
+                  id="file-input"
+                  accept=".txt,.md,.js,.ts,.json,.py,.html,.css,.env,.yml,.yaml,.xml,.csv"
+                  hidden
+                />
+                <button type="button" id="attach-btn" class="btn-icon" title="Attach file" aria-label="Attach file">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                </button>
+                <button type="button" id="stop-btn" class="btn-secondary btn-sm" hidden>Stop</button>
+                <button type="submit" id="send-btn" class="btn-send" aria-label="Send">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.4 20.6 21 12 3.4 3.4l2.8 7.2L16 12l-9.8 1.4-2.8 7.2z"/></svg>
+                </button>
+              </div>
             </div>
           </form>
         </div>
