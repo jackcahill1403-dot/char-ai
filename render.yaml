@@ -9,6 +9,7 @@ services:
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
+      - fromGroup: keys
       - key: NODE_ENV
         value: production
       - key: NODE_VERSION
