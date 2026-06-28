@@ -2,7 +2,14 @@ document.documentElement.classList.add("page-open");
 setTimeout(() => document.documentElement.classList.remove("page-open"), 480);
 
 const SCROLL_REVEAL_SELECTOR =
-  ".card, .message:not(.streaming), .plugin-card, .script-card, .agent-card, .model-option, .ui-theme-swatch, .model-graph-row";
+  ".card, .plugin-card, .script-card, .agent-card, .model-option, .ui-theme-swatch, .model-graph-row";
+
+function scrollRevealSelector(root = document) {
+  if (document.body.classList.contains("chat-layout")) {
+    return SCROLL_REVEAL_SELECTOR;
+  }
+  return `${SCROLL_REVEAL_SELECTOR}, .message:not(.streaming)`;
+}
 
 let scrollObserver = null;
 let lastScrollY = window.scrollY;
@@ -61,7 +68,7 @@ function initScrollReveals(root = document) {
   if (motionReduced()) return;
 
   const observer = getScrollObserver();
-  const items = root.querySelectorAll(SCROLL_REVEAL_SELECTOR);
+  const items = root.querySelectorAll(scrollRevealSelector(root));
 
   items.forEach((el, index) => {
     if (

@@ -32,7 +32,10 @@ function escapeHtml(text) {
 function autoGrowTextarea(el) {
   if (!el) return;
   el.style.height = "auto";
-  el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
+  const max = 160;
+  const next = Math.min(el.scrollHeight, max);
+  el.style.height = `${next}px`;
+  el.style.overflowY = el.scrollHeight > max ? "auto" : "hidden";
 }
 
 function renderMessages(messages, { animate = false } = {}) {
@@ -503,4 +506,5 @@ const prefill = new URLSearchParams(window.location.search).get("q");
 if (prefill && input) input.value = prefill;
 
 autoGrowTextarea(input);
+setGenerating(false);
 loadChat();

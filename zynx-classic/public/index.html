@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/img/atlas-logo.png" type="image/png" />
     <title>Atlas</title>
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/style.css?v=3" />
   </head>
   <body class="chat-layout">
     <header>
@@ -41,33 +41,42 @@
       <main class="chat-main">
         <div id="error" class="error-banner" role="alert"></div>
 
-        <p class="hint" id="greeting">Atlas</p>
-        <p id="status-line"></p>
+        <div class="chat-top">
+          <p class="hint" id="greeting">Atlas</p>
+          <p id="status-line"></p>
+        </div>
 
-        <ul id="messages" aria-live="polite"></ul>
+        <div class="chat-messages-pane">
+          <ul id="messages" aria-live="polite"></ul>
+        </div>
 
-        <form id="chat-form" class="chat-form">
-          <select id="chat-model" class="chat-model-select" title="Model" aria-label="Model">
-            <option value="auto">Auto</option>
-          </select>
-          <div class="chat-input-wrap">
-            <textarea
-              id="input"
-              rows="1"
-              placeholder="Message Atlas…  Enter to send · Shift+Enter new line · ! commands"
-              autocomplete="off"
-              required
-            ></textarea>
-            <div id="attach-chip" class="attach-chip" hidden></div>
-            <div id="command-palette" class="command-palette" hidden></div>
+        <div class="chat-composer">
+          <div class="composer-toolbar">
+            <select id="chat-model" class="chat-model-select" title="Model" aria-label="Model">
+              <option value="auto">Auto</option>
+            </select>
+            <button type="button" id="export-btn" class="btn-secondary btn-sm">Export markdown</button>
           </div>
-          <input type="file" id="file-input" accept=".txt,.md,.js,.ts,.json,.py,.html,.css,.env,.yml,.yaml,.xml,.csv" hidden />
-          <button type="button" id="attach-btn" class="btn-secondary btn-icon" title="Attach file">📎</button>
-          <button type="button" id="stop-btn" class="btn-secondary" hidden>Stop</button>
-          <button type="submit" id="send-btn">Send</button>
-        </form>
-        <div class="btn-group chat-actions">
-          <button type="button" id="export-btn" class="btn-secondary">Export markdown</button>
+          <form id="chat-form" class="chat-form">
+            <div class="chat-input-wrap">
+              <textarea
+                id="input"
+                rows="1"
+                placeholder="Message Atlas…"
+                title="Enter to send · Shift+Enter new line · ! for commands"
+                autocomplete="off"
+                required
+              ></textarea>
+              <div id="attach-chip" class="attach-chip" hidden></div>
+              <div id="command-palette" class="command-palette" hidden></div>
+            </div>
+            <div class="composer-actions">
+              <input type="file" id="file-input" accept=".txt,.md,.js,.ts,.json,.py,.html,.css,.env,.yml,.yaml,.xml,.csv" hidden />
+              <button type="button" id="attach-btn" class="btn-secondary btn-icon" title="Attach file">📎</button>
+              <button type="button" id="stop-btn" class="btn-secondary" hidden>Stop</button>
+              <button type="submit" id="send-btn">Send</button>
+            </div>
+          </form>
         </div>
       </main>
     </div>
