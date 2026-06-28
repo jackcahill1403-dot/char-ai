@@ -44,6 +44,7 @@ const DEFAULT = {
     hfCustomModel: "",
     agentsTier: activeAgentsTier(),
     autoRoute: true,
+    customSystemPrompt: "",
   },
   agentsEnabled: false,
   agents: null,

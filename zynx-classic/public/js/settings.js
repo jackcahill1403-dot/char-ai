@@ -4,6 +4,7 @@ const shareLinkEl = document.getElementById("share-link");
 const useCacheEl = document.getElementById("use-response-cache");
 const modelListEl = document.getElementById("model-list");
 const hfCustomModelEl = document.getElementById("hf-custom-model");
+const customSystemPromptEl = document.getElementById("custom-system-prompt");
 const saveBtn = document.getElementById("save-btn");
 const errorEl = document.getElementById("error");
 const successEl = document.getElementById("success");
@@ -72,6 +73,7 @@ async function loadSettings() {
     refreshShareLink(userId || getZynxUserId());
     if (useCacheEl) useCacheEl.checked = settings.useResponseCache !== false;
     if (hfCustomModelEl) hfCustomModelEl.value = settings.hfCustomModel || "";
+    if (customSystemPromptEl) customSystemPromptEl.value = settings.customSystemPrompt || "";
     initTheme(settings.theme);
     renderModels(models.models, models.active);
   } catch (err) {
@@ -91,6 +93,7 @@ saveBtn.addEventListener("click", async () => {
       useResponseCache: useCacheEl?.checked ?? true,
       theme: document.documentElement.dataset.theme === "light" ? "light" : "dark",
       hfCustomModel: hfCustomModelEl?.value.trim() || "",
+      customSystemPrompt: customSystemPromptEl?.value.trim() || "",
     });
     showSuccess(successEl, "Saved.");
     await loadSettings();

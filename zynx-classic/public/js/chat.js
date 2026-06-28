@@ -444,9 +444,26 @@ stopBtn?.addEventListener("click", () => {
 
 attachBtn?.addEventListener("click", () => fileInput?.click());
 
+function loadImageFile(file) {
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    pendingAttachment = { name: file.name, type: "image", content: ev.target.result };
+    if (attachChip) {
+      attachChip.hidden = false;
+      attachChip.textContent = `📷 ${file.name}`;
+      attachChip.onclick = clearAttachment;
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
 fileInput?.addEventListener("change", async () => {
   const file = fileInput.files?.[0];
   if (!file) return;
+  if (file.type.startsWith("image/")) {
+    loadImageFile(file);
+    return;
+  }
   if (file.size > 100000) {
     showError(errorEl, "File too large (max 100KB).");
     return;
@@ -458,6 +475,15 @@ fileInput?.addEventListener("change", async () => {
     attachChip.textContent = `📎 ${file.name}`;
     attachChip.onclick = clearAttachment;
   }
+});
+
+input?.addEventListener("paste", (e) => {
+  const items = Array.from(e.clipboardData?.items || []);
+  const imgItem = items.find((i) => i.type.startsWith("image/"));
+  if (!imgItem) return;
+  e.preventDefault();
+  const file = imgItem.getAsFile();
+  if (file) loadImageFile(file);
 });
 
 input?.addEventListener("input", async () => {
@@ -473,6 +499,10 @@ input?.addEventListener("input", async () => {
 
 input?.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && !e.shiftKey) {
+    if (commandPalette && !commandPalette.hidden) {
+      const focused = commandPalette.querySelector(".command-palette-item.is-focused");
+      if (focused) { e.preventDefault(); focused.click(); return; }
+    }
     e.preventDefault();
     form.requestSubmit();
     return;
@@ -480,6 +510,17 @@ input?.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     if (commandPalette) commandPalette.hidden = true;
     clearEditMode();
+  }
+  if ((e.key === "ArrowDown" || e.key === "ArrowUp") && commandPalette && !commandPalette.hidden) {
+    e.preventDefault();
+    const items = Array.from(commandPalette.querySelectorAll(".command-palette-item"));
+    if (!items.length) return;
+    const cur = commandPalette.querySelector(".command-palette-item.is-focused");
+    const idx = items.indexOf(cur);
+    const next = e.key === "ArrowDown" ? (idx + 1) % items.length : (idx - 1 + items.length) % items.length;
+    items.forEach((el) => el.classList.remove("is-focused"));
+    items[next].classList.add("is-focused");
+    items[next].scrollIntoView({ block: "nearest" });
   }
 });
 
@@ -536,6 +577,16 @@ document.addEventListener("click", (e) => {
   if (!commandPalette || commandPalette.hidden) return;
   if (e.target === input || commandPalette.contains(e.target)) return;
   commandPalette.hidden = true;
+});
+
+const convSearchEl = document.getElementById("conv-search");
+convSearchEl?.addEventListener("input", () => {
+  const q = convSearchEl.value.toLowerCase().trim();
+  if (!conversationListEl) return;
+  conversationListEl.querySelectorAll(".conversation-item").forEach((li) => {
+    const text = li.querySelector(".conversation-btn")?.textContent?.toLowerCase() || "";
+    li.style.display = !q || text.includes(q) ? "" : "none";
+  });
 });
 
 const prefill = new URLSearchParams(window.location.search).get("q");

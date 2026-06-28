@@ -33,6 +33,7 @@ const COMMANDS = [
   },
   { id: "search", usage: "!search <query>", desc: "Web search (DuckDuckGo / Tavily)", always: true, free: true },
   { id: "summary", usage: "!summary", desc: "Show session brief for this chat", always: true, free: true },
+  { id: "url", usage: "!url <https://...>", desc: "Fetch a URL and read it into context", always: true },
 ];
 
 function listAvailableCommands(installedPlugins = []) {

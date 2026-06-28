@@ -86,10 +86,13 @@ const { projectContextBlock } = require("./project-context");
 const { APP_NAME } = require("./branding");
 
 function modeSystemPrompt(mode, displayName, extraContext = "", opts = {}) {
-  const { taskType } = opts;
+  const { taskType, customSystemPrompt } = opts;
   const needsCoT = ["coding", "planning", "review", "dev-team", "long-task"].includes(taskType);
+  const customBlock = customSystemPrompt
+    ? `\n\nUSER INSTRUCTIONS (override defaults where they conflict):\n${customSystemPrompt}`
+    : "";
 
-  const base = `You are ${APP_NAME}, a precise technical assistant specialising in software development. User: ${displayName || "User"}.
+  const base = `You are ${APP_NAME}, a precise technical assistant specialising in software development. User: ${displayName || "User"}.${customBlock}
 
 Output rules:
 - Get to the point. Never open with "Sure!", "Great question!", "Certainly!", "Of course!" or similar filler.

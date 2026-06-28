@@ -25,12 +25,44 @@ function highlightCode(code, lang) {
   let html = escapeHtml(code);
   if (lang === "javascript" || lang === "js" || lang === "typescript" || lang === "ts") {
     html = html
-      .replace(/\b(const|let|var|function|return|if|else|import|export|from|async|await|class)\b/g, '<span class="kw">$1</span>')
-      .replace(/(&quot;|&#39;|`)(.*?)\1/g, '<span class="str">$1$2$1</span>');
+      .replace(/\b(const|let|var|function|return|if|else|import|export|from|async|await|class|typeof|instanceof|new|delete|void|throw|try|catch|finally|for|while|do|switch|case|break|continue|default|this|super|extends|static|get|set|yield|of|in)\b/g, '<span class="kw">$1</span>')
+      .replace(/(&quot;|&#39;|`)(.*?)\1/g, '<span class="str">$1$2$1</span>')
+      .replace(/(\/\/[^\n]*)/g, '<span class="cmt">$1</span>');
   } else if (lang === "python" || lang === "py") {
     html = html
-      .replace(/\b(def|return|if|else|elif|import|from|class|async|await|print)\b/g, '<span class="kw">$1</span>')
-      .replace(/(&quot;|&#39;)(.*?)\1/g, '<span class="str">$1$2$1</span>');
+      .replace(/\b(def|return|if|else|elif|import|from|class|async|await|print|with|as|pass|raise|lambda|global|nonlocal|not|and|or|is|in|None|True|False|for|while|try|except|finally|yield|del)\b/g, '<span class="kw">$1</span>')
+      .replace(/(&quot;|&#39;)(.*?)\1/g, '<span class="str">$1$2$1</span>')
+      .replace(/(#[^\n]*)/g, '<span class="cmt">$1</span>');
+  } else if (lang === "sql" || lang === "SQL") {
+    html = html
+      .replace(/\b(SELECT|FROM|WHERE|JOIN|LEFT|RIGHT|INNER|OUTER|ON|GROUP BY|ORDER BY|HAVING|INSERT|INTO|VALUES|UPDATE|SET|DELETE|CREATE|TABLE|INDEX|DROP|ALTER|ADD|COLUMN|PRIMARY KEY|FOREIGN KEY|REFERENCES|NOT NULL|UNIQUE|DEFAULT|AS|AND|OR|NOT|IN|IS|NULL|LIKE|BETWEEN|LIMIT|OFFSET|DISTINCT|COUNT|SUM|AVG|MIN|MAX|CASE|WHEN|THEN|ELSE|END)\b/gi, '<span class="kw">$1</span>')
+      .replace(/(&quot;|&#39;)(.*?)\1/g, '<span class="str">$1$2$1</span>')
+      .replace(/(--[^\n]*)/g, '<span class="cmt">$1</span>');
+  } else if (lang === "go" || lang === "golang") {
+    html = html
+      .replace(/\b(func|return|if|else|import|package|var|const|type|struct|interface|map|chan|go|defer|select|case|break|continue|default|for|range|switch|make|new|nil|true|false|error)\b/g, '<span class="kw">$1</span>')
+      .replace(/(&quot;|&#39;|`)(.*?)\1/g, '<span class="str">$1$2$1</span>')
+      .replace(/(\/\/[^\n]*)/g, '<span class="cmt">$1</span>');
+  } else if (lang === "rust" || lang === "rs") {
+    html = html
+      .replace(/\b(fn|let|mut|const|return|if|else|use|mod|pub|struct|enum|impl|trait|for|while|loop|match|break|continue|Some|None|Ok|Err|true|false|self|Self|super|crate|async|await|move|ref|type|where)\b/g, '<span class="kw">$1</span>')
+      .replace(/(&quot;|&#39;)(.*?)\1/g, '<span class="str">$1$2$1</span>')
+      .replace(/(\/\/[^\n]*)/g, '<span class="cmt">$1</span>');
+  } else if (lang === "bash" || lang === "sh" || lang === "shell" || lang === "zsh") {
+    html = html
+      .replace(/\b(if|then|else|elif|fi|for|in|do|done|while|until|case|esac|function|return|export|local|echo|cd|ls|mkdir|rm|cp|mv|chmod|grep|sed|awk|cat|source)\b/g, '<span class="kw">$1</span>')
+      .replace(/(&quot;|&#39;)(.*?)\1/g, '<span class="str">$1$2$1</span>')
+      .replace(/(#[^\n]*)/g, '<span class="cmt">$1</span>');
+  } else if (lang === "json") {
+    html = html
+      .replace(/(&quot;[^&]*&quot;)\s*:/g, '<span class="str">$1</span>:')
+      .replace(/:\s*(&quot;[^&]*&quot;)/g, ': <span class="str">$1</span>')
+      .replace(/\b(true|false|null)\b/g, '<span class="kw">$1</span>');
+  } else if (lang === "css" || lang === "scss") {
+    html = html
+      .replace(/([a-z-]+)\s*:/g, '<span class="kw">$1</span>:')
+      .replace(/(&quot;|&#39;)(.*?)\1/g, '<span class="str">$1$2$1</span>')
+      .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="cmt">$1</span>');
   }
   return html;
 }
@@ -47,51 +79,79 @@ function formatMarkdownInline(text) {
   return s;
 }
 
+function renderTable(tableLines) {
+  const rows = tableLines.filter((l) => !l.match(/^\s*\|?[-:| ]+\|?\s*$/));
+  const cells = (row) =>
+    row
+      .replace(/^\||\|$/g, "")
+      .split("|")
+      .map((c) => c.trim());
+  if (!rows.length) return "";
+  const [head, ...body] = rows;
+  const ths = cells(head).map((c) => `<th>${formatMarkdownInline(c)}</th>`).join("");
+  const trs = body
+    .map((r) => `<tr>${cells(r).map((c) => `<td>${formatMarkdownInline(c)}</td>`).join("")}</tr>`)
+    .join("");
+  return `<div class="md-table-wrap"><table class="md-table"><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table></div>`;
+}
+
 function formatMarkdownBlock(text) {
   const lines = String(text || "").split("\n");
   const out = [];
-  let inList = false;
+  let inUl = false;
+  let inOl = false;
+  let tableLines = null;
+
+  function flushList() {
+    if (inUl) { out.push("</ul>"); inUl = false; }
+    if (inOl) { out.push("</ol>"); inOl = false; }
+  }
+  function flushTable() {
+    if (tableLines) { out.push(renderTable(tableLines)); tableLines = null; }
+  }
 
   for (const line of lines) {
     const h3 = line.match(/^###\s+(.+)/);
     const h2 = line.match(/^##\s+(.+)/);
     const h1 = line.match(/^#\s+(.+)/);
     const li = line.match(/^[-*]\s+(.+)/);
+    const oli = line.match(/^\d+\.\s+(.+)/);
+    const isTableRow = line.match(/^\s*\|/);
+
+    if (isTableRow) {
+      flushList();
+      if (!tableLines) tableLines = [];
+      tableLines.push(line);
+      continue;
+    } else {
+      flushTable();
+    }
 
     if (h3) {
-      if (inList) {
-        out.push("</ul>");
-        inList = false;
-      }
+      flushList();
       out.push(`<h3 class="md-h3">${formatMarkdownInline(h3[1])}</h3>`);
     } else if (h2) {
-      if (inList) {
-        out.push("</ul>");
-        inList = false;
-      }
+      flushList();
       out.push(`<h2 class="md-h2">${formatMarkdownInline(h2[1])}</h2>`);
     } else if (h1) {
-      if (inList) {
-        out.push("</ul>");
-        inList = false;
-      }
+      flushList();
       out.push(`<h1 class="md-h1">${formatMarkdownInline(h1[1])}</h1>`);
     } else if (li) {
-      if (!inList) {
-        out.push('<ul class="md-list">');
-        inList = true;
-      }
+      if (inOl) { out.push("</ol>"); inOl = false; }
+      if (!inUl) { out.push('<ul class="md-list">'); inUl = true; }
       out.push(`<li>${formatMarkdownInline(li[1])}</li>`);
+    } else if (oli) {
+      if (inUl) { out.push("</ul>"); inUl = false; }
+      if (!inOl) { out.push('<ol class="md-list md-ol">'); inOl = true; }
+      out.push(`<li>${formatMarkdownInline(oli[1])}</li>`);
     } else {
-      if (inList) {
-        out.push("</ul>");
-        inList = false;
-      }
+      flushList();
       if (line.trim()) out.push(`<p>${formatMarkdownInline(line)}</p>`);
       else out.push("<br>");
     }
   }
-  if (inList) out.push("</ul>");
+  flushList();
+  flushTable();
   return out.join("");
 }
 

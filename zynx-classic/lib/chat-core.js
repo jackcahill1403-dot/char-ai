@@ -1,6 +1,6 @@
 const { readMemory, writeMemory, FORCED_MODE } = require("./memory");
 const { buildReply } = require("./responder");
-const { callModel } = require("./llm");
+const { callModel, callProvider } = require("./llm");
 const { statusForModels, checkCavemanLimit, recordModels } = require("./rate-limiter");
 const { runAgentPipeline } = require("./agents");
 const { parseAgentsCommand, parseScriptCommand, parseMetaCommand, DEV_TEAM_ON_REPLY, DEV_TEAM_OFF_REPLY } = require("./commands");
@@ -31,13 +31,14 @@ const {
 } = require("./scripts");
 const { getCached, setCached } = require("./response-cache");
 const { friendlyLlmError } = require("./errors");
-const { activeMessages, setActiveMessages } = require("./conversations");
+const { activeMessages, setActiveMessages, getActiveConversation } = require("./conversations");
+const { fetchUrlText } = require("./url-fetch");
 
 async function buildExtraContext(userId, mem, task, attachment) {
   let extra = factsContextBlock(userId);
   extra += scriptRagBlock(task, mem.savedScripts || []);
   extra += projectIndexBlock(task);
-  if (attachment?.content) {
+  if (attachment?.content && attachment.type !== "image") {
     extra += `\n\n--- Attached file: ${attachment.name || "file"} ---\n\`\`\`\n${String(attachment.content).slice(0, 12000)}\n\`\`\`\n--- end attach ---`;
   }
   if (looksLikeWebQuery(task)) {
@@ -176,6 +177,22 @@ async function postDiscordOutbound(content, llm) {
   }
 }
 
+async function generateConversationTitle(userId, mem, userMsg, displayName) {
+  const conv = getActiveConversation(mem);
+  if (!conv) return;
+  const result = await callProvider(
+    "or-flash",
+    [{ role: "user", content: `Write a concise 3-7 word title for this conversation. Only the title, no quotes, no period.\n\n"${userMsg.slice(0, 200)}"` }],
+    `You are a title generator. Reply with ONLY the title — no punctuation at end, no quotes.`,
+    "normal",
+    { taskType: "quick" }
+  );
+  if (result?.ok && result.content) {
+    conv.title = result.content.trim().slice(0, 60);
+    writeMemory(userId, mem);
+  }
+}
+
 async function processChat({
   content,
   stream,
@@ -261,6 +278,14 @@ async function processChat({
         reply = `**File: ${file.path}**${file.truncated ? " (truncated)" : ""}\n\n\`\`\`\n${file.content}\n\`\`\``;
       } catch (err) {
         return { error: err.message, status: 400 };
+      }
+    } else if (metaCmd.action === "url") {
+      if (!metaCmd.arg) return { error: "Usage: !url https://...", status: 400 };
+      try {
+        const text = await fetchUrlText(metaCmd.arg);
+        reply = `**URL:** ${metaCmd.arg}\n\n${text.slice(0, 8000)}${text.length > 8000 ? "\n\n*(truncated)*" : ""}`;
+      } catch (err) {
+        return { error: `Failed to fetch URL: ${err.message}`, status: 400 };
       }
     }
     streamText(reply, emit);
@@ -468,10 +493,24 @@ async function processChat({
     const chatModel = pickChatModel(mem, pipelineTask, userId);
     const routeInfo = routeModel(pipelineTask, { openrouter: openrouterConfigured(), userId });
     const boosted = applyUserMessage(pipelineTask, pluginCtx, mem.plugins);
-    const chatMessages = buildChatMessages(msgs.slice(0, -1), { sessionSummary, userMessage: boosted });
+    let chatMessages = buildChatMessages(msgs.slice(0, -1), { sessionSummary, userMessage: boosted });
+    if (attachment?.type === "image" && attachment.content) {
+      const lastIdx = chatMessages.reduce((acc, m, i) => (m.role === "user" ? i : acc), -1);
+      if (lastIdx >= 0) {
+        const last = chatMessages[lastIdx];
+        chatMessages[lastIdx] = {
+          ...last,
+          content: [
+            { type: "text", text: typeof last.content === "string" ? last.content : boosted },
+            { type: "image_url", image_url: { url: attachment.content } },
+          ],
+        };
+      }
+    }
     const llmOpts = {
       extraContext,
       taskType: routeInfo.reason === "coding" ? "coding" : "general",
+      customSystemPrompt: mem.settings.customSystemPrompt || undefined,
       onStream: stream
         ? (delta) => emit({ type: "delta", delta })
         : undefined,
@@ -563,6 +602,11 @@ async function processChat({
   }
 
   writeMemory(userId, mem);
+
+  if (finalMsgs.length === 2 && (llm.used || llm.pipeline)) {
+    generateConversationTitle(userId, mem, trimmed, displayName).catch(() => {});
+  }
+
   await postDiscordOutbound(replyText, llm);
 
   return {

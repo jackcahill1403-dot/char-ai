@@ -18,7 +18,7 @@
       rel="stylesheet"
     />
     <title>Atlas</title>
-    <link rel="stylesheet" href="/css/style.css?v=11" />
+    <link rel="stylesheet" href="/css/style.css?v=12" />
   </head>
   <body class="chat-layout app-shell">
     <header class="app-header">
@@ -52,6 +52,9 @@
         <div class="chat-sidebar-head">
           <span class="sidebar-label">Threads</span>
           <button type="button" id="new-chat-btn" class="btn-icon btn-sm" title="New chat" aria-label="New chat">+</button>
+        </div>
+        <div class="conv-search-wrap">
+          <input type="search" id="conv-search" class="conv-search" placeholder="Search…" aria-label="Search conversations" />
         </div>
         <ul id="conversation-list" class="conversation-list"></ul>
       </aside>
@@ -94,7 +97,7 @@
                 <input
                   type="file"
                   id="file-input"
-                  accept=".txt,.md,.js,.ts,.json,.py,.html,.css,.env,.yml,.yaml,.xml,.csv"
+                  accept="image/*,.txt,.md,.js,.ts,.json,.py,.html,.css,.env,.yml,.yaml,.xml,.csv"
                   hidden
                 />
                 <button type="button" id="attach-btn" class="btn-icon" title="Attach file" aria-label="Attach file">
@@ -117,6 +120,7 @@
     <script src="/js/usage-bar.js"></script>
     <script src="/js/format.js"></script>
     <script src="/js/theme.js"></script>
+    <script src="/js/alive.js"></script>
     <script src="/js/chat.js"></script>
   </body>
 </html>

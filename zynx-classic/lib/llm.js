@@ -286,7 +286,10 @@ async function callProviderWithFallback(preferredId, messages, system, mode, opt
 
 async function callModel(providerId, messages, mode, displayName, opts = {}) {
   const extra = opts.extraContext || "";
-  const system = modeSystemPrompt(mode, displayName, extra, { taskType: opts.taskType });
+  const system = modeSystemPrompt(mode, displayName, extra, {
+    taskType: opts.taskType,
+    customSystemPrompt: opts.customSystemPrompt,
+  });
   return callProviderWithFallback(providerId, messages, system, mode, opts);
 }
 

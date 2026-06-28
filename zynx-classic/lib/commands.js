@@ -68,6 +68,9 @@ function parseMetaCommand(content) {
 
   if (/^!summary\s*$/i.test(trimmed)) return { action: "summary" };
 
+  const urlCmd = trimmed.match(/^!url\s+(https?:\/\/\S+)$/i);
+  if (urlCmd) return { action: "url", arg: urlCmd[1].trim() };
+
   return null;
 }
 
