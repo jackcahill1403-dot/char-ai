@@ -2138,12 +2138,13 @@ body.chat-layout #messages {
   border-radius: var(--radius-lg);
   background: var(--card);
   box-shadow: var(--shadow-sm);
-  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  transition: border-color 0.18s ease, box-shadow 0.22s ease, transform 0.22s var(--ease-out-smooth);
 }
 
 .composer-box:focus-within {
-  border-color: #363636;
-  box-shadow: none;
+  border-color: #3a3a3a;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  transform: translateY(-2px);
 }
 
 .chat-form {
@@ -2264,4 +2265,114 @@ body.chat-layout #messages {
   .app-nav a {
     transition: none;
   }
+}
+
+/* ─── v8: Rich Animations ─── */
+
+/* Typing indicator: 3 pulsing dots before first token */
+.streaming .msg-text:empty::before {
+  content: "●●●";
+  display: inline-block;
+  color: var(--muted);
+  letter-spacing: 5px;
+  font-size: 0.55rem;
+  vertical-align: middle;
+  animation: typing-pulse 1.3s ease-in-out infinite;
+}
+
+@keyframes typing-pulse {
+  0%, 100% { opacity: 0.15; letter-spacing: 5px; }
+  50%       { opacity: 0.8;  letter-spacing: 7px; }
+}
+
+/* Streaming badge breathe */
+@keyframes badge-breathe {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+
+/* Directional message entrance */
+@keyframes msg-slide-right {
+  from { opacity: 0; transform: translateX(22px) translateY(8px) scale(0.97); }
+  to   { opacity: 1; transform: translateX(0) translateY(0) scale(1); }
+}
+
+@keyframes msg-slide-left {
+  from { opacity: 0; transform: translateX(-16px) translateY(8px); }
+  to   { opacity: 1; transform: translateX(0) translateY(0); }
+}
+
+/* Sidebar entrance from left */
+@keyframes sidebar-enter {
+  from { opacity: 0; transform: translateX(-18px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Conversation item slide from left */
+@keyframes conv-in {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Floating empty-state orb */
+@keyframes orb-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-9px); }
+}
+
+/* Smoother blink cursor */
+@keyframes blink {
+  0%, 45% { opacity: 1; }
+  55%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Directional message entrance */
+  .message.user.message-enter {
+    animation: msg-slide-right 0.36s var(--ease-out-smooth) both;
+  }
+
+  .message.assistant.message-enter {
+    animation: msg-slide-left 0.34s var(--ease-out-smooth) both;
+  }
+
+  /* Sidebar slide in */
+  html.page-open body.chat-layout .chat-sidebar {
+    animation: sidebar-enter 0.44s 0.04s var(--ease-out-smooth) both;
+  }
+
+  /* Conv items slide in */
+  .conv-enter {
+    animation: conv-in 0.26s var(--ease-out-smooth) both;
+  }
+
+  /* Floating empty-state orb */
+  .empty-mark {
+    animation: orb-float 3.5s ease-in-out infinite;
+  }
+
+  /* Streaming badge breathe */
+  .message.streaming .msg-badge {
+    animation: badge-breathe 1.8s ease-in-out infinite;
+  }
+
+  /* Page-open: main content fades up later */
+  html.page-open body.chat-layout main.chat-main {
+    animation: motion-rise-in 0.5s 0.14s var(--ease-out-smooth) both;
+  }
+
+  html.page-open .chat-composer {
+    animation: motion-rise-in 0.42s 0.22s var(--ease-out-smooth) both;
+  }
+}
+
+/* Message actions: hidden until hover */
+.message-actions {
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.message:hover .message-actions,
+.message:focus-within .message-actions {
+  opacity: 1;
 }

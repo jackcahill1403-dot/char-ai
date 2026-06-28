@@ -1,5 +1,5 @@
 document.documentElement.classList.add("page-open");
-setTimeout(() => document.documentElement.classList.remove("page-open"), 520);
+setTimeout(() => document.documentElement.classList.remove("page-open"), 700);
 
 const SCROLL_REVEAL_SELECTOR =
   ".card, .plugin-card, .script-card, .agent-card, .model-option, .ui-theme-swatch, .model-graph-row, .conversation-item";
