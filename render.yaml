@@ -1,29 +1,41 @@
-# Render blueprint — deploy at https://dashboard.render.com/blueprints
-# Connect your GitHub repo, then Render reads this file automatically.
+# Atlas — default Render deploy for this repo (zynx-classic). char.ai uses render-char-ai.yaml.
 services:
   - type: web
-    name: char-ai
+    name: atlas
     runtime: node
     plan: free
+    rootDir: zynx-classic
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
-      - key: LLM_API_KEY
-        sync: false
-      - key: LLM_MODEL
-        value: gemini-3.5-flash
-      - key: LLM_API_URL
-        value: https://generativelanguage.googleapis.com/v1beta/openai/chat/completions
-      - key: FALLBACK_API_KEY
-        sync: false
-      - key: FALLBACK_MODEL
-        value: meta-llama/llama-3.3-70b-instruct:free
-      - key: FALLBACK_API_URL
-        value: https://openrouter.ai/api/v1/chat/completions
+      - key: NODE_VERSION
+        value: "20"
+      - key: OPENROUTER_APP_TITLE
+        value: Atlas
       - key: RATE_LIMIT_PER_HOUR
         value: "20"
       - key: RATE_LIMIT_PER_DAY
         value: "50"
+      - key: OPENROUTER_KEY_OR_KIMI
+        sync: false
+      - key: OPENROUTER_KEY_OR_KIMI_CODE
+        sync: false
+      - key: OPENROUTER_KEY_OR_QWEN36
+        sync: false
+      - key: OPENROUTER_KEY_OR_GLM
+        sync: false
+      - key: OPENROUTER_KEY_OR_GPT_OSS
+        sync: false
+      - key: OPENROUTER_KEY_OR_DEEPSEEK_V4
+        sync: false
+      - key: OPENROUTER_KEY_OR_FLASH
+        sync: false
+      - key: OPENROUTER_API_KEYS
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false

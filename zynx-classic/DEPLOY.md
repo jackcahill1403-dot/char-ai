@@ -4,9 +4,9 @@ Atlas is a Node/Express chat app. Default port locally is **3848**; Render sets 
 
 ## Quick deploy (Web Service)
 
-1. Push this repo to GitHub (`jackcahill1403-dot/char-ai`).
-2. In [Render](https://render.com) → **New** → **Web Service** → **Connect GitHub** → select `char-ai`.
-3. Set **Root Directory** to `zynx-classic` (required — the monorepo also contains char-ai at the root).
+1. Repo: [jackcahill1403-dot/char-ai](https://github.com/jackcahill1403-dot/char-ai) — use branch **`atlas`** (root `render.yaml` deploys Atlas, not char.ai).
+2. In [Render](https://render.com) → **New** → **Web Service** → **Connect GitHub** → select `char-ai`, branch **`atlas`**.
+3. If not using the Blueprint file, set **Root Directory** to `zynx-classic` (required when Render runs from repo root).
 4. Render reads `zynx-classic/render.yaml` if present, or use these settings:
    - **Runtime:** Node
    - **Build command:** `npm install`
@@ -14,9 +14,19 @@ Atlas is a Node/Express chat app. Default port locally is **3848**; Render sets 
    - **Health check path:** `/api/health`
 5. Add environment variables (see below), then deploy.
 
-### Monorepo Blueprint (optional)
+### Seeing char.ai instead of Atlas?
 
-To deploy from a Blueprint at the repo root without overwriting char-ai’s `render.yaml`, use `atlas-render.yaml` at the repo root (includes `rootDir: zynx-classic`). Rename it to `render.yaml` only for an Atlas-only Blueprint, or create the service manually with Root Directory `zynx-classic`.
+Render was using the **repo root** (`char-ai`’s `server.js`). Fix:
+
+- **Branch:** `atlas` (not `main`)
+- **Root Directory:** `zynx-classic` if you create the service manually
+- Or use Blueprint: root `render.yaml` on branch `atlas` already sets `rootDir: zynx-classic` and service name `atlas`
+
+Redeploy after changing settings. Health check should return `{ "app": "Atlas" }`.
+
+### Monorepo Blueprint
+
+On branch **`atlas`**, root `render.yaml` deploys Atlas. char.ai is in `render-char-ai.yaml` if you need it separately.
 
 ## Environment variables
 

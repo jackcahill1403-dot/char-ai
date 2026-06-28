@@ -1,0 +1,28 @@
+# char.ai — separate Render service (not Atlas). Use this only if you want the root app.
+services:
+  - type: web
+    name: char-ai
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: GLM_API_KEY
+        sync: false
+      - key: GLM_MODEL
+        value: zai-org/GLM-5.2
+      - key: GLM_API_URL
+        value: https://router.huggingface.co/v1/chat/completions
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: DEEPSEEK_MODEL
+        value: deepseek-v4-pro
+      - key: DEEPSEEK_API_URL
+        value: https://api.deepseek.com/v1/chat/completions
+      - key: RATE_LIMIT_PER_HOUR
+        value: "20"
+      - key: RATE_LIMIT_PER_DAY
+        value: "50"
