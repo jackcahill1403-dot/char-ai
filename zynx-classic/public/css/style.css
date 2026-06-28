@@ -52,7 +52,7 @@ header h1 {
   font-size: 1.2rem;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: var(--brand, #f67e31);
+  color: var(--brand, #7c6dfa);
 }
 
 nav {
@@ -767,9 +767,9 @@ button {
 }
 
 code {
-  font-family: ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.9em;
-  background: #f0f0f0;
+  background: var(--accent-soft);
   padding: 0.1em 0.35em;
   border-radius: 3px;
 }
@@ -815,36 +815,36 @@ code {
 
 :root {
   color-scheme: dark;
-  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Code", monospace;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
-  --bg: #0d0d0d;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --bg: #1a1a1a;
   --bg-soft: #141414;
   --text: #e8e8e8;
-  --muted: #8a8a8a;
-  --border: #2a2a2a;
-  --hover: #222222;
-  --accent: #f54e00;
-  --accent-hover: #ff7029;
-  --accent-soft: rgba(245, 78, 0, 0.12);
-  --accent-glow: rgba(245, 78, 0, 0.35);
-  --brand: #f54e00;
-  --user-bg: #1a1a1a;
-  --user-border: #333333;
-  --card: #171717;
-  --code-bg: #0f0f0f;
+  --muted: #888;
+  --border: #262626;
+  --hover: rgba(255, 255, 255, 0.05);
+  --accent: #7c6dfa;
+  --accent-hover: #9180fb;
+  --accent-soft: rgba(124, 109, 250, 0.12);
+  --accent-glow: rgba(124, 109, 250, 0.25);
+  --brand: #7c6dfa;
+  --user-bg: #252525;
+  --user-border: #333;
+  --card: #1f1f1f;
+  --code-bg: #141414;
   --code-text: #d4d4d4;
-  --grid-line: rgba(245, 78, 0, 0.04);
+  --grid-line: rgba(255, 255, 255, 0.025);
   --error-bg: #2a1515;
-  --error-text: #ffb4b4;
-  --error-border: #5c2020;
+  --error-text: #ff8080;
+  --error-border: rgba(255, 80, 80, 0.2);
   --success-bg: #122018;
-  --success-text: #8fd9a8;
-  --success-border: #1a4030;
+  --success-text: #6dd68a;
+  --success-border: rgba(109, 214, 138, 0.2);
 }
 
 html[data-theme="light"] {
@@ -853,14 +853,14 @@ html[data-theme="light"] {
   --bg-soft: #f0f0f0;
   --text: #1a1a1a;
   --muted: #6b6b6b;
-  --border: #dddddd;
+  --border: #e0e0e0;
   --hover: #e8e8e8;
-  --accent: #f54e00;
-  --accent-hover: #e04500;
-  --accent-soft: rgba(245, 78, 0, 0.08);
-  --accent-glow: rgba(245, 78, 0, 0.2);
-  --brand: #f54e00;
-  --user-bg: #f3f3f3;
+  --accent: #6355e8;
+  --accent-hover: #5044d6;
+  --accent-soft: rgba(99, 85, 232, 0.08);
+  --accent-glow: rgba(99, 85, 232, 0.2);
+  --brand: #6355e8;
+  --user-bg: #f0f0f0;
   --user-border: #e0e0e0;
   --card: #ffffff;
   --code-bg: #1e1e1e;
@@ -1194,7 +1194,7 @@ nav a[aria-current="page"] {
   }
 
   #messages::-webkit-scrollbar {
-    width: 8px;
+    width: 4px;
   }
 
   #messages::-webkit-scrollbar-track {
@@ -1202,12 +1202,12 @@ nav a[aria-current="page"] {
   }
 
   #messages::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, var(--muted, #666) 35%, transparent);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 999px;
   }
 
   #messages::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in srgb, var(--muted, #666) 55%, transparent);
+    background: rgba(255, 255, 255, 0.18);
   }
 }
 
@@ -1813,7 +1813,7 @@ body.chat-layout #messages {
   align-items: center;
   gap: 1.25rem;
   padding: 0 1.25rem;
-  height: 48px;
+  height: 40px;
   border-bottom: 1px solid var(--border);
   background: var(--bg-soft);
   flex-shrink: 0;
@@ -1824,22 +1824,14 @@ body.chat-layout #messages {
 }
 
 .app-header .brand-name {
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   color: var(--text);
 }
 
 .app-header .brand-name::after {
-  content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  margin-left: 0.35rem;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent-glow);
-  vertical-align: middle;
+  display: none;
 }
 
 .app-nav {
@@ -1853,11 +1845,14 @@ body.chat-layout #messages {
 .app-nav a {
   color: var(--muted);
   text-decoration: none;
-  padding: 0.65rem 0.7rem;
+  padding: 0 0.7rem;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
   font-size: 0.8125rem;
   font-weight: 500;
   border-radius: 0;
-  border-bottom: 2px solid transparent;
+  border-bottom: 1.5px solid transparent;
   margin-bottom: -1px;
   transition: color 0.15s ease, border-color 0.15s ease;
 }
@@ -1870,8 +1865,8 @@ body.chat-layout #messages {
 .app-nav a[aria-current="page"] {
   color: var(--text);
   background: transparent;
-  border-bottom-color: var(--accent);
-  font-weight: 600;
+  border-bottom-color: var(--text);
+  font-weight: 500;
 }
 
 .app-header-actions {
@@ -1951,11 +1946,7 @@ body.chat-layout .chat-shell {
 
 body.chat-layout main.chat-main {
   padding: 0.75rem 1.25rem 1rem;
-  background:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 32px 32px;
-  background-color: var(--bg);
+  background: var(--bg);
 }
 
 .chat-greeting {
@@ -2019,10 +2010,14 @@ body.chat-layout #messages {
 .message.user .message-body {
   background: var(--user-bg);
   border-color: var(--user-border);
+  border-radius: 12px 12px 4px 12px;
 }
 
 .message.assistant .message-body {
-  border-color: var(--border);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0.35rem 0;
 }
 
 .message .meta {
@@ -2136,8 +2131,8 @@ body.chat-layout #messages {
 }
 
 .composer-box:focus-within {
-  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
-  box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow-md);
+  border-color: #363636;
+  box-shadow: none;
 }
 
 .chat-form {
