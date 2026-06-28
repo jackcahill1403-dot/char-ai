@@ -1113,8 +1113,17 @@ nav a[aria-current="page"] {
     animation: motion-rise-in 0.42s 0.05s var(--ease-out-smooth) both;
   }
 
-  .message-enter {
-    animation: motion-rise-in 0.28s var(--ease-out-smooth) both;
+  html.page-open body.chat-layout .chat-sidebar {
+    animation: motion-rise-in 0.36s 0.02s var(--ease-out-smooth) both;
+  }
+
+  html.page-open body.chat-layout .chat-composer {
+    animation: motion-rise-in 0.38s 0.12s var(--ease-out-smooth) both;
+  }
+
+  .message-enter,
+  .conv-enter {
+    animation: motion-rise-in 0.32s var(--ease-out-smooth) both;
   }
 
   .error-banner.is-visible,
@@ -1171,7 +1180,7 @@ nav a[aria-current="page"] {
 @keyframes motion-rise-in {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -1475,12 +1484,6 @@ body.chat-layout {
   flex-direction: column;
   height: 100dvh;
   overflow: hidden;
-}
-
-body.chat-layout .message.scroll-reveal {
-  opacity: 1;
-  transform: none;
-  transition: none;
 }
 
 body.chat-layout .chat-composer,

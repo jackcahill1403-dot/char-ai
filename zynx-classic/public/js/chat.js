@@ -57,9 +57,13 @@ function renderMessages(messages, { animate = false } = {}) {
     const li = document.createElement("li");
     li.className = `message ${msg.role}`;
     li.dataset.index = String(index);
+    const staggerFrom = Math.max(0, currentMessages.length - 12);
     if (animate && index >= currentMessages.length - 2) {
       li.classList.add("message-enter");
       if (index === currentMessages.length - 1) li.style.animationDelay = "0.05s";
+    } else if (!window.motionReduced?.() && index >= staggerFrom) {
+      li.classList.add("message-enter");
+      li.style.animationDelay = `${(index - staggerFrom) * 0.035}s`;
     }
     const label = msg.role === "user" ? "You" : "Atlas";
     const badges = msg.role === "assistant" ? badgeForLlm(msg.llm) : "";
@@ -153,6 +157,13 @@ function renderConversationList(conversations, activeId) {
       </li>`;
     })
     .join("");
+
+  if (!window.motionReduced?.()) {
+    conversationListEl.querySelectorAll(".conversation-item").forEach((el, i) => {
+      el.classList.add("conv-enter");
+      el.style.animationDelay = `${i * 0.04}s`;
+    });
+  }
 
   conversationListEl.querySelectorAll(".conversation-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
