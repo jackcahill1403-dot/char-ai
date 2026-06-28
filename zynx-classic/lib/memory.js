@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { validModelIds } = require("./models");
+const { validModelIds, ollamaAvailable } = require("./models");
 const { defaultAgents } = require("./agents");
 const { normalizeInstalled } = require("./plugins");
 const { normalizeLocalScripts } = require("./scripts");
@@ -24,7 +24,8 @@ function defaultModelForNewUser() {
   if (openrouterConfigured()) return DEFAULT_OR_MODEL;
   if (get("GEMINI_API_KEY") || get("GOOGLE_API_KEY")) return "gemini";
   if (get("GROQ_API_KEY")) return "groq";
-  return "ollama";
+  if (ollamaAvailable()) return "ollama";
+  return DEFAULT_OR_MODEL;
 }
 
 function normalizeModelId(model) {
@@ -75,6 +76,9 @@ function preferOpenRouterModel(model) {
 
 function pickBestSingleModel(model) {
   model = preferOpenRouterModel(model);
+  if (model === "ollama" && !ollamaAvailable()) {
+    return defaultModelForNewUser();
+  }
   if (!model || !VALID_MODELS.includes(model)) {
     return defaultModelForNewUser();
   }

@@ -134,13 +134,25 @@ const OTHER_PROVIDERS = [
 
 const PROVIDERS = [...OR_PROVIDERS, ...OTHER_FREE_PROVIDERS, ...HF_PROVIDERS, ...OTHER_PROVIDERS];
 
+function ollamaAvailable() {
+  if (get("DISABLE_OLLAMA") === "1" || get("DISABLE_OLLAMA") === "true") return false;
+  if (process.env.RENDER === "true") return false;
+  if (process.env.NODE_ENV === "production") {
+    const url = get("OLLAMA_URL", "http://127.0.0.1:11434/v1/chat/completions");
+    if (/localhost|127\.0\.0\.1/i.test(url)) return false;
+  }
+  return true;
+}
+
 function listModels() {
   return PROVIDERS.map((p) => ({
     id: p.id,
     label: p.label,
     model: p.model(),
     configured: p.noAuth
-      ? true
+      ? p.id === "ollama"
+        ? ollamaAvailable()
+        : true
       : p.hf
         ? Boolean(hfKey())
         : p.openrouter
@@ -170,7 +182,10 @@ function hfFallbackOrder() {
 
 function freeFallbackOrder() {
   const orIds = OR_PROVIDERS.filter(() => openrouterConfigured()).map((p) => p.id);
-  const rest = OTHER_FREE_PROVIDERS.filter((p) => p.noAuth || p.apiKey()).map((p) => p.id);
+  const rest = OTHER_FREE_PROVIDERS.filter((p) => {
+    if (p.id === "ollama") return ollamaAvailable();
+    return p.noAuth || Boolean(p.apiKey());
+  }).map((p) => p.id);
   return [...orIds, ...rest];
 }
 
@@ -194,5 +209,6 @@ module.exports = {
   freeFallbackOrder,
   hfConfigured,
   openrouterConfigured: openrouterConfiguredFlag,
+  ollamaAvailable,
   validModelIds: () => PROVIDERS.map((p) => p.id),
 };
