@@ -144,6 +144,37 @@ function allModelKeyPools() {
   return pools;
 }
 
+/** Safe diagnostic — variable names only, never secret values. */
+function openrouterEnvCheck() {
+  const perModel = OR_CATALOG.map((m) => {
+    const slug = modelEnvSlug(m.id);
+    const single = `OPENROUTER_KEY_OR_${slug}`;
+    const multi = `OPENROUTER_KEYS_OR_${slug}`;
+    const pool = listKeysForModel(m.id);
+    return {
+      modelId: m.id,
+      label: m.label,
+      envVar: pool.envVar,
+      set: pool.keys.length > 0,
+      keyCount: pool.keys.length,
+      source: pool.source,
+      dedicatedSingle: Boolean(get(single)),
+      dedicatedMulti: Boolean(get(multi)),
+    };
+  });
+  const globalKeys = listGlobalOpenRouterKeys();
+  return {
+    configured: openrouterConfigured(),
+    onRender: process.env.RENDER === "true",
+    global: {
+      OPENROUTER_API_KEYS: Boolean(get("OPENROUTER_API_KEYS")),
+      OPENROUTER_API_KEY: Boolean(get("OPENROUTER_API_KEY")),
+      keyCount: globalKeys.length,
+    },
+    perModel,
+  };
+}
+
 module.exports = {
   modelEnvSlug,
   listGlobalOpenRouterKeys,
@@ -157,4 +188,5 @@ module.exports = {
   resetKeyPool,
   keyPoolStatus,
   allModelKeyPools,
+  openrouterEnvCheck,
 };

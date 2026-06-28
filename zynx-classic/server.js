@@ -37,6 +37,7 @@ const {
 const { listAvailableCommands } = require("./lib/command-registry");
 const { friendlyLlmError } = require("./lib/errors");
 const { APP_NAME } = require("./lib/branding");
+const { openrouterEnvCheck } = require("./lib/openrouter-keys");
 
 loadEnv();
 
@@ -65,6 +66,10 @@ app.use((req, _res, next) => {
 
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, app: APP_NAME });
+});
+
+app.get("/api/env-check", (_req, res) => {
+  res.json({ ok: true, app: APP_NAME, keys: openrouterEnvCheck() });
 });
 
 app.get("/api/status", async (req, res) => {
