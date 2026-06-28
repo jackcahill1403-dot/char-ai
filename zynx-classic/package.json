@@ -1,7 +1,7 @@
 {
-  "name": "zynx-classic",
-  "version": "1.0.0",
-  "description": "Atlas — simple chat, caveman mode, OpenRouter models",
+  "name": "atlas",
+  "version": "1.1.0",
+  "description": "Atlas — AI chat app with OpenRouter models",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

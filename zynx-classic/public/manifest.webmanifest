@@ -1,0 +1,26 @@
+{
+  "name": "Atlas",
+  "short_name": "Atlas",
+  "description": "AI chat with OpenRouter models, dev team, and scripts",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fff9f2",
+  "theme_color": "#f67e31",
+  "orientation": "any",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/img/atlas-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/img/atlas-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

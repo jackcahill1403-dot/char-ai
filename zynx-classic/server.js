@@ -45,7 +45,15 @@ const PORT = process.env.PORT || 3848;
 const VALID_MODELS = validModelIds();
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    setHeaders(res, filePath) {
+      if (filePath.endsWith("manifest.webmanifest")) {
+        res.setHeader("Content-Type", "application/manifest+json");
+      }
+    },
+  })
+);
 
 app.use((req, _res, next) => {
   const header = req.headers["x-user-id"];

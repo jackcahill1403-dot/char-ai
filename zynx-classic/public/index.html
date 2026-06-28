@@ -3,7 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Atlas — AI chat with OpenRouter models" />
+    <meta name="theme-color" content="#f67e31" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Atlas" />
     <link rel="icon" href="/img/atlas-logo.png" type="image/png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/img/atlas-logo.png" />
     <title>Atlas</title>
     <link rel="stylesheet" href="/css/style.css?v=3" />
   </head>
@@ -20,6 +27,9 @@
         <a href="/scripts.html">Scripts</a>
         <a href="/settings.html">Settings</a>
         <a href="/status.html">Status</a>
+        <button type="button" id="install-app-btn" class="btn-secondary btn-sm install-app-btn" hidden>
+          Install app
+        </button>
       </nav>
     </header>
 
@@ -81,6 +91,7 @@
       </main>
     </div>
 
+    <script src="/js/app.js" defer></script>
     <script src="/js/api.js"></script>
     <script src="/js/motion.js"></script>
     <script src="/js/usage-bar.js"></script>
