@@ -222,7 +222,7 @@ async function callProvider(providerId, messages, system, mode, opts = {}) {
     model: p.model(),
     messages: [{ role: "system", content: system }, ...messages],
     max_tokens: maxTokens,
-    temperature: taskType === "coding" ? 0.35 : mode === "caveman" ? 0.7 : 0.6,
+    temperature: taskType === "coding" ? 0.35 : 0.6,
   };
 
   if (p.openrouter) {

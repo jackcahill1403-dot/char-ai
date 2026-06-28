@@ -36,15 +36,6 @@
     "tags": ["context"]
   },
   {
-    "id": "caveman-turbo",
-    "name": "Caveman Turbo",
-    "description": "Extra-compresses final replies while keeping code blocks intact.",
-    "version": "1.0.0",
-    "author": "Atlas",
-    "power": "low",
-    "tags": ["caveman"]
-  },
-  {
     "id": "test-driver",
     "name": "Test Driver",
     "description": "Coder agent must include runnable tests or test instructions.",
@@ -96,7 +87,7 @@
     "version": "1.0.0",
     "author": "Atlas",
     "power": "medium",
-    "tags": ["caveman", "efficiency"]
+    "tags": ["efficiency"]
   },
   {
     "id": "json-forge",

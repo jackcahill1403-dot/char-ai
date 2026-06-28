@@ -91,8 +91,8 @@ async function probeHfAccount() {
   const result = await callProvider(
     probeTarget.id,
     [{ role: "user", content: "Reply with exactly: ok" }],
-    modeSystemPrompt("caveman", "probe"),
-    "caveman"
+    modeSystemPrompt("normal", "probe"),
+    "normal"
   );
   const latencyMs = Date.now() - start;
   const { message: detail } = parseProviderErrorBody(result.detail);
@@ -139,8 +139,8 @@ async function probeOpenRouterAccount() {
   const result = await callProvider(
     DEFAULT_OR_MODEL,
     [{ role: "user", content: "Reply with exactly: ok" }],
-    modeSystemPrompt("caveman", "probe"),
-    "caveman"
+    modeSystemPrompt("normal", "probe"),
+    "normal"
   );
   const latencyMs = Date.now() - start;
   const { message: detail } = parseProviderErrorBody(result.detail);
@@ -192,8 +192,8 @@ async function probeModelEntry(m, hfProbe) {
   const result = await callProvider(
     m.id,
     [{ role: "user", content: "Reply with exactly: ok" }],
-    modeSystemPrompt("caveman", "probe"),
-    "caveman"
+    modeSystemPrompt("normal", "probe"),
+    "normal"
   );
   return buildRow(m, {
     ok: result.ok,

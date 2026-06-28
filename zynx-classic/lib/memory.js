@@ -11,7 +11,7 @@ const { migrateToConversations, memoryWithLegacyMessages } = require("./conversa
 
 const VALID_MODELS = validModelIds();
 
-const FORCED_MODE = "caveman";
+const FORCED_MODE = "normal";
 const AGENTS_TIER_HF = "qwen-kimi-glm-team-v1";
 const AGENTS_TIER_OR = "or-kimi-glm-team-v1";
 
@@ -41,7 +41,6 @@ const DEFAULT = {
     model: defaultModelForNewUser(),
     useResponseCache: true,
     theme: "light",
-    cavemanDict: {},
     hfCustomModel: "",
     agentsTier: activeAgentsTier(),
     autoRoute: true,
@@ -111,9 +110,6 @@ function normalizeMemoryData(data, userId) {
   }
   settings.model = preferOpenRouterModel(settings.model);
   if (!settings.theme) settings.theme = "light";
-  if (!settings.cavemanDict || typeof settings.cavemanDict !== "object") {
-    settings.cavemanDict = {};
-  }
   if (typeof settings.hfCustomModel !== "string") {
     settings.hfCustomModel = "";
   }
@@ -123,7 +119,9 @@ function normalizeMemoryData(data, userId) {
   const agents = applyDevTeam();
   const agentsEnabled =
     data.agentsEnabled !== undefined ? Boolean(data.agentsEnabled) : DEFAULT.agentsEnabled;
-  const plugins = normalizeInstalled(data.plugins).filter((p) => p.id !== "ui-themes");
+  const plugins = normalizeInstalled(data.plugins).filter(
+    (p) => p.id !== "ui-themes" && p.id !== "caveman-turbo"
+  );
   const savedScripts = normalizeLocalScripts(data.savedScripts);
   const withConversations = migrateToConversations({ ...data });
   return memoryWithLegacyMessages({

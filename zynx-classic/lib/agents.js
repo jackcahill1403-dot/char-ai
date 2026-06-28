@@ -1,7 +1,5 @@
 const { listModels, openrouterConfigured } = require("./models");
 const { friendlyLlmError } = require("./errors");
-const { applyCavemanMode } = require("./caveman-dict");
-
 const HF_DEFAULT_AGENTS = [
   {
     id: "planner",
@@ -248,7 +246,6 @@ async function runAgentPipeline({
   displayName,
   plugins = [],
   chatHistory = [],
-  cavemanDict = {},
   extraContext = "",
   pipelineEvents,
 }) {
@@ -286,7 +283,6 @@ async function runAgentPipeline({
   }
 
   let content = formatPipelineReply(steps);
-  content = applyCavemanMode(content, mode, cavemanDict);
   content = applyFinalResponse(content, { mode, displayName, devTeam: true }, plugins);
 
   const anyReal = steps.some((s) => s.ok);

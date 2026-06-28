@@ -7,19 +7,13 @@ function fenceCount(text) {
 
 function looksIncompleteCode(text) {
   const s = String(text);
-  const fences = fenceCount(s);
-  if (fences % 2 !== 0) return true;
-  if (/```[\s\S]*$/.test(s) && !s.trimEnd().endsWith("```")) return true;
-  if (/\b(function|class|const|let|var|def |import |export )\b[\s\S]{0,200}$/.test(s) && !/[;})\]]\s*$/.test(s.trim())) {
-    return true;
-  }
-  return false;
+  // Only treat unclosed fenced blocks as incomplete — prose after a closed block is normal.
+  return fenceCount(s) % 2 !== 0;
 }
 
 function looksBrokenReply(text) {
   const s = String(text).trim();
   if (!s) return true;
-  if (s.length < 20 && looksIncompleteCode(s)) return true;
   return looksIncompleteCode(s);
 }
 

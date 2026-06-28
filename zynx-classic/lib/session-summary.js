@@ -1,31 +1,34 @@
-const fs = require("fs");
 const { getActiveConversation } = require("./conversations");
 const { callModel } = require("./llm");
+const { RECENT_FULL } = require("./chat-context");
 
-const SUMMARY_AFTER = 20;
-const KEEP_RECENT = 14;
+const KEEP_RECENT = RECENT_FULL;
 
 function needsSummary(conv) {
   const msgs = conv?.messages || [];
-  if (msgs.length < SUMMARY_AFTER) return false;
   const olderCount = msgs.length - KEEP_RECENT;
-  return olderCount > 0 && conv.summaryUpTo !== olderCount;
+  if (olderCount <= 0) return false;
+  return conv.summaryUpTo !== olderCount;
 }
 
-async function summarizeMessages(messages, displayName) {
+async function summarizeMessages(messages, displayName, priorSummary = "") {
   const transcript = messages
-    .map((m) => `${m.role}: ${String(m.content).replace(/\s+/g, " ").slice(0, 600)}`)
+    .map((m) => `${m.role}: ${String(m.content).replace(/\s+/g, " ").slice(0, 900)}`)
     .join("\n");
+
+  const prior = priorSummary
+    ? `Previous session brief (merge and update, drop stale details):\n${priorSummary}\n\nNew messages to fold in:\n`
+    : "";
 
   const result = await callModel(
     "or-flash",
     [
       {
         role: "user",
-        content: `Summarize this conversation for future AI context. Keep: user goals, decisions made, file names, code approach, bugs, open questions. Under 350 words. No fluff.\n\n${transcript}`,
+        content: `${prior}Summarize this conversation for future AI context. Keep: user goals, decisions, names, file paths, code approach, bugs, preferences, open questions. Under 500 words. No fluff.\n\n${transcript}`,
       },
     ],
-    "caveman",
+    "normal",
     displayName || "User",
     { taskType: "planning" }
   );
@@ -39,7 +42,7 @@ async function maybeUpdateSessionSummary(mem, displayName) {
 
   const msgs = conv.messages;
   const older = msgs.slice(0, msgs.length - KEEP_RECENT);
-  const summary = await summarizeMessages(older, displayName);
+  const summary = await summarizeMessages(older, displayName, conv.summary || "");
   if (summary) {
     conv.summary = summary;
     conv.summaryUpTo = older.length;
@@ -53,7 +56,6 @@ function getSessionSummary(mem) {
 }
 
 module.exports = {
-  SUMMARY_AFTER,
   KEEP_RECENT,
   needsSummary,
   maybeUpdateSessionSummary,

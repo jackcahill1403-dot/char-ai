@@ -160,7 +160,7 @@ app.get("/api/usage", (req, res) => {
     : [mem.settings.model || "or-kimi"];
   res.json({
     mode: FORCED_MODE,
-    cavemanLimits: true,
+    rateLimits: true,
     locked: true,
     perModel: true,
     perUser: true,
@@ -249,7 +249,7 @@ app.post("/api/plugins/toggle", (req, res) => {
 
 app.put("/api/settings", (req, res) => {
   const mem = readMemory(req.userId);
-  const { displayName, model, useResponseCache, theme, cavemanDict, hfCustomModel, autoRoute } =
+  const { displayName, model, useResponseCache, theme, hfCustomModel, autoRoute } =
     req.body || {};
   mem.settings.mode = FORCED_MODE;
   if (displayName !== undefined) {
@@ -262,13 +262,6 @@ app.put("/api/settings", (req, res) => {
   if (autoRoute !== undefined) mem.settings.autoRoute = Boolean(autoRoute);
   if (useResponseCache !== undefined) mem.settings.useResponseCache = Boolean(useResponseCache);
   if (theme !== undefined) mem.settings.theme = theme === "dark" ? "dark" : "light";
-  if (cavemanDict !== undefined && typeof cavemanDict === "object") {
-    const clean = {};
-    for (const [k, v] of Object.entries(cavemanDict)) {
-      if (k && typeof v === "string") clean[String(k).slice(0, 40)] = v.slice(0, 80);
-    }
-    mem.settings.cavemanDict = clean;
-  }
   if (hfCustomModel !== undefined) {
     mem.settings.hfCustomModel = String(hfCustomModel).slice(0, 120);
   }

@@ -1,6 +1,6 @@
-const RECENT_FULL = 14;
-const OLDER_SNIPPET = 6;
-const SNIPPET_LEN = 140;
+const RECENT_FULL = 28;
+const OLDER_SNIPPET = 12;
+const SNIPPET_LEN = 350;
 
 function buildChatMessages(memMessages, { userMessage, sessionSummary } = {}) {
   const all = Array.isArray(memMessages) ? memMessages : [];
@@ -12,7 +12,7 @@ function buildChatMessages(memMessages, { userMessage, sessionSummary } = {}) {
   if (sessionSummary) {
     parts.push({
       role: "system",
-      content: `Session brief (earlier in this chat):\n${sessionSummary}`,
+      content: `Session brief (earlier in this chat — treat as authoritative context):\n${sessionSummary}`,
     });
   } else if (older.length) {
     const bullets = older
@@ -20,7 +20,7 @@ function buildChatMessages(memMessages, { userMessage, sessionSummary } = {}) {
       .map((m) => `${m.role}: ${String(m.content).replace(/\s+/g, " ").slice(0, SNIPPET_LEN)}`);
     parts.push({
       role: "system",
-      content: `Earlier messages (${older.length} total, snippets only):\n${bullets.join("\n")}`,
+      content: `Earlier messages (${older.length} total, snippets — ask user to recap if unsure):\n${bullets.join("\n")}`,
     });
   }
 

@@ -42,8 +42,9 @@ function extractFactsFromMessage(text) {
   const found = [];
   const patterns = [
     /(?:remember|note|fyi)[:\s]+(.+)/i,
-    /(?:i prefer|i like|i use|i want|my name is|call me)\s+(.+)/i,
+    /(?:i prefer|i like|i use|i want|my name is|call me|i'm building|i am building|my project is)\s+(.+)/i,
     /(?:always|never)\s+(.+)/i,
+    /(?:the plan is|goal is|we decided)\s+(.+)/i,
   ];
   for (const re of patterns) {
     const m = String(text).match(re);
@@ -70,7 +71,7 @@ function addFact(userId, value, category = "user") {
 function factsContextBlock(userId) {
   const facts = readFacts(userId);
   if (!facts.length) return "";
-  const lines = facts.slice(0, 20).map((f) => `- ${f.value}`);
+  const lines = facts.slice(0, 25).map((f) => `- ${f.value}`);
   return `\n\n--- Long-term memory ---\n${lines.join("\n")}\n--- end memory ---`;
 }
 

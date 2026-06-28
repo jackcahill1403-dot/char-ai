@@ -3,7 +3,6 @@ const userSpaceInput = document.getElementById("user-space");
 const shareLinkEl = document.getElementById("share-link");
 const useCacheEl = document.getElementById("use-response-cache");
 const modelListEl = document.getElementById("model-list");
-const cavemanDictEl = document.getElementById("caveman-dict");
 const hfCustomModelEl = document.getElementById("hf-custom-model");
 const saveBtn = document.getElementById("save-btn");
 const errorEl = document.getElementById("error");
@@ -54,24 +53,6 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-function dictToText(dict) {
-  return Object.entries(dict || {})
-    .map(([k, v]) => `${k}=${v}`)
-    .join("\n");
-}
-
-function textToDict(text) {
-  const dict = {};
-  for (const line of String(text || "").split("\n")) {
-    const t = line.trim();
-    if (!t || t.startsWith("#")) continue;
-    const i = t.indexOf("=");
-    if (i < 1) continue;
-    dict[t.slice(0, i).trim()] = t.slice(i + 1).trim();
-  }
-  return dict;
-}
-
 function refreshShareLink(userId) {
   if (!shareLinkEl) return;
   const id = userId || getZynxUserId();
@@ -90,7 +71,6 @@ async function loadSettings() {
     if (userSpaceInput) userSpaceInput.value = userId || getZynxUserId();
     refreshShareLink(userId || getZynxUserId());
     if (useCacheEl) useCacheEl.checked = settings.useResponseCache !== false;
-    if (cavemanDictEl) cavemanDictEl.value = dictToText(settings.cavemanDict);
     if (hfCustomModelEl) hfCustomModelEl.value = settings.hfCustomModel || "";
     initTheme(settings.theme);
     renderModels(models.models, models.active);
@@ -110,7 +90,6 @@ saveBtn.addEventListener("click", async () => {
       displayName: displayNameInput.value.trim() || "User",
       useResponseCache: useCacheEl?.checked ?? true,
       theme: document.documentElement.dataset.theme === "dark" ? "dark" : "light",
-      cavemanDict: textToDict(cavemanDictEl?.value),
       hfCustomModel: hfCustomModelEl?.value.trim() || "",
     });
     showSuccess(successEl, "Saved.");

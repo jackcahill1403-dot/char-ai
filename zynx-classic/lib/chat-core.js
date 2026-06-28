@@ -12,7 +12,7 @@ const { maybeUpdateSessionSummary, getSessionSummary } = require("./session-summ
 const { searchWeb, formatSearchResults, webSearchBlock, looksLikeWebQuery } = require("./web-search");
 const { buildChatMessages } = require("./chat-context");
 const { routeModel } = require("./model-router");
-const { looksIncompleteCode, looksBrokenReply } = require("./ai-quality");
+const { looksIncompleteCode } = require("./ai-quality");
 const { readProjectFile } = require("./file-read");
 const { openrouterConfigured } = require("./openrouter-keys");
 const {
@@ -30,7 +30,6 @@ const {
 } = require("./scripts");
 const { getCached, setCached } = require("./response-cache");
 const { friendlyLlmError } = require("./errors");
-const { applyCavemanMode } = require("./caveman-dict");
 const { activeMessages, setActiveMessages } = require("./conversations");
 
 async function buildExtraContext(userId, mem, task, attachment) {
@@ -63,27 +62,24 @@ async function callModelWithQuality(modelId, messages, mode, displayName, opts) 
     const cont = await callModel(
       modelId,
       [
+        ...messages,
+        { role: "assistant", content: result.content },
         {
           role: "user",
-          content: `Continue exactly where you left off (no repetition):\n\n${result.content}`,
+          content: "Continue exactly where you left off. Do not repeat anything already written. Close any open code fences.",
         },
       ],
       mode,
       displayName,
-      { ...opts, taskType: "continue", onStream: undefined }
+      { ...opts, taskType: "continue", onStream: opts.onStream }
     );
-    if (cont.ok) result = { ...result, content: `${result.content}\n${cont.content}` };
-  }
-
-  if (looksBrokenReply(result.content)) {
-    const fix = await callModel(
-      modelId,
-      [{ role: "user", content: `Fix errors and complete this reply:\n\n${result.content}` }],
-      mode,
-      displayName,
-      { ...opts, taskType: "coding" }
-    );
-    if (fix.ok) result = fix;
+    if (cont.ok) {
+      result = {
+        ...result,
+        content: `${result.content}\n${cont.content}`,
+        streamed: result.streamed || cont.streamed,
+      };
+    }
   }
 
   return result;
@@ -199,7 +195,7 @@ async function processChat({
     return { error: "Message cannot be empty.", status: 400 };
   }
 
-  const { displayName, model, cavemanDict } = mem.settings;
+  const { displayName, model } = mem.settings;
   const mode = FORCED_MODE;
   const scriptCmd = parseScriptCommand(trimmed);
   const agentsCmd = parseAgentsCommand(trimmed);
@@ -338,11 +334,7 @@ async function processChat({
   if (mem.settings.useResponseCache !== false) {
     const cached = getCached(pipelineTask);
     if (cached) {
-      const reply = applyCavemanMode(
-        `[Cached replay — FREE, no limit used]\n\n${cached}`,
-        mode,
-        cavemanDict
-      );
+      const reply = `[Cached replay — FREE, no limit used]\n\n${cached}`;
       streamText(reply, emit);
       const messages = pushCommandExchange(
         userId,
@@ -381,7 +373,8 @@ async function processChat({
     learnFromUserMessage(userId, trimmed);
   }
 
-  const history = buildChatMessages(msgs.slice(0, -1), { sessionSummary: getSessionSummary(mem) });
+  const sessionSummary = getSessionSummary(mem);
+  const history = buildChatMessages(msgs.slice(0, -1), { sessionSummary });
   const pluginCtx = buildPluginCtx(mem, history, mode, displayName);
   const extraContext = await buildExtraContext(userId, mem, pipelineTask, attachment);
 
@@ -396,7 +389,6 @@ async function processChat({
       displayName,
       plugins: mem.plugins,
       chatHistory: history,
-      cavemanDict,
       extraContext,
       pipelineEvents: emit,
     });
@@ -425,7 +417,7 @@ async function processChat({
     const chatModel = pickChatModel(mem, pipelineTask, userId);
     const routeInfo = routeModel(pipelineTask, { openrouter: openrouterConfigured(), userId });
     const boosted = applyUserMessage(pipelineTask, pluginCtx, mem.plugins);
-    const chatMessages = buildChatMessages(msgs.slice(0, -1), { userMessage: boosted });
+    const chatMessages = buildChatMessages(msgs.slice(0, -1), { sessionSummary, userMessage: boosted });
     const llmOpts = {
       extraContext,
       taskType: routeInfo.reason === "coding" ? "coding" : "general",
@@ -446,7 +438,6 @@ async function processChat({
     if (llmResult.ok) {
       recordModels(userId, [chatModel]);
       replyText = applyFinalResponse(llmResult.content, pluginCtx, mem.plugins);
-      replyText = applyCavemanMode(replyText, mode, cavemanDict);
       llm = {
         used: true,
         provider: llmResult.provider,
@@ -465,7 +456,6 @@ async function processChat({
       };
     } else {
       replyText = applyFinalResponse(buildReply(trimmed, mode), pluginCtx, mem.plugins);
-      replyText = applyCavemanMode(replyText, mode, cavemanDict);
       llm = {
         used: false,
         provider: model,

@@ -98,7 +98,6 @@ Rules:
     normal: `${base} Friendly, plain tone.`,
     silly: `${base} Playful, exaggerated, occasional emoji. Fun energy.`,
     serious: `${base} Formal, concise, no fluff, no emoji.`,
-    caveman: `${base} CAVEMAN ULTRA MODE. Drop articles (a/an/the), filler, hedging. Fragments OK. Short synonyms. Abbrev prose words (DB/config/fn/req). Arrows for cause (X → Y). One word when enough. Code + error strings exact. Pattern: [thing] [action] [reason]. Technical accuracy full.`,
   };
   return modes[mode] || modes.normal;
 }
