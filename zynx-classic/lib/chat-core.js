@@ -89,7 +89,7 @@ async function callModelWithQuality(modelId, messages, mode, displayName, opts) 
   return result;
 }
 
-function resolveUsageModelIds(mem, runPipeline, task) {
+function resolveUsageModelIds(mem, runPipeline, task, userId) {
   if (runPipeline && mem.agents?.length) {
     return [...new Set(mem.agents.map((a) => a.model).filter(Boolean))];
   }
@@ -97,7 +97,7 @@ function resolveUsageModelIds(mem, runPipeline, task) {
 }
 
 function usageSnapshot(userId, mem, runPipeline, task) {
-  const modelIds = resolveUsageModelIds(mem, runPipeline, task);
+  const modelIds = resolveUsageModelIds(mem, runPipeline, task, userId);
   return statusForModels(userId, modelIds, { devTeam: Boolean(runPipeline && modelIds.length > 1) });
 }
 
@@ -360,7 +360,7 @@ async function processChat({
     }
   }
 
-  const usageModels = resolveUsageModelIds(mem, runPipeline, pipelineTask);
+  const usageModels = resolveUsageModelIds(mem, runPipeline, pipelineTask, userId);
   const limit = checkCavemanLimit(userId, usageModels, {
     devTeam: Boolean(runPipeline && usageModels.length > 1),
   });
