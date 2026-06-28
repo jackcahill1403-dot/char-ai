@@ -140,5 +140,5 @@ async function loadAgentsPage() {
   renderAgents();
 }
 
-initTheme("light");
+initTheme("dark");
 loadAgentsPage().catch((err) => showError(errorEl, err.message));

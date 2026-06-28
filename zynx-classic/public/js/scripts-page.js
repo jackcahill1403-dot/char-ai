@@ -196,5 +196,5 @@ async function deleteScript(slug) {
   }
 }
 
-initTheme("light");
+initTheme("dark");
 loadPage().catch((err) => showError(errorEl, err.message));

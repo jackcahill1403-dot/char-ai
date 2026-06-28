@@ -40,7 +40,7 @@ const DEFAULT = {
     displayName: "User",
     model: defaultModelForNewUser(),
     useResponseCache: true,
-    theme: "light",
+    theme: "dark",
     hfCustomModel: "",
     agentsTier: activeAgentsTier(),
     autoRoute: true,
@@ -109,7 +109,7 @@ function normalizeMemoryData(data, userId) {
     settings.model = defaultModelForNewUser();
   }
   settings.model = preferOpenRouterModel(settings.model);
-  if (!settings.theme) settings.theme = "light";
+  if (!settings.theme) settings.theme = "dark";
   if (typeof settings.hfCustomModel !== "string") {
     settings.hfCustomModel = "";
   }

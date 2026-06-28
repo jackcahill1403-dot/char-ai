@@ -89,7 +89,7 @@ saveBtn.addEventListener("click", async () => {
       model,
       displayName: displayNameInput.value.trim() || "User",
       useResponseCache: useCacheEl?.checked ?? true,
-      theme: document.documentElement.dataset.theme === "dark" ? "dark" : "light",
+      theme: document.documentElement.dataset.theme === "light" ? "light" : "dark",
       hfCustomModel: hfCustomModelEl?.value.trim() || "",
     });
     showSuccess(successEl, "Saved.");

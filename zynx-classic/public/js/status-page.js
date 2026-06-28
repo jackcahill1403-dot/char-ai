@@ -407,5 +407,5 @@ async function loadStatus() {
 
 refreshBtn.addEventListener("click", () => loadStatus().catch((e) => showError(errorEl, e.message)));
 
-initTheme("light");
+initTheme("dark");
 loadStatus().catch((e) => showError(errorEl, e.message));

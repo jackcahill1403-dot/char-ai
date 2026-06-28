@@ -172,7 +172,7 @@ app.get("/api/usage", (req, res) => {
       devTeam: Boolean(runPipeline && modelIds.length > 1),
     }),
     modelPools: allModelPools(req.userId),
-    theme: mem.settings.theme || "light",
+    theme: mem.settings.theme || "dark",
   });
 });
 

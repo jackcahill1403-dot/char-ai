@@ -1,13 +1,17 @@
 const THEME_KEY = "zynx_theme";
 
 function applyTheme(theme) {
-  document.documentElement.dataset.theme = theme === "dark" ? "dark" : "light";
-  localStorage.setItem(THEME_KEY, theme === "dark" ? "dark" : "light");
+  if (theme === "light") {
+    document.documentElement.dataset.theme = "light";
+  } else {
+    delete document.documentElement.dataset.theme;
+  }
+  localStorage.setItem(THEME_KEY, theme === "light" ? "light" : "dark");
 }
 
 function initTheme(settingsTheme) {
   const stored = localStorage.getItem(THEME_KEY);
-  const theme = stored || settingsTheme || "light";
+  const theme = stored || settingsTheme || "dark";
   applyTheme(theme);
 }
 
