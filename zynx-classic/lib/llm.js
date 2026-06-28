@@ -47,6 +47,26 @@ function buildFallbackOrder(preferredId) {
 
 const { tokenBudget } = require("./ai-quality");
 
+const TASK_TEMPS = {
+  coding: 0.25,
+  "dev-team": 0.3,
+  review: 0.2,
+  planning: 0.5,
+  "long-task": 0.45,
+  continue: 0.2,
+  quick: 0.75,
+  general: 0.65,
+};
+
+function stripThinkBlocks(content) {
+  const thinking = [];
+  const clean = String(content).replace(/<think>([\s\S]*?)<\/think>/gi, (_, inner) => {
+    thinking.push(inner.trim());
+    return "";
+  });
+  return { clean: clean.trim(), thinking: thinking.length ? thinking.join("\n\n") : null };
+}
+
 async function fetchProviderStream(p, key, body, onStream) {
   const headers = { "Content-Type": "application/json" };
   if (key) headers.Authorization = `Bearer ${key}`;
@@ -112,7 +132,8 @@ async function fetchProviderStream(p, key, body, onStream) {
   if (!full.trim()) {
     return { ok: false, reason: "empty_reply", provider: p.id, model: p.model() };
   }
-  return { ok: true, content: full.trim(), provider: p.id, model: p.model(), streamed: true };
+  const { clean: streamClean, thinking: streamThinking } = stripThinkBlocks(full.trim());
+  return { ok: true, content: streamClean, thinking: streamThinking, provider: p.id, model: p.model(), streamed: true };
 }
 
 async function fetchProviderOnce(p, key, body, onStream) {
@@ -165,7 +186,8 @@ async function fetchProviderOnce(p, key, body, onStream) {
   if (!reply) {
     return { ok: false, reason: "empty_reply", provider: p.id, model: p.model() };
   }
-  return { ok: true, content: reply, provider: p.id, model: p.model() };
+  const { clean: onceClean, thinking: onceThinking } = stripThinkBlocks(reply);
+  return { ok: true, content: onceClean, thinking: onceThinking, provider: p.id, model: p.model() };
 }
 
 async function callOpenRouterProvider(p, body, onStream) {
@@ -222,7 +244,7 @@ async function callProvider(providerId, messages, system, mode, opts = {}) {
     model: p.model(),
     messages: [{ role: "system", content: system }, ...messages],
     max_tokens: maxTokens,
-    temperature: taskType === "coding" ? 0.35 : 0.6,
+    temperature: TASK_TEMPS[taskType] ?? 0.65,
   };
 
   if (p.openrouter) {
@@ -264,7 +286,7 @@ async function callProviderWithFallback(preferredId, messages, system, mode, opt
 
 async function callModel(providerId, messages, mode, displayName, opts = {}) {
   const extra = opts.extraContext || "";
-  const system = modeSystemPrompt(mode, displayName, extra);
+  const system = modeSystemPrompt(mode, displayName, extra, { taskType: opts.taskType });
   return callProviderWithFallback(providerId, messages, system, mode, opts);
 }
 

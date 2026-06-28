@@ -1039,6 +1039,48 @@ nav a[aria-current="page"] {
   color: var(--muted);
 }
 
+.think-block {
+  margin: 0 0 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--code-bg);
+  overflow: hidden;
+}
+
+.think-summary {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.think-summary::-webkit-details-marker { display: none; }
+
+.think-summary::before {
+  content: "▸";
+  font-size: 0.65rem;
+  transition: transform 0.15s ease;
+  display: inline-block;
+}
+
+.think-block[open] .think-summary::before {
+  transform: rotate(90deg);
+}
+
+.think-body {
+  padding: 0.5rem 0.75rem 0.65rem;
+  font-size: 0.83rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  line-height: 1.6;
+}
+
 .code-block-wrap {
   margin: 0.5rem 0;
   border: 1px solid var(--border);

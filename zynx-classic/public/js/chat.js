@@ -99,7 +99,7 @@ function renderMessages(messages, { animate = false } = {}) {
           <button type="button" class="copy-msg-btn btn-icon" title="Copy">⧉</button>
         </div>
       </div>
-      <div class="message-body">${formatMessageContent(msg.content)}</div>`;
+      <div class="message-body">${msg.thinking ? `<details class="think-block"><summary class="think-summary">Reasoning</summary><div class="think-body">${formatMarkdownBlock(msg.thinking)}</div></details>` : ""}${formatMessageContent(msg.content)}</div>`;
 
     li.querySelector(".copy-msg-btn")?.addEventListener("click", (e) => copyText(msg.content, e.target));
     li.querySelector(".regenerate-btn")?.addEventListener("click", () => runChat({ regenerate: true }));
@@ -354,7 +354,10 @@ async function runChat(opts = {}) {
         if (event.type === "delta" || event.delta) {
           streamed += event.delta || "";
           if (streamBody) {
-            streamBody.textContent = streamed;
+            const display = streamed
+              .replace(/<think>[\s\S]*?<\/think>/gi, "")
+              .replace(/<think>[\s\S]*$/i, "⋯ reasoning ⋯");
+            streamBody.textContent = display;
             scrollChatToBottom(true);
           }
         }

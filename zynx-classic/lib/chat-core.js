@@ -13,7 +13,7 @@ const { searchWeb, formatSearchResults, webSearchBlock, looksLikeWebQuery } = re
 const { buildChatMessages } = require("./chat-context");
 const { routeModel } = require("./model-router");
 const { pickAvailableModel } = require("./model-availability");
-const { looksIncompleteCode } = require("./ai-quality");
+const { looksIncompleteCode, looksLowQuality } = require("./ai-quality");
 const { readProjectFile } = require("./file-read");
 const { openrouterConfigured } = require("./openrouter-keys");
 const {
@@ -62,6 +62,25 @@ async function callModelWithQuality(modelId, messages, mode, displayName, opts) 
   let result = await callModel(modelId, messages, mode, displayName, opts);
   if (!result?.ok) return result;
 
+  const taskType = opts.taskType || "general";
+
+  if (looksLowQuality(result.content, taskType)) {
+    const retry = await callModel(
+      modelId,
+      [
+        ...messages,
+        { role: "assistant", content: result.content },
+        { role: "user", content: "Your response was too short or incomplete. Please provide a thorough, detailed answer." },
+      ],
+      mode,
+      displayName,
+      { ...opts, taskType }
+    );
+    if (retry.ok && !looksLowQuality(retry.content, taskType)) {
+      result = { ...retry, thinking: result.thinking || retry.thinking };
+    }
+  }
+
   if (looksIncompleteCode(result.content)) {
     const cont = await callModel(
       modelId,
@@ -81,6 +100,7 @@ async function callModelWithQuality(modelId, messages, mode, displayName, opts) 
       result = {
         ...result,
         content: `${result.content}\n${cont.content}`,
+        thinking: result.thinking || cont.thinking,
         streamed: result.streamed || cont.streamed,
       };
     }
@@ -404,6 +424,7 @@ async function processChat({
   const extraContext = await buildExtraContext(userId, mem, pipelineTask, attachment);
 
   let replyText;
+  let replyThinking = null;
   let llm = { used: false, provider: model, countsAsOneMessage: true, badge: "mock" };
 
   if (runPipeline && mem.agents.length) {
@@ -467,6 +488,7 @@ async function processChat({
     );
     if (llmResult.ok) {
       recordModels(userId, [chatModel]);
+      replyThinking = llmResult.thinking || null;
       replyText = applyFinalResponse(llmResult.content, pluginCtx, mem.plugins);
       llm = {
         used: true,
@@ -526,6 +548,7 @@ async function processChat({
   finalMsgs.push({
     role: "assistant",
     content: replyText,
+    ...(replyThinking ? { thinking: replyThinking } : {}),
     timestamp: new Date().toISOString(),
     llm,
   });

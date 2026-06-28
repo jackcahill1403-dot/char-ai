@@ -40,14 +40,18 @@ function upsertFact(facts, value, category = "note") {
 
 function extractFactsFromMessage(text) {
   const found = [];
+  const s = String(text);
   const patterns = [
     /(?:remember|note|fyi)[:\s]+(.+)/i,
     /(?:i prefer|i like|i use|i want|my name is|call me|i'm building|i am building|my project is)\s+(.+)/i,
     /(?:always|never)\s+(.+)/i,
     /(?:the plan is|goal is|we decided)\s+(.+)/i,
+    /(?:this project|our app|the app|this app)\s+(?:is|uses?|runs?)\s+(.{5,100})/i,
+    /(?:i'm using|we're using|we use|running on|built with|stack is)\s+([\w\s,./\-]+)/i,
+    /(?:my|our)\s+(?:language|framework|database|stack|backend|frontend)\s+is\s+(.{3,80})/i,
   ];
   for (const re of patterns) {
-    const m = String(text).match(re);
+    const m = s.match(re);
     if (m?.[1]) found.push(m[1].trim().slice(0, 200));
   }
   return found;

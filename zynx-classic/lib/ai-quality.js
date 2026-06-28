@@ -1,13 +1,16 @@
 const CODE_HINT =
   /\b(code|function|implement|fix|bug|refactor|api|endpoint|component|script|test)\b/i;
 
+const FILLER_RE =
+  /^(sure|ok|okay|got it|noted|understood|certainly|of course|happy to help|absolutely|great question)[.!?\s]*$/i;
+const COMPLEX_TASKS = new Set(["coding", "planning", "review", "dev-team", "long-task"]);
+
 function fenceCount(text) {
   return (String(text).match(/```/g) || []).length;
 }
 
 function looksIncompleteCode(text) {
   const s = String(text);
-  // Only treat unclosed fenced blocks as incomplete — prose after a closed block is normal.
   return fenceCount(s) % 2 !== 0;
 }
 
@@ -15,6 +18,14 @@ function looksBrokenReply(text) {
   const s = String(text).trim();
   if (!s) return true;
   return looksIncompleteCode(s);
+}
+
+function looksLowQuality(text, taskType) {
+  const s = String(text).trim();
+  if (!s) return true;
+  if (FILLER_RE.test(s)) return true;
+  if (COMPLEX_TASKS.has(taskType) && s.length < 80) return true;
+  return false;
 }
 
 function cavemanPreserveCode(text) {
@@ -36,20 +47,22 @@ function tokenBudget(taskType) {
   switch (taskType) {
     case "coding":
     case "dev-team":
+      return 6144;
     case "continue":
       return 4096;
     case "planning":
-      return 2048;
+      return 3500;
     case "review":
-      return 2048;
+      return 3000;
     default:
-      return 1536;
+      return 2500;
   }
 }
 
 module.exports = {
   looksIncompleteCode,
   looksBrokenReply,
+  looksLowQuality,
   cavemanPreserveCode,
   cacheEligible,
   tokenBudget,
