@@ -1206,7 +1206,7 @@ nav a[aria-current="page"] {
 
   .message-enter,
   .conv-enter {
-    animation: motion-rise-in 0.32s var(--ease-out-smooth) both;
+    animation: motion-rise-in 0.44s var(--ease-out-smooth) both;
   }
 
   .error-banner.is-visible,
@@ -1225,21 +1225,21 @@ nav a[aria-current="page"] {
   .scroll-reveal {
     opacity: 0;
     transition:
-      opacity 0.28s var(--ease-out-smooth),
-      transform 0.28s var(--ease-out-smooth);
+      opacity 0.48s var(--ease-out-smooth),
+      transform 0.48s var(--ease-out-smooth);
   }
 
   .scroll-reveal.from-below {
-    transform: translateY(10px);
+    transform: translateY(32px) scale(0.95);
   }
 
   .scroll-reveal.from-above {
-    transform: translateY(-10px);
+    transform: translateY(-22px) scale(0.96);
   }
 
   .scroll-reveal.scroll-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 
   #messages::-webkit-scrollbar {
@@ -1263,11 +1263,11 @@ nav a[aria-current="page"] {
 @keyframes motion-rise-in {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(26px) scale(0.96);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -2335,13 +2335,13 @@ body.chat-layout #messages {
 
 /* Directional message entrance */
 @keyframes msg-slide-right {
-  from { opacity: 0; transform: translateX(22px) translateY(8px) scale(0.97); }
+  from { opacity: 0; transform: translateX(36px) translateY(10px) scale(0.94); }
   to   { opacity: 1; transform: translateX(0) translateY(0) scale(1); }
 }
 
 @keyframes msg-slide-left {
-  from { opacity: 0; transform: translateX(-16px) translateY(8px); }
-  to   { opacity: 1; transform: translateX(0) translateY(0); }
+  from { opacity: 0; transform: translateX(-28px) translateY(10px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) translateY(0) scale(1); }
 }
 
 /* Sidebar entrance from left */
@@ -2371,11 +2371,11 @@ body.chat-layout #messages {
 @media (prefers-reduced-motion: no-preference) {
   /* Directional message entrance */
   .message.user.message-enter {
-    animation: msg-slide-right 0.36s var(--ease-out-smooth) both;
+    animation: msg-slide-right 0.50s var(--ease-out-smooth) both;
   }
 
   .message.assistant.message-enter {
-    animation: msg-slide-left 0.34s var(--ease-out-smooth) both;
+    animation: msg-slide-left 0.46s var(--ease-out-smooth) both;
   }
 
   /* Sidebar slide in */
