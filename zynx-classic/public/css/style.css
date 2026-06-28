@@ -371,7 +371,7 @@ button {
 }
 
 .btn,
-.chat-form button[type="submit"],
+.chat-form button[type="submit"]:not(#send-btn),
 #save-btn,
 #save-script-btn {
   display: inline-flex;
@@ -392,7 +392,7 @@ button {
 }
 
 .btn:hover,
-.chat-form button[type="submit"]:hover,
+.chat-form button[type="submit"]:not(#send-btn):hover,
 #save-btn:hover,
 #save-script-btn:hover {
   background: var(--accent-hover);
@@ -1119,7 +1119,7 @@ nav a[aria-current="page"] {
   background: var(--accent);
 }
 
-.chat-form button[type="submit"]:hover,
+.chat-form button[type="submit"]:not(#send-btn):hover,
 #save-btn:hover,
 #save-script-btn:hover,
 .btn:hover {
