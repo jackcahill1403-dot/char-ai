@@ -110,16 +110,21 @@ function emitPipeline(events, event) {
 }
 
 async function runOneAgent(agent, context, opts) {
-  const { applyAgentPrompts, plugins, mode, displayName, modelLabels, customRole, pipelineEvents } =
+  const { applyAgentPrompts, plugins, mode, displayName, modelLabels, customRole, pipelineEvents, userId } =
     opts;
   const { callAgent } = require("./llm");
+  const { pickAvailableModel } = require("./model-availability");
+
+  const requestedModel = agent.model;
+  const modelId = (userId && pickAvailableModel(userId, requestedModel)) || requestedModel;
 
   emitPipeline(pipelineEvents, {
     type: "step_start",
     id: agent.id,
     name: agent.name,
-    model: agent.model,
-    modelLabel: modelLabels[agent.model] || agent.model,
+    model: modelId,
+    modelLabel: modelLabels[modelId] || modelLabels[requestedModel] || modelId,
+    requestedModel: modelId !== requestedModel ? requestedModel : undefined,
   });
 
   const role = applyAgentPrompts(
@@ -130,7 +135,7 @@ async function runOneAgent(agent, context, opts) {
 
   let streamed = "";
   const result = await callAgent(
-    agent.model,
+    modelId,
     [{ role: "user", content: context }],
     role,
     mode,
@@ -157,8 +162,9 @@ async function runOneAgent(agent, context, opts) {
     const step = {
       id: agent.id,
       name: agent.name,
-      model: agent.model,
-      modelLabel: modelLabels[agent.model] || agent.model,
+      model: modelId,
+      requestedModel: modelId !== requestedModel ? requestedModel : undefined,
+      modelLabel: modelLabels[modelId] || modelLabels[requestedModel] || modelId,
       ok: false,
       failed: true,
       error,
@@ -173,8 +179,9 @@ async function runOneAgent(agent, context, opts) {
   const step = {
     id: agent.id,
     name: agent.name,
-    model: agent.model,
-    modelLabel: modelLabels[agent.model] || agent.model,
+    model: modelId,
+    requestedModel: modelId !== requestedModel ? requestedModel : undefined,
+    modelLabel: modelLabels[modelId] || modelLabels[requestedModel] || modelId,
     ok: true,
     failed: false,
     mock: false,
@@ -244,6 +251,7 @@ async function runAgentPipeline({
   agents,
   mode,
   displayName,
+  userId,
   plugins = [],
   chatHistory = [],
   extraContext = "",
@@ -263,6 +271,7 @@ async function runAgentPipeline({
     displayName,
     modelLabels,
     pipelineEvents,
+    userId,
     llmOpts: {
       extraContext,
       taskType: "dev-team",

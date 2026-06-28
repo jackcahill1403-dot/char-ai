@@ -207,21 +207,29 @@ function renderConversationList(conversations, activeId) {
   });
 }
 
+let modelSelectProgrammatic = false;
+
 function populateModelSelect(models, active, autoRoute, pools) {
   if (!chatModelSelect) return;
   const poolMap = Object.fromEntries((pools || []).map((p) => [p.modelId, p]));
   const orModels = (models || []).filter((m) => m.openrouter || m.configured);
+  modelSelectProgrammatic = true;
   chatModelSelect.innerHTML =
     `<option value="auto"${autoRoute !== false ? " selected" : ""}>Auto route</option>` +
     orModels
       .map((m) => {
         const sel = autoRoute === false && m.id === active ? " selected" : "";
         const p = poolMap[m.id];
+        const limited = p?.limited;
         const usage = p ? ` · ${p.hourCount}/${p.perHour}hr` : "";
-        return `<option value="${m.id}"${sel}>${escapeHtml(m.label)}${usage}</option>`;
+        const limitTag = limited ? " · limit hit" : "";
+        return `<option value="${m.id}"${sel}>${escapeHtml(m.label)}${usage}${limitTag}</option>`;
       })
       .join("");
-  chatModelSelect.disabled = agentsEnabled;
+  modelSelectProgrammatic = false;
+  chatModelSelect.title = agentsEnabled
+    ? "Dev team uses agent models — !agents off for single-model chat"
+    : "Chat model — limited models are skipped automatically";
 }
 
 function setGenerating(on) {
@@ -229,6 +237,7 @@ function setGenerating(on) {
   sendBtn.hidden = on;
   stopBtn.hidden = !on;
   if (attachBtn) attachBtn.disabled = on;
+  if (chatModelSelect) chatModelSelect.disabled = on;
 }
 
 function appendStreamingAssistant() {
@@ -295,7 +304,7 @@ async function loadChat() {
     if (greetingEl) greetingEl.textContent = `Hi ${name} — like ChatGPT: Enter send · Shift+Enter newline · ↻ regenerate`;
     if (!activeAbort) {
       statusLine.textContent = agentsEnabled
-        ? "Dev team ON"
+        ? "Dev team ON · !agents off for single model"
         : models.autoRoute !== false
           ? "Auto-route"
           : models.models.find((m) => m.id === models.active)?.label || "";
@@ -356,7 +365,11 @@ async function runChat(opts = {}) {
         }
         if (event.type === "step_done" && pipeline) finishPipelineStep(pipeline.stepsEl, event);
         if (event.type === "fallback" && statusLine) {
-          statusLine.textContent = `Fallback: ${event.from} → ${event.to}`;
+          const reason = event.reason === "quota" ? "quota" : "provider";
+          statusLine.textContent =
+            reason === "quota"
+              ? `Quota fallback: ${event.from} → ${event.to}`
+              : `Fallback: ${event.from} → ${event.to}`;
         }
       },
       { signal: activeAbort.signal }
@@ -398,13 +411,16 @@ function clearAttachment() {
 }
 
 chatModelSelect?.addEventListener("change", async () => {
+  if (modelSelectProgrammatic) return;
   const val = chatModelSelect.value;
   try {
+    hideError(errorEl);
     if (val === "auto") await updateSettings({ autoRoute: true });
     else await updateSettings({ model: val, autoRoute: false });
     await loadChat();
   } catch (err) {
     showError(errorEl, err.message);
+    await loadChat();
   }
 });
 

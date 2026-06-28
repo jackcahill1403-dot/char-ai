@@ -3,7 +3,7 @@ const { buildReply } = require("./responder");
 const { callModel } = require("./llm");
 const { statusForModels, checkCavemanLimit, recordModels } = require("./rate-limiter");
 const { runAgentPipeline } = require("./agents");
-const { parseAgentsCommand, parseScriptCommand, parseMetaCommand, DEV_TEAM_ON_REPLY } = require("./commands");
+const { parseAgentsCommand, parseScriptCommand, parseMetaCommand, DEV_TEAM_ON_REPLY, DEV_TEAM_OFF_REPLY } = require("./commands");
 const { listAvailableCommands, formatCommandList } = require("./command-registry");
 const { factsContextBlock, learnFromUserMessage, addFact, readFacts } = require("./long-term-memory");
 const { scriptRagBlock } = require("./script-rag");
@@ -12,6 +12,7 @@ const { maybeUpdateSessionSummary, getSessionSummary } = require("./session-summ
 const { searchWeb, formatSearchResults, webSearchBlock, looksLikeWebQuery } = require("./web-search");
 const { buildChatMessages } = require("./chat-context");
 const { routeModel } = require("./model-router");
+const { pickAvailableModel } = require("./model-availability");
 const { looksIncompleteCode } = require("./ai-quality");
 const { readProjectFile } = require("./file-read");
 const { openrouterConfigured } = require("./openrouter-keys");
@@ -50,8 +51,11 @@ async function buildExtraContext(userId, mem, task, attachment) {
 }
 
 function pickChatModel(mem, task, userId) {
-  if (mem.settings.autoRoute === false) return mem.settings.model || "or-kimi";
-  return routeModel(task, { openrouter: openrouterConfigured(), userId }).modelId;
+  const preferred =
+    mem.settings.autoRoute === false
+      ? mem.settings.model || "or-kimi"
+      : routeModel(task, { openrouter: openrouterConfigured(), userId }).modelId;
+  return pickAvailableModel(userId, preferred) || preferred;
 }
 
 async function callModelWithQuality(modelId, messages, mode, displayName, opts) {
@@ -293,6 +297,24 @@ async function processChat({
   }
 
   if (agentsCmd) {
+    if (agentsCmd.toggle === "off") {
+      mem.agentsEnabled = false;
+      writeMemory(userId, mem);
+      streamText(DEV_TEAM_OFF_REPLY, emit);
+      const messages = pushCommandExchange(userId, mem, trimmed, DEV_TEAM_OFF_REPLY, {
+        command: "!agents off",
+        devTeam: false,
+        badge: "dev-team",
+      });
+      return {
+        messages,
+        llm: { used: false, command: "!agents off", devTeam: false, badge: "dev-team" },
+        rateLimit: usageSnapshot(userId, mem, false, trimmed),
+        agentsEnabled: false,
+        activeConversationId: mem.activeConversationId,
+      };
+    }
+
     mem.agentsEnabled = true;
     if (!agentsCmd.task) {
       const now = new Date().toISOString();
@@ -364,6 +386,9 @@ async function processChat({
       retryAfterSeconds: limit.retryAfterSeconds,
     };
   }
+  if (limit.routedTo && stream) {
+    emit({ type: "fallback", from: limit.routedFrom, to: limit.routedTo, reason: "quota" });
+  }
 
   const now = new Date().toISOString();
   const msgs = activeMessages(mem);
@@ -387,6 +412,7 @@ async function processChat({
       agents: mem.agents,
       mode,
       displayName,
+      userId,
       plugins: mem.plugins,
       chatHistory: history,
       extraContext,
@@ -414,6 +440,10 @@ async function processChat({
       model: pipelineResult.model,
     };
   } else {
+    const preferredModel =
+      mem.settings.autoRoute === false
+        ? mem.settings.model || "or-kimi"
+        : routeModel(pipelineTask, { openrouter: openrouterConfigured(), userId }).modelId;
     const chatModel = pickChatModel(mem, pipelineTask, userId);
     const routeInfo = routeModel(pipelineTask, { openrouter: openrouterConfigured(), userId });
     const boosted = applyUserMessage(pipelineTask, pluginCtx, mem.plugins);
@@ -447,7 +477,9 @@ async function processChat({
         countsAsOneMessage: true,
         badge: llmResult.fallback
           ? `${llmResult.provider} (fallback)`
-          : `${chatModel}${mem.settings.autoRoute === false ? "" : ` · ${routeInfo.reason}`}`,
+          : chatModel !== preferredModel
+            ? `${chatModel} (quota fallback)`
+            : `${chatModel}${mem.settings.autoRoute === false ? "" : ` · ${routeInfo.reason}`}`,
         fallback: llmResult.fallback,
         fallbackFrom: llmResult.fallbackFrom,
         fallbackTo: llmResult.fallbackTo,

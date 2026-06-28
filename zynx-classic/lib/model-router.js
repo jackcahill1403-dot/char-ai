@@ -7,7 +7,7 @@ const QUICK_RE = /^(hi|hello|hey|thanks|ok|yes|no|what is|who|when|where)\b/i;
 
 const OR_CANDIDATES = {
   planning: ["or-qwen36", "or-kimi", "or-glm"],
-  coding: ["or-kimi-code", "or-glm", "or-qwen36", "or-deepseek-v4"],
+  coding: ["or-kimi-code", "or-glm", "or-qwen36", "or-flash", "or-deepseek-v4"],
   review: ["or-gpt-oss", "or-kimi", "or-flash"],
   quick: ["or-kimi", "or-flash"],
   general: ["or-kimi", "or-kimi-code", "or-glm"],
@@ -40,15 +40,29 @@ function routeModel(message, { openrouter = true, userId } = {}) {
 
   const { modelBias } = require("./route-feedback");
   const { listModels } = require("./models");
+  const { isModelLimited } = require("./model-availability");
   const configured = new Set(listModels().filter((m) => m.configured).map((m) => m.id));
 
   for (const id of candidates) {
     if (!configured.has(id)) continue;
+    if (userId && isModelLimited(userId, id)) continue;
     let score = candidates.length - candidates.indexOf(id);
     if (userId) score += modelBias(userId, id, reason) * 2;
     if (score > bestScore) {
       bestScore = score;
       best = id;
+    }
+  }
+
+  if (bestScore === -Infinity) {
+    for (const id of candidates) {
+      if (!configured.has(id)) continue;
+      let score = candidates.length - candidates.indexOf(id);
+      if (userId) score += modelBias(userId, id, reason) * 2;
+      if (score > bestScore) {
+        bestScore = score;
+        best = id;
+      }
     }
   }
 

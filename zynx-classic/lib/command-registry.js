@@ -8,6 +8,8 @@ const COMMANDS = [
   { id: "help", usage: "!", desc: "List commands you can use", always: true, free: true },
   { id: "help", usage: "!help", desc: "Same as !", always: true, free: true },
   { id: "agents", usage: "!agents", desc: "Turn dev team on", always: true, free: true },
+  { id: "agents-on", usage: "!agents on", desc: "Turn dev team on", always: true, free: true },
+  { id: "agents-off", usage: "!agents off", desc: "Turn dev team off (single-model chat)", always: true, free: true },
   { id: "agents-task", usage: "!agents <task>", desc: "Run dev team on a task (1 message)", always: true },
   {
     id: "agents-continue",

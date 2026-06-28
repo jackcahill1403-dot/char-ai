@@ -1,10 +1,23 @@
 const DEV_TEAM_ON_REPLY =
-  "Dev team ON. Planner → Coders → Merger → Testers. Type `!` for commands.";
+  "Dev team ON. Planner → Coders → Merger → Testers. Type `!agents off` to switch back to single-model chat.";
+
+const DEV_TEAM_OFF_REPLY =
+  "Dev team OFF. Pick a model in the header or Settings. Type `!agents` to turn dev team back on.";
 
 function parseAgentsCommand(content) {
   const trimmed = content.trim();
   if (!/^!agents(\s|$)/i.test(trimmed)) return null;
   let rest = trimmed.replace(/^!agents\s*/i, "").trim();
+
+  if (/^(off|disable|stop)$/i.test(rest)) {
+    return { toggle: "off", task: "" };
+  }
+  if (/^(on|enable|start)$/i.test(rest)) {
+    return { toggle: "on", task: "" };
+  }
+  if (!rest) {
+    return { toggle: "on", task: "" };
+  }
 
   const continueMatch = rest.match(/^continue\s+(\S+)\s*(?:--|—)\s*([\s\S]+)$/i);
   if (continueMatch) {
@@ -64,4 +77,5 @@ module.exports = {
   parseHelpCommand,
   parseMetaCommand,
   DEV_TEAM_ON_REPLY,
+  DEV_TEAM_OFF_REPLY,
 };

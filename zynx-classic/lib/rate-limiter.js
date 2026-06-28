@@ -163,23 +163,46 @@ function checkCavemanLimit(userId, modelIds, { devTeam = false } = {}) {
     return { ok: false, error: "No model selected.", rateLimit: status(userId) };
   }
 
-  const blocked = ids.map((id) => buildPoolStatus(userId, id)).filter((p) => p.limited);
-  if (blocked.length) {
-    const names = blocked.map((p) => p.label).join(", ");
-    const first = blocked[0];
-    const when = first.resetKind === "day" ? "midnight" : "top of the hour";
+  const pools = ids.map((id) => buildPoolStatus(userId, id));
+  const blocked = pools.filter((p) => p.limited);
+
+  if (devTeam) {
+    if (blocked.length < ids.length) {
+      return {
+        ok: true,
+        rateLimit: statusForModels(userId, ids, { devTeam: true }),
+        skippedLimited: blocked.map((p) => p.modelId),
+      };
+    }
+  } else if (!blocked.length) {
     return {
-      ok: false,
-      error: `Your limit hit — ${names} (${first.hourCount}/${MODEL_PER_HOUR} hr · ${first.dayCount}/${MODEL_PER_DAY} day). Resets at ${when} in ${formatDuration(first.retryAfterSeconds)}.`,
+      ok: true,
       rateLimit: statusForModels(userId, ids, { devTeam }),
-      retryAfterSeconds: first.retryAfterSeconds,
-      limitedModels: blocked.map((p) => p.modelId),
     };
+  } else {
+    const { pickAvailableModel } = require("./model-availability");
+    const fallback = pickAvailableModel(userId, ids[0]);
+    if (fallback) {
+      return {
+        ok: true,
+        rateLimit: statusForModels(userId, [fallback], { devTeam }),
+        routedFrom: ids[0],
+        routedTo: fallback,
+      };
+    }
   }
 
+  const first = blocked[0] || pools[0];
+  const names = blocked.map((p) => p.label).join(", ");
+  const when = first.resetKind === "day" ? "midnight" : "top of the hour";
   return {
-    ok: true,
+    ok: false,
+    error: devTeam
+      ? `Dev team blocked — every agent model is out of quota (${names}). Resets at ${when} in ${formatDuration(first.retryAfterSeconds)}. Use !agents off and pick another model, or wait for reset.`
+      : `Your limit hit — ${names} (${first.hourCount}/${MODEL_PER_HOUR} hr · ${first.dayCount}/${MODEL_PER_DAY} day). Resets at ${when} in ${formatDuration(first.retryAfterSeconds)}. Pick another model in the header.`,
     rateLimit: statusForModels(userId, ids, { devTeam }),
+    retryAfterSeconds: first.retryAfterSeconds,
+    limitedModels: blocked.map((p) => p.modelId),
   };
 }
 
