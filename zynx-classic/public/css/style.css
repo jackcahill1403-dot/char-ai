@@ -827,9 +827,9 @@ code {
   --radius-lg: 14px;
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
-  --bg: #1a1a1a;
-  --bg-soft: #141414;
-  --text: #e8e8e8;
+  --bg: #2c2c2c;
+  --bg-soft: #1a1a1a;
+  --text: #ffffff;
   --muted: #888;
   --border: #262626;
   --hover: rgba(255, 255, 255, 0.05);
@@ -844,7 +844,7 @@ code {
   --card: #1f1f1f;
   --code-bg: #141414;
   --code-text: #d4d4d4;
-  --grid-line: rgba(255, 255, 255, 0.025);
+  --grid-line: rgba(255, 255, 255, 0.05);
   --error-bg: #2a1515;
   --error-text: #ff8080;
   --error-border: rgba(255, 80, 80, 0.2);
@@ -1953,7 +1953,11 @@ body.chat-layout .chat-shell {
 
 body.chat-layout main.chat-main {
   padding: 0.75rem 1.25rem 1rem;
-  background: var(--bg);
+  background:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-color: var(--bg);
 }
 
 .chat-greeting {
