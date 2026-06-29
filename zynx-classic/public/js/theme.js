@@ -11,7 +11,8 @@ function applyTheme(theme) {
 
 function initTheme(settingsTheme) {
   const stored = localStorage.getItem(THEME_KEY);
-  const theme = stored || settingsTheme || "dark";
+  // localStorage wins; otherwise default light regardless of stale server value
+  const theme = stored || "light";
   applyTheme(theme);
 }
 
