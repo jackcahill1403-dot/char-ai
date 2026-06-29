@@ -8,7 +8,7 @@ body {
   margin: 0;
   font-family: var(--font-sans);
   font-size: 14px;
-  line-height: 1.55;
+  line-height: 20px; /* baseline grid: 20px = half the 40px grid unit */
   color: var(--text);
   background: var(--bg);
   min-height: 100vh;
@@ -2055,7 +2055,7 @@ body.chat-layout #messages {
 }
 
 .message .message-body {
-  padding: 0.75rem 0.95rem;
+  padding: 10px 14px; /* 10px = half line-height, snaps to grid */
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: var(--card);
@@ -2706,7 +2706,7 @@ body.chat-layout main.chat-main {
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-size: 40px 20px; /* columns 40px, rows 20px = 1 line-height */
 }
 
 /* 6 ── User messages: warm dark bubble w/ orange border ───── */
@@ -2723,7 +2723,7 @@ body.chat-layout main.chat-main {
   border: none;
   border-left: 2px solid #2a2a2a;
   border-radius: 0;
-  padding: 0.3rem 0 0.3rem 1rem;
+  padding: 0 0 0 16px; /* left-gutter aligns to 2 columns (40px ÷ 2.5) */
   box-shadow: none;
   transition: border-left-color 0.2s ease;
 }
