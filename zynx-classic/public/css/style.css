@@ -2543,7 +2543,7 @@ body.chat-layout #messages {
 
 /* ── Conversation search ─────────────────────────────────── */
 .conv-search-wrap {
-  padding: 0.35rem 0.35rem 0;
+  padding: 0 0 0.5rem;
 }
 
 .conv-search {
