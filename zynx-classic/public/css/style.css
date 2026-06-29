@@ -2497,22 +2497,7 @@ body.chat-layout #messages {
 }
 
 
-/* ── Feel Alive: grid drift on chat background ───────────── */
-@keyframes grid-drift {
-  0%   { background-position: 0 0; }
-  100% { background-position: 28px 28px; }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  main.chat-main {
-    background-image:
-      linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 28px 28px;
-    background-position: 0 0;
-    animation: grid-drift 12s linear infinite;
-  }
-}
+/* grid-drift removed — static grid set on body.chat-layout main.chat-main */
 
 /* ── Feel Alive: card hover lift ────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {
@@ -2706,7 +2691,7 @@ body.chat-layout main.chat-main {
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 48px 24px; /* columns 2× line-height, rows = 1 line-height */
+  background-size: 32px 32px;
 }
 
 /* 6 ── Messages: no containers — raw text on the grid ──────── */
