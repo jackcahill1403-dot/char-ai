@@ -2612,3 +2612,290 @@ button:not(.copy-code-btn):not(.copy-msg-btn) {
 #custom-system-prompt:focus {
   border-color: var(--accent);
 }
+
+/* ════════════════════════════════════════════════════════════
+   ATLAS — Bold identity pass
+   Philosophy: orange as live signal, deep blacks as space,
+   structure over decoration. Terminal CRT meets cockpit.
+════════════════════════════════════════════════════════════ */
+
+/* 1 ── Token overrides: deeper blacks + orange primary ───── */
+:root {
+  --bg:          #0d0d0d;
+  --bg-soft:     #141414;
+  --card:        #181818;
+  --border:      #272727;
+  --code-bg:     #0a0a0a;
+  --accent:      #f54e00;
+  --accent-hover:#ff6520;
+  --accent-soft: rgba(245, 78, 0, 0.09);
+  --accent-glow: rgba(245, 78, 0, 0.30);
+  --on-accent:   #ffffff;
+  --user-bg:     #1c1410;
+  --user-border: rgba(245, 78, 0, 0.22);
+  --shadow-sm:   0 1px 4px rgba(0, 0, 0, 0.7);
+  --shadow-md:   0 8px 32px rgba(0, 0, 0, 0.85);
+  --grid-line:   rgba(255, 255, 255, 0.028);
+}
+
+/* 2 ── Header: brand name gets the orange signal ─────────── */
+.app-header {
+  height: 46px;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--border);
+}
+
+.app-header .brand-name {
+  color: var(--accent);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.app-header .brand-logo {
+  filter: brightness(0) saturate(100%) invert(35%) sepia(80%) saturate(1600%) hue-rotate(5deg) brightness(110%);
+}
+
+html[data-theme="light"] .app-header .brand-logo {
+  filter: none;
+}
+
+/* 3 ── Nav: active tab = orange underline + orange text ───── */
+.app-nav a[aria-current="page"] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+.app-nav a:hover {
+  color: var(--text);
+  background: transparent;
+}
+
+/* 4 ── Sidebar: structural panel, not a footnote ──────────── */
+.chat-sidebar {
+  background: var(--bg-soft);
+  border-right: 1px solid var(--border);
+}
+
+.sidebar-label {
+  color: var(--accent);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+}
+
+.conversation-btn {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  transition: color 0.12s ease, background 0.12s ease;
+}
+
+.conversation-btn:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.conversation-item.is-active .conversation-btn {
+  color: var(--text);
+  background: rgba(245, 78, 0, 0.1);
+  border-left: 2px solid var(--accent);
+  padding-left: calc(0.5rem - 2px);
+  font-weight: 500;
+}
+
+/* 5 ── Chat main: deeper, subtler grid ───────────────────── */
+body.chat-layout main.chat-main {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* 6 ── User messages: warm dark bubble w/ orange border ───── */
+.message.user .message-body {
+  background: var(--user-bg);
+  border: 1px solid var(--user-border);
+  border-radius: 14px 14px 4px 14px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.45), 0 0 0 0 rgba(245, 78, 0, 0);
+}
+
+/* 7 ── Assistant messages: left gutter line (terminal conv.) */
+.message.assistant .message-body {
+  background: transparent;
+  border: none;
+  border-left: 2px solid #2a2a2a;
+  border-radius: 0;
+  padding: 0.3rem 0 0.3rem 1rem;
+  box-shadow: none;
+  transition: border-left-color 0.2s ease;
+}
+
+.message.streaming .message-body {
+  border-left-color: rgba(245, 78, 0, 0.5);
+}
+
+/* 8 ── User meta label: warm orange trace ────────────────── */
+.message.user .meta {
+  color: rgba(245, 78, 0, 0.6);
+}
+
+/* 9 ── Composer: the cockpit — heaviest element on screen ── */
+.composer-box {
+  background: var(--card);
+  border: 1px solid #2e2e2e;
+  border-radius: 12px;
+  padding: 0.65rem 0.65rem 0.65rem 0.95rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
+  transition: border-color 0.18s ease, box-shadow 0.22s ease, transform 0.2s var(--ease-out-smooth, ease);
+}
+
+.composer-box:focus-within {
+  border-color: rgba(245, 78, 0, 0.45);
+  box-shadow:
+    0 0 0 1px rgba(245, 78, 0, 0.16),
+    0 8px 40px rgba(0, 0, 0, 0.65);
+  transform: translateY(-2px);
+}
+
+/* 10 ── Send button: orange, bold, alive ─────────────────── */
+.btn-send {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9px;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(245, 78, 0, 0.38);
+  transition: background 0.14s ease, box-shadow 0.14s ease, transform 0.1s ease;
+}
+
+.btn-send:hover {
+  background: var(--accent-hover);
+  box-shadow: 0 4px 18px rgba(245, 78, 0, 0.52);
+  transform: scale(1.05);
+}
+
+.btn-send:active {
+  transform: scale(0.95);
+}
+
+/* 11 ── Message badges: styled chips, not bare text ─────── */
+.msg-badge {
+  background: rgba(245, 78, 0, 0.08);
+  color: rgba(245, 78, 0, 0.75);
+  border: 1px solid rgba(245, 78, 0, 0.15);
+  border-radius: 4px;
+  padding: 0.05rem 0.4rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  font-family: var(--font-mono);
+}
+
+/* 12 ── Empty state: larger, more vivid ─────────────────── */
+.empty-mark {
+  width: 72px;
+  height: 72px;
+  border: 1px solid rgba(245, 78, 0, 0.18);
+  background: radial-gradient(circle at 35% 35%, rgba(245, 78, 0, 0.14), transparent 68%);
+  box-shadow: 0 0 48px rgba(245, 78, 0, 0.07);
+}
+
+.empty-mark::after {
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  background: var(--accent);
+  box-shadow: 0 0 24px rgba(245, 78, 0, 0.8);
+}
+
+.empty-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+/* 13 ── Usage bar fill: orange ───────────────────────────── */
+.usage-bar-fill {
+  background: var(--accent);
+}
+
+/* 14 ── Code blocks: darker, more distinguished ─────────── */
+.code-block {
+  background: var(--code-bg);
+}
+
+.code-block-head {
+  background: #111111;
+  border-bottom: 1px solid var(--border);
+}
+
+/* 15 ── Card hover lift: orange shadow trace ─────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 78, 0, 0.07);
+  }
+}
+
+/* 16 ── Light mode: keep black accent, don't bleed orange ── */
+html[data-theme="light"] {
+  --accent:       #1a1a1a;
+  --accent-hover: #333333;
+  --accent-soft:  rgba(0, 0, 0, 0.06);
+  --accent-glow:  rgba(0, 0, 0, 0.12);
+  --on-accent:    #ffffff;
+  --user-bg:      #f0f0f0;
+  --user-border:  #e0e0e0;
+  --bg:           #fafafa;
+  --bg-soft:      #f0f0f0;
+  --card:         #ffffff;
+  --border:       #e0e0e0;
+}
+
+html[data-theme="light"] .app-header .brand-name {
+  color: #1a1a1a;
+}
+
+html[data-theme="light"] .app-nav a[aria-current="page"] {
+  color: #1a1a1a;
+  border-bottom-color: #1a1a1a;
+}
+
+html[data-theme="light"] .sidebar-label {
+  color: #1a1a1a;
+}
+
+html[data-theme="light"] .msg-badge {
+  background: rgba(0, 0, 0, 0.06);
+  color: #555;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+html[data-theme="light"] .message.assistant .message-body {
+  border-left-color: #ddd;
+}
+
+html[data-theme="light"] .message.streaming .message-body {
+  border-left-color: rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="light"] .usage-bar-fill {
+  background: #1a1a1a;
+}
+
+html[data-theme="light"] .conversation-item.is-active .conversation-btn {
+  background: rgba(0, 0, 0, 0.07);
+  border-left-color: #1a1a1a;
+}
+
+html[data-theme="light"] .message.user .meta {
+  color: #555;
+}
+
+html[data-theme="light"] body.chat-layout main.chat-main {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+}
