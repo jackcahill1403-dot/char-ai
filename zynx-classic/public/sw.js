@@ -1,12 +1,5 @@
-const CACHE = "atlas-static-v3";
+const CACHE = "atlas-static-v4";
 const PRECACHE = [
-  "/css/style.css",
-  "/js/api.js",
-  "/js/app.js",
-  "/js/theme.js",
-  "/js/motion.js",
-  "/js/format.js",
-  "/js/usage-bar.js",
   "/img/atlas-logo.png",
   "/manifest.webmanifest",
 ];
@@ -38,6 +31,23 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // JS/CSS: network-first so code updates land immediately, cache as fallback only
+  if (url.pathname.endsWith(".js") || url.pathname.endsWith(".css")) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE).then((cache) => cache.put(request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  // Other static assets (images, manifest): cache-first
   event.respondWith(
     caches.match(request).then(
       (cached) =>

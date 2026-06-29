@@ -2062,18 +2062,7 @@ body.chat-layout #messages {
   border-radius: 0;
 }
 
-.message.user .message-body {
-  background: var(--user-bg);
-  border-color: var(--user-border);
-  border-radius: 12px 12px 4px 12px;
-}
-
-.message.assistant .message-body {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  padding: 0.35rem 0;
-}
+/* role-specific box styles defined in identity pass below */
 
 .message .meta {
   font-family: var(--font-mono);
@@ -2694,14 +2683,24 @@ body.chat-layout main.chat-main {
   background-size: 32px 32px;
 }
 
-/* 6 ── Messages: no containers — raw text on the grid ──────── */
+/* 6 ── Message boxes: sit on the grid, text breathes inside ─── */
 .message.user .message-body,
 .message.assistant .message-body {
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  padding: 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.4);
+}
+
+.message.user .message-body {
+  background: var(--user-bg);
+  border: 1px solid var(--user-border);
+  border-radius: 14px 14px 4px 14px;
+}
+
+.message.assistant .message-body {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px 14px 14px 4px;
 }
 
 /* 7 ── User label: orange to distinguish roles ──────────────── */
@@ -2709,10 +2708,9 @@ body.chat-layout main.chat-main {
   color: rgba(245, 78, 0, 0.7);
 }
 
-/* 8 ── Streaming: subtle left rule only while generating ──────── */
+/* 8 ── Streaming: orange border highlight while generating ───── */
 .message.streaming .message-body {
-  border-left: 2px solid rgba(245, 78, 0, 0.4);
-  padding-left: 12px;
+  border-color: rgba(245, 78, 0, 0.45);
 }
 
 /* 9 ── Composer: the cockpit — heaviest element on screen ── */
