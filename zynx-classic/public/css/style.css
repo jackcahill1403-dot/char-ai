@@ -2573,7 +2573,7 @@ button:not(.copy-code-btn):not(.copy-msg-btn) {
 
 /* ── Conversation search ─────────────────────────────────── */
 .conv-search-wrap {
-  padding: 0.35rem 0.6rem 0;
+  padding: 0.35rem 0.35rem 0;
 }
 
 .conv-search {
