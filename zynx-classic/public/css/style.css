@@ -2480,7 +2480,7 @@ body.chat-layout #messages {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
-  background: rgba(37, 99, 235, 0.35);
+  background: rgba(255, 255, 255, 0.4);
   animation: ripple-out 0.55s ease-out forwards;
   pointer-events: none;
 }
@@ -2531,8 +2531,8 @@ body.chat-layout #messages {
 
 /* ── Feel Alive: composer glow pulse on focus ────────────── */
 @keyframes composer-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
-  50%       { box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+  50%       { box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -2589,23 +2589,26 @@ body.chat-layout #messages {
    structure over decoration. Terminal CRT meets cockpit.
 ════════════════════════════════════════════════════════════ */
 
-/* 1 ── Token overrides: deeper blacks + orange primary ───── */
+/* 1 ── Token overrides: deeper blacks, neutral accent ────── */
 :root {
   --bg:          #0d0d0d;
   --bg-soft:     #141414;
   --card:        #181818;
   --border:      #272727;
   --code-bg:     #0a0a0a;
-  --accent:      #2563eb;
-  --accent-hover:#3b82f6;
-  --accent-soft: rgba(37, 99, 235, 0.09);
-  --accent-glow: rgba(37, 99, 235, 0.30);
-  --on-accent:   #ffffff;
-  --user-bg:     #1c1410;
-  --user-border: rgba(37, 99, 235, 0.22);
+  --accent:      #ffffff;
+  --accent-hover:#e0e0e0;
+  --accent-soft: rgba(255, 255, 255, 0.08);
+  --accent-glow: rgba(255, 255, 255, 0.14);
+  --on-accent:   #141414;
+  --user-bg:     #1c1c1c;
+  --user-border: #2e2e2e;
   --shadow-sm:   0 1px 4px rgba(0, 0, 0, 0.7);
   --shadow-md:   0 8px 32px rgba(0, 0, 0, 0.85);
   --grid-line:   rgba(255, 255, 255, 0.028);
+  /* the one signal color — used ONLY by send button, cursor spotlight, orb */
+  --blue:        #2563eb;
+  --blue-hover:  #3b82f6;
 }
 
 /* 2 ── Header: brand name gets the orange signal ─────────── */
@@ -2623,7 +2626,7 @@ body.chat-layout #messages {
 }
 
 .app-header .brand-logo {
-  filter: brightness(0) saturate(100%) invert(33%) sepia(94%) saturate(1700%) hue-rotate(207deg) brightness(95%);
+  filter: brightness(0) invert(1);
 }
 
 html[data-theme="light"] .app-header .brand-logo {
@@ -2668,7 +2671,7 @@ html[data-theme="light"] .app-header .brand-logo {
 
 .conversation-item.is-active .conversation-btn {
   color: var(--text);
-  background: rgba(37, 99, 235, 0.1);
+  background: var(--accent-soft);
   border-left: 2px solid var(--accent);
   padding-left: calc(0.5rem - 2px);
   font-weight: 500;
@@ -2703,14 +2706,14 @@ body.chat-layout main.chat-main {
   border-radius: 14px 14px 14px 4px;
 }
 
-/* 7 ── User label: orange to distinguish roles ──────────────── */
+/* 7 ── User label: subtle, neutral ──────────────────────────── */
 .message.user .meta {
-  color: rgba(37, 99, 235, 0.7);
+  color: var(--muted);
 }
 
-/* 8 ── Streaming: orange border highlight while generating ───── */
+/* 8 ── Streaming: neutral border highlight while generating ──── */
 .message.streaming .message-body {
-  border-color: rgba(37, 99, 235, 0.45);
+  border-color: color-mix(in srgb, var(--text) 35%, var(--border));
 }
 
 /* 9 ── Composer: the cockpit — heaviest element on screen ── */
@@ -2724,26 +2727,26 @@ body.chat-layout main.chat-main {
 }
 
 .composer-box:focus-within {
-  border-color: rgba(37, 99, 235, 0.45);
+  border-color: color-mix(in srgb, var(--text) 30%, var(--border));
   box-shadow:
-    0 0 0 1px rgba(37, 99, 235, 0.16),
-    0 8px 40px rgba(0, 0, 0, 0.65);
+    0 0 0 1px color-mix(in srgb, var(--text) 12%, transparent),
+    0 8px 40px rgba(0, 0, 0, 0.45);
   transform: translateY(-2px);
 }
 
-/* 10 ── Send button: orange, bold, alive ─────────────────── */
+/* 10 ── Send button: the blue signal ─────────────────────── */
 .btn-send {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 9px;
-  background: var(--accent);
+  background: var(--blue);
   color: #fff;
   box-shadow: 0 2px 10px rgba(37, 99, 235, 0.38);
   transition: background 0.14s ease, box-shadow 0.14s ease, transform 0.1s ease;
 }
 
 .btn-send:hover {
-  background: var(--accent-hover);
+  background: var(--blue-hover);
   box-shadow: 0 4px 18px rgba(37, 99, 235, 0.52);
   transform: scale(1.05);
 }
@@ -2752,11 +2755,11 @@ body.chat-layout main.chat-main {
   transform: scale(0.95);
 }
 
-/* 11 ── Message badges: styled chips, not bare text ─────── */
+/* 11 ── Message badges: neutral chips ───────────────────── */
 .msg-badge {
-  background: rgba(37, 99, 235, 0.08);
-  color: rgba(37, 99, 235, 0.75);
-  border: 1px solid rgba(37, 99, 235, 0.15);
+  background: var(--accent-soft);
+  color: var(--muted);
+  border: 1px solid var(--border);
   border-radius: 4px;
   padding: 0.05rem 0.4rem;
   font-size: 0.6rem;
@@ -2764,20 +2767,20 @@ body.chat-layout main.chat-main {
   font-family: var(--font-mono);
 }
 
-/* 12 ── Empty state: larger, more vivid ─────────────────── */
+/* 12 ── Empty state orb: the blue signal ─────────────────── */
 .empty-mark {
   width: 72px;
   height: 72px;
-  border: 1px solid rgba(37, 99, 235, 0.18);
-  background: radial-gradient(circle at 35% 35%, rgba(37, 99, 235, 0.14), transparent 68%);
-  box-shadow: 0 0 48px rgba(37, 99, 235, 0.07);
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  background: radial-gradient(circle at 35% 35%, rgba(37, 99, 235, 0.16), transparent 68%);
+  box-shadow: 0 0 48px rgba(37, 99, 235, 0.1);
 }
 
 .empty-mark::after {
   width: 14px;
   height: 14px;
   margin: -7px 0 0 -7px;
-  background: var(--accent);
+  background: var(--blue);
   box-shadow: 0 0 24px rgba(37, 99, 235, 0.8);
 }
 
@@ -2806,19 +2809,19 @@ body.chat-layout main.chat-main {
 @media (prefers-reduced-motion: no-preference) {
   .card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(37, 99, 235, 0.07);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04);
   }
 }
 
-/* 16 ── Light mode: blue accent on clean white ───────────── */
+/* 16 ── Light mode: black text/UI, white surfaces ────────── */
 html[data-theme="light"] {
-  --accent:       #2563eb;
-  --accent-hover: #3b82f6;
-  --accent-soft:  rgba(37, 99, 235, 0.08);
-  --accent-glow:  rgba(37, 99, 235, 0.18);
+  --accent:       #1a1a1a;
+  --accent-hover: #333333;
+  --accent-soft:  rgba(0, 0, 0, 0.06);
+  --accent-glow:  rgba(0, 0, 0, 0.12);
   --on-accent:    #ffffff;
-  --user-bg:      #eef3fd;
-  --user-border:  rgba(37, 99, 235, 0.22);
+  --user-bg:      #f0f0f0;
+  --user-border:  #e0e0e0;
   --bg:           #fafafa;
   --bg-soft:      #f2f4f8;
   --card:         #ffffff;
@@ -2826,39 +2829,35 @@ html[data-theme="light"] {
 }
 
 html[data-theme="light"] .app-header .brand-name {
-  color: #2563eb;
+  color: var(--text);
 }
 
 html[data-theme="light"] .app-nav a[aria-current="page"] {
-  color: #2563eb;
-  border-bottom-color: #2563eb;
+  color: var(--text);
+  border-bottom-color: var(--text);
 }
 
 html[data-theme="light"] .sidebar-label {
-  color: #2563eb;
+  color: var(--muted);
 }
 
 html[data-theme="light"] .msg-badge {
-  background: rgba(37, 99, 235, 0.08);
-  color: #2563eb;
-  border-color: rgba(37, 99, 235, 0.18);
-}
-
-html[data-theme="light"] .message.streaming .message-body {
-  border-color: rgba(37, 99, 235, 0.45);
+  background: rgba(0, 0, 0, 0.05);
+  color: #555;
+  border-color: rgba(0, 0, 0, 0.12);
 }
 
 html[data-theme="light"] .usage-bar-fill {
-  background: #2563eb;
+  background: #1a1a1a;
 }
 
 html[data-theme="light"] .conversation-item.is-active .conversation-btn {
-  background: rgba(37, 99, 235, 0.1);
-  border-left-color: #2563eb;
+  background: rgba(0, 0, 0, 0.06);
+  border-left-color: #1a1a1a;
 }
 
 html[data-theme="light"] .message.user .meta {
-  color: #2563eb;
+  color: var(--muted);
 }
 
 html[data-theme="light"] body.chat-layout main.chat-main {
