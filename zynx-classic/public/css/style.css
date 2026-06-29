@@ -2496,10 +2496,6 @@ body.chat-layout #messages {
   pointer-events: none;
 }
 
-button:not(.copy-code-btn):not(.copy-msg-btn) {
-  overflow: hidden;
-  position: relative;
-}
 
 /* ── Feel Alive: grid drift on chat background ───────────── */
 @keyframes grid-drift {
