@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: nexa
+    runtime: node
+    rootDir: nexa
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: OPENROUTER_API_KEY
+        sync: false

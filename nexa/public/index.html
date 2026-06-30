@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Nexa — your organisation & workflow copilot" />
+    <meta name="theme-color" content="#10b981" />
+    <link rel="icon" href="/img/nexa-logo.png" type="image/png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>Nexa</title>
+    <link rel="stylesheet" href="/css/style.css?v=1" />
+  </head>
+  <body class="chat-layout app-shell">
+    <header class="app-header">
+      <a href="/" class="brand-mark" aria-label="Nexa home">
+        <img src="/img/nexa-logo.png" alt="" width="28" height="28" class="brand-logo" />
+        <span class="brand-name">Nexa</span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="/" aria-current="page">Workspace</a>
+        <a href="/settings.html">Settings</a>
+      </nav>
+      <div class="app-header-actions">
+        <span class="header-tagline">Organisation &amp; workflow copilot</span>
+      </div>
+    </header>
+
+    <div class="chat-shell">
+      <aside class="chat-sidebar" aria-label="Plans">
+        <div class="chat-sidebar-head">
+          <span class="sidebar-label">Plans</span>
+          <button type="button" id="new-chat-btn" class="btn-icon btn-sm" title="New plan" aria-label="New plan">+</button>
+        </div>
+        <div class="conv-search-wrap">
+          <input type="search" id="conv-search" class="conv-search" placeholder="Search…" aria-label="Search plans" />
+        </div>
+        <ul id="conversation-list" class="conversation-list"></ul>
+      </aside>
+
+      <main class="chat-main">
+        <div id="error" class="error-banner" role="alert"></div>
+
+        <div class="chat-top">
+          <p class="chat-greeting" id="greeting">Nexa</p>
+          <p id="status-line" class="chat-status"></p>
+        </div>
+
+        <div class="chat-messages-pane">
+          <ul id="messages" class="message-list" aria-live="polite"></ul>
+        </div>
+
+        <div class="chat-composer">
+          <div class="composer-toolbar">
+            <label class="field-label" for="chat-model">Model</label>
+            <select id="chat-model" class="chat-model-select" title="Model" aria-label="Model"></select>
+          </div>
+          <form id="chat-form" class="chat-form">
+            <div class="composer-box">
+              <div class="chat-input-wrap">
+                <textarea
+                  id="input"
+                  rows="1"
+                  placeholder="Dump a goal, a mess of notes, or a task…"
+                  autocomplete="off"
+                  required
+                ></textarea>
+              </div>
+              <div class="composer-actions">
+                <button type="button" id="stop-btn" class="btn-secondary btn-sm" hidden>Stop</button>
+                <button type="submit" id="send-btn" class="btn-send" aria-label="Send">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.4 20.6 21 12 3.4 3.4l2.8 7.2L16 12l-9.8 1.4-2.8 7.2z"/></svg>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script src="/js/app.js" defer></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/motion.js"></script>
+    <script src="/js/format.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/alive.js"></script>
+    <script src="/js/chat.js"></script>
+  </body>
+</html>

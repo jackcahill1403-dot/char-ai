@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10b981" />
+    <link rel="icon" href="/img/nexa-logo.png" type="image/png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>Nexa — Settings</title>
+    <link rel="stylesheet" href="/css/style.css?v=1" />
+  </head>
+  <body class="app-page">
+    <header class="app-header">
+      <a href="/" class="brand-mark" aria-label="Nexa home">
+        <img src="/img/nexa-logo.png" alt="" width="28" height="28" class="brand-logo" />
+        <span class="brand-name">Nexa</span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="/">Workspace</a>
+        <a href="/settings.html" aria-current="page">Settings</a>
+      </nav>
+    </header>
+
+    <main>
+      <div id="error" class="error-banner" role="alert"></div>
+      <div id="success" class="success-banner" role="status"></div>
+
+      <section class="card">
+        <h2>Profile</h2>
+        <label>Display name
+          <input type="text" id="display-name" maxlength="60" />
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Default model</h2>
+        <p class="hint">Four OpenRouter models tuned for organisation &amp; workflow.</p>
+        <div id="model-list" class="model-list"></div>
+      </section>
+
+      <section class="card">
+        <h2>Custom instructions</h2>
+        <p class="hint">Steer how Nexa plans for you. Leave blank for the default style.</p>
+        <textarea id="custom-prompt" rows="5" maxlength="2000" placeholder="E.g. I run a 2-person studio. Default to weekly sprints and Markdown checklists."></textarea>
+      </section>
+
+      <section class="card">
+        <h2>Appearance</h2>
+        <label class="toggle-row">
+          <input type="checkbox" id="dark-toggle" />
+          Dark mode
+        </label>
+      </section>
+
+      <div class="page-actions">
+        <button type="button" id="save-btn" class="btn">Save settings</button>
+      </div>
+    </main>
+
+    <script src="/js/app.js" defer></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/motion.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/settings.js"></script>
+  </body>
+</html>

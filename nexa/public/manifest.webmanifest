@@ -1,0 +1,12 @@
+{
+  "name": "Nexa — Organisation & Workflow",
+  "short_name": "Nexa",
+  "description": "Your organisation & workflow copilot",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0d0d",
+  "theme_color": "#10b981",
+  "icons": [
+    { "src": "/img/nexa-logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
