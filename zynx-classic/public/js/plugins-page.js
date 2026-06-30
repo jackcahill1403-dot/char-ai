@@ -25,11 +25,8 @@ function renderPlugins(plugins) {
     tile.innerHTML = `
       <div class="plugin-tile-icon" aria-hidden="true">${monogram(p.name)}</div>
       <div class="plugin-tile-body">
-        <div class="plugin-tile-name">${escapeHtml(p.name)}
-          ${p.installed ? "" : '<span class="plugin-tile-tag">not installed</span>'}
-        </div>
+        <div class="plugin-tile-name">${escapeHtml(p.name)}</div>
         <p class="plugin-tile-blurb">${escapeHtml(p.description)}</p>
-        ${p.installed ? '<button type="button" class="plugin-uninstall">Uninstall</button>' : ""}
       </div>
       <button type="button" class="plugin-switch ${on ? "is-on" : ""}" role="switch"
         aria-checked="${on}" aria-label="Toggle ${escapeHtml(p.name)}">
@@ -37,10 +34,9 @@ function renderPlugins(plugins) {
       </button>`;
 
     tile.querySelector(".plugin-switch").addEventListener("click", () => {
-      if (!p.installed) installOne(p.id); // installs + enables
-      else toggleOne(p.id, !p.enabled);
+      if (on) toggleOne(p.id, false); // turn off (stays installed)
+      else installOne(p.id); // install if needed + enable
     });
-    tile.querySelector(".plugin-uninstall")?.addEventListener("click", () => uninstallOne(p.id));
     pluginListEl.appendChild(tile);
   }
   if (typeof initScrollReveals === "function") initScrollReveals(pluginListEl);
@@ -51,7 +47,7 @@ async function installOne(id) {
   try {
     await installPlugin(id);
     try { await togglePlugin(id, true); } catch { /* enable best-effort */ }
-    showSuccess(successEl, "Plugin installed & enabled.");
+    showSuccess(successEl, "Plugin enabled.");
     await loadPage();
   } catch (err) {
     showError(errorEl, err.message);
