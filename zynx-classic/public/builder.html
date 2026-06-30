@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Atlas Builder — autonomous agent with file & command tools" />
+    <meta name="theme-color" content="#1a1a1a" />
+    <link rel="icon" href="/img/atlas-logo.png" type="image/png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>Atlas — Builder</title>
+    <link rel="stylesheet" href="/css/style.css?v=19" />
+  </head>
+  <body class="app-page">
+    <header class="app-header">
+      <a href="/" class="brand-mark" aria-label="Atlas home">
+        <img src="/img/atlas-logo.png" alt="" width="28" height="28" class="brand-logo" />
+        <span class="brand-name">Atlas</span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="/">Chat</a>
+        <a href="/builder.html" aria-current="page">Builder</a>
+        <a href="/agents.html">Agents</a>
+        <a href="/plugins.html">Plugins</a>
+        <a href="/scripts.html">Scripts</a>
+        <a href="/settings.html">Settings</a>
+        <a href="/status.html">Status</a>
+      </nav>
+    </header>
+
+    <main class="builder-main">
+      <div id="error" class="error-banner" role="alert"></div>
+
+      <div class="builder-head">
+        <h1 class="builder-title">Builder</h1>
+        <p class="builder-sub">
+          Atlas can read, write, delete files and run commands on this PC.
+          Every action waits for your approval.
+        </p>
+        <p class="builder-cwd">Working dir: <code id="agent-cwd">…</code></p>
+      </div>
+
+      <ul id="agent-log" class="agent-log" aria-live="polite">
+        <li class="agent-empty">
+          <span class="empty-mark" aria-hidden="true"></span>
+          <p>Describe a task — e.g. "create a Python script that renames my screenshots by date".</p>
+        </li>
+      </ul>
+
+      <form id="agent-form" class="agent-form">
+        <div class="composer-box">
+          <textarea
+            id="agent-input"
+            rows="2"
+            placeholder="What should Atlas build or do?  (Shift+Enter for newline)"
+            autocomplete="off"
+            required
+          ></textarea>
+          <button type="submit" id="agent-send" class="btn-send" aria-label="Run">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.4 20.6 21 12 3.4 3.4l2.8 7.2L16 12l-9.8 1.4-2.8 7.2z"/></svg>
+          </button>
+        </div>
+        <div class="agent-controls">
+          <button type="button" id="agent-stop" class="btn-ghost btn-sm" hidden>Stop</button>
+          <span id="agent-status" class="agent-status"></span>
+        </div>
+      </form>
+    </main>
+
+    <script src="/js/app.js" defer></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/motion.js"></script>
+    <script src="/js/usage-bar.js"></script>
+    <script src="/js/format.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/alive.js"></script>
+    <script src="/js/builder.js"></script>
+  </body>
+</html>

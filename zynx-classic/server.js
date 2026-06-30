@@ -38,6 +38,9 @@ const { listAvailableCommands } = require("./lib/command-registry");
 const { friendlyLlmError } = require("./lib/errors");
 const { APP_NAME } = require("./lib/branding");
 const { openrouterEnvCheck } = require("./lib/openrouter-keys");
+const { agentStep } = require("./lib/agent");
+const { executeTool, MUTATING, baseDir } = require("./lib/agent-tools");
+const { DEFAULT_OR_MODEL } = require("./lib/openrouter-models");
 
 loadEnv();
 
@@ -45,7 +48,7 @@ const app = express();
 const PORT = process.env.PORT || 3848;
 const VALID_MODELS = validModelIds();
 
-app.use(express.json());
+app.use(express.json({ limit: "12mb" }));
 app.use(
   express.static(path.join(__dirname, "public"), {
     setHeaders(res, filePath) {
@@ -415,6 +418,43 @@ app.post("/api/chat/stream", async (req, res) => {
     res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
   }
   res.end();
+});
+
+// ── Agent: file/command tools with per-action approval ──────────
+// /step asks the model what to do next (may return tool_calls) — never executes.
+// /execute runs ONE approved tool call. The browser orchestrates the loop.
+app.get("/api/agent/info", (req, res) => {
+  const mem = readMemory(req.userId);
+  res.json({ cwd: baseDir(), model: mem.settings.model || DEFAULT_OR_MODEL });
+});
+
+app.post("/api/agent/step", async (req, res) => {
+  try {
+    const { messages, model } = req.body || {};
+    if (!Array.isArray(messages) || !messages.length) {
+      return res.status(400).json({ error: "messages array is required" });
+    }
+    const mem = readMemory(req.userId);
+    const modelId = model || mem.settings.model || DEFAULT_OR_MODEL;
+    const result = await agentStep(modelId, messages);
+    if (!result.ok) {
+      return res.status(400).json({ error: friendlyLlmError(result.reason, result.detail) || result.detail || "Agent step failed." });
+    }
+    res.json({ message: result.message, model: modelId });
+  } catch (err) {
+    res.status(500).json({ error: err.message || "Agent step failed." });
+  }
+});
+
+app.post("/api/agent/execute", async (req, res) => {
+  try {
+    const { name, arguments: args } = req.body || {};
+    if (!name) return res.status(400).json({ error: "tool name is required" });
+    const output = executeTool(name, args || {});
+    res.json({ ok: true, output: String(output), mutating: MUTATING.has(name) });
+  } catch (err) {
+    res.json({ ok: false, output: `Error: ${err.message}` });
+  }
 });
 
 app.post("/api/hook/discord", async (req, res) => {
