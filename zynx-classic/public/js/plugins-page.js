@@ -8,8 +8,23 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-function monogram(name) {
-  return escapeHtml(String(name || "?").trim().charAt(0).toUpperCase());
+const PLUGIN_EMOJI = {
+  "code-expert": "💻",
+  "plan-master": "🗺️",
+  "security-shield": "🛡️",
+  "memory-boost": "🧠",
+  "test-driver": "🧪",
+  "test-driver-plus": "🧪",
+  "script-vault": "🗄️",
+  "api-builder": "🔌",
+  "doc-writer": "📄",
+  "pr-format": "🔀",
+  "token-saver": "🪙",
+  "json-forge": "🧱",
+};
+
+function pluginIcon(p) {
+  return PLUGIN_EMOJI[p.id] || "🧩";
 }
 
 function renderPlugins(plugins) {
@@ -23,7 +38,7 @@ function renderPlugins(plugins) {
     const tile = document.createElement("div");
     tile.className = `plugin-tile ${on ? "is-on" : ""}`.trim();
     tile.innerHTML = `
-      <div class="plugin-tile-icon" aria-hidden="true">${monogram(p.name)}</div>
+      <div class="plugin-tile-icon" aria-hidden="true">${pluginIcon(p)}</div>
       <div class="plugin-tile-body">
         <div class="plugin-tile-name">${escapeHtml(p.name)}</div>
         <p class="plugin-tile-blurb">${escapeHtml(p.description)}</p>

@@ -2900,22 +2900,8 @@ html[data-theme="light"] body.chat-layout main.chat-main {
 
 .plugin-tile-icon {
   flex-shrink: 0;
-  width: 2.1rem;
-  height: 2.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9px;
-  background: var(--accent-soft);
-  color: var(--text);
-  font-weight: 700;
-  font-size: 1rem;
-  font-family: var(--font-mono);
-}
-
-.plugin-tile.is-on .plugin-tile-icon {
-  background: color-mix(in srgb, var(--blue) 16%, transparent);
-  color: var(--blue);
+  font-size: 1.4rem;
+  line-height: 1;
 }
 
 .plugin-tile-body {
