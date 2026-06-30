@@ -18,7 +18,7 @@
       rel="stylesheet"
     />
     <title>Atlas — Plugins</title>
-    <link rel="stylesheet" href="/css/style.css?v=20" />
+    <link rel="stylesheet" href="/css/style.css?v=21" />
   </head>
   <body class="app-page">
     <header class="app-header">
@@ -47,11 +47,11 @@
       <div id="error" class="error-banner" role="alert"></div>
       <div id="success" class="success-banner" role="status"></div>
 
-      <section class="card">
-        <h2>Plugin store</h2>
-        <p class="hint">Download = install bundled power-ups. Enabled plugins boost dev team + chat (still 1 message per pipeline).</p>
-        <div id="plugin-list" class="plugin-list"></div>
-      </section>
+      <div class="builder-head">
+        <h1 class="builder-title">Plugins</h1>
+        <p class="builder-sub">Power-ups for dev team + chat. Flip one on — installed plugins still count as 1 message per pipeline.</p>
+      </div>
+      <div id="plugin-list" class="plugin-grid"></div>
     </main>
 
     <script src="/js/app.js" defer></script>

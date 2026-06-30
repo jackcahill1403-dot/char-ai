@@ -8,10 +8,8 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-function powerClass(power) {
-  if (power === "high") return "power-high";
-  if (power === "medium") return "power-med";
-  return "power-low";
+function monogram(name) {
+  return escapeHtml(String(name || "?").trim().charAt(0).toUpperCase());
 }
 
 function renderPlugins(plugins) {
@@ -21,48 +19,29 @@ function renderPlugins(plugins) {
     return;
   }
   for (const p of plugins) {
-    const card = document.createElement("div");
-    card.className = "plugin-card";
-    const tags = (p.tags || []).map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join("");
-    card.innerHTML = `
-      <div class="plugin-card-head">
-        <div>
-          <strong>${escapeHtml(p.name)}</strong>
-          <span class="badge ${powerClass(p.power)}">${escapeHtml(p.power || "low")} power</span>
+    const on = p.installed && p.enabled;
+    const tile = document.createElement("div");
+    tile.className = `plugin-tile ${on ? "is-on" : ""}`.trim();
+    tile.innerHTML = `
+      <div class="plugin-tile-icon" aria-hidden="true">${monogram(p.name)}</div>
+      <div class="plugin-tile-body">
+        <div class="plugin-tile-name">${escapeHtml(p.name)}
+          ${p.installed ? "" : '<span class="plugin-tile-tag">not installed</span>'}
         </div>
-        <span class="hint">v${escapeHtml(p.version)}</span>
+        <p class="plugin-tile-blurb">${escapeHtml(p.description)}</p>
+        ${p.installed ? '<button type="button" class="plugin-uninstall">Uninstall</button>' : ""}
       </div>
-      <p class="plugin-desc">${escapeHtml(p.description)}</p>
-      <div class="plugin-tags">${tags}</div>
-      <div class="plugin-actions"></div>
-    `;
-    const actions = card.querySelector(".plugin-actions");
-    if (!p.installed) {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "btn";
-      btn.textContent = "Download & install";
-      btn.addEventListener("click", () => installOne(p.id));
-      actions.appendChild(btn);
-    } else {
-      const toggle = document.createElement("label");
-      toggle.className = "toggle-row";
-      toggle.innerHTML = `
-        <input type="checkbox" ${p.enabled ? "checked" : ""} />
-        Enabled
-      `;
-      toggle.querySelector("input").addEventListener("change", (e) =>
-        toggleOne(p.id, e.target.checked)
-      );
-      const uninstall = document.createElement("button");
-      uninstall.type = "button";
-      uninstall.className = "btn-secondary";
-      uninstall.textContent = "Uninstall";
-      uninstall.addEventListener("click", () => uninstallOne(p.id));
-      actions.appendChild(toggle);
-      actions.appendChild(uninstall);
-    }
-    pluginListEl.appendChild(card);
+      <button type="button" class="plugin-switch ${on ? "is-on" : ""}" role="switch"
+        aria-checked="${on}" aria-label="Toggle ${escapeHtml(p.name)}">
+        <span class="plugin-knob"></span>
+      </button>`;
+
+    tile.querySelector(".plugin-switch").addEventListener("click", () => {
+      if (!p.installed) installOne(p.id); // installs + enables
+      else toggleOne(p.id, !p.enabled);
+    });
+    tile.querySelector(".plugin-uninstall")?.addEventListener("click", () => uninstallOne(p.id));
+    pluginListEl.appendChild(tile);
   }
   if (typeof initScrollReveals === "function") initScrollReveals(pluginListEl);
 }
@@ -71,7 +50,8 @@ async function installOne(id) {
   hideError(errorEl);
   try {
     await installPlugin(id);
-    showSuccess(successEl, "Plugin installed.");
+    try { await togglePlugin(id, true); } catch { /* enable best-effort */ }
+    showSuccess(successEl, "Plugin installed & enabled.");
     await loadPage();
   } catch (err) {
     showError(errorEl, err.message);
