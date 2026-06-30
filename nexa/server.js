@@ -5,6 +5,7 @@ const { listModels, validModelIds, DEFAULT_MODEL } = require("./lib/models");
 const { callModel } = require("./lib/llm");
 const { read, write, activeConversation, freshConversation, sanitizeId } = require("./lib/store");
 const { APP_NAME, TAGLINE } = require("./lib/branding");
+const { listPlugins, validPluginIds } = require("./lib/plugins");
 
 loadEnv();
 
@@ -48,6 +49,23 @@ app.post("/api/settings", (req, res) => {
   if (theme !== undefined) data.settings.theme = theme === "dark" ? "dark" : "light";
   write(req.userId, data);
   res.json({ ok: true, settings: data.settings });
+});
+
+app.get("/api/plugins", (req, res) => {
+  const data = read(req.userId);
+  res.json({ plugins: listPlugins(data.settings.plugins || []) });
+});
+
+app.post("/api/plugins/toggle", (req, res) => {
+  const data = read(req.userId);
+  const { id, enabled } = req.body || {};
+  if (!validPluginIds().includes(id)) return res.status(400).json({ error: "Unknown plugin." });
+  const set = new Set(data.settings.plugins || []);
+  if (enabled) set.add(id);
+  else set.delete(id);
+  data.settings.plugins = [...set];
+  write(req.userId, data);
+  res.json({ plugins: listPlugins(data.settings.plugins) });
 });
 
 app.post("/api/conversations", (req, res) => {
@@ -105,6 +123,7 @@ app.post("/api/chat/stream", async (req, res) => {
     const result = await callModel(data.settings.model, history, {
       displayName: data.settings.displayName,
       customPrompt: data.settings.customPrompt,
+      plugins: data.settings.plugins || [],
       onStream: (delta) => send({ type: "delta", delta }),
     });
 

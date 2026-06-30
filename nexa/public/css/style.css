@@ -3086,3 +3086,93 @@ html[data-theme="light"] body.chat-layout main.chat-main {
   font-size: 0.72rem;
   color: var(--muted);
 }
+
+/* ════════════════════════════════════════════════════════════
+   NEXA PLUGINS — capability packs
+════════════════════════════════════════════════════════════ */
+.plugin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.plugin-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.plugin-card.is-on {
+  border-color: color-mix(in srgb, var(--blue) 45%, var(--border));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--blue) 22%, transparent), var(--shadow-sm);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .plugin-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.plugin-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.plugin-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.plugin-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+
+.plugin-blurb {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.plugin-switch {
+  flex-shrink: 0;
+  width: 40px;
+  height: 23px;
+  border-radius: 999px;
+  border: none;
+  background: var(--border);
+  position: relative;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.18s ease;
+}
+
+.plugin-switch.is-on {
+  background: var(--blue);
+}
+
+.plugin-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.18s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.plugin-switch.is-on .plugin-knob {
+  transform: translateX(17px);
+}

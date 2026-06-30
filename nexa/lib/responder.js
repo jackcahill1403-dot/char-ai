@@ -1,9 +1,11 @@
 const { APP_NAME } = require("./branding");
+const { pluginPromptBlock } = require("./plugins");
 
-function systemPrompt(displayName, customPrompt) {
+function systemPrompt(displayName, customPrompt, plugins = []) {
   const custom = customPrompt
     ? `\n\nUSER INSTRUCTIONS (override defaults where they conflict):\n${customPrompt}`
     : "";
+  const pluginBlock = pluginPromptBlock(plugins);
   return `You are ${APP_NAME}, an AI copilot for organisation and workflow. User: ${displayName || "there"}.${custom}
 
 Your job is to help the user get organised and move work forward. You are great at:
@@ -18,7 +20,7 @@ Output rules:
 - Default to structure: numbered steps, checklists (- [ ]), or markdown tables when it aids clarity.
 - Make plans actionable — every item is a verb the user can do. Add rough time estimates when useful.
 - Surface assumptions and ask one sharp clarifying question only when genuinely blocked.
-- Keep it tight. Organisation means less noise, not more.`;
+- Keep it tight. Organisation means less noise, not more.${pluginBlock}`;
 }
 
 module.exports = { systemPrompt };

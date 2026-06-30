@@ -12,7 +12,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-    <title>Nexa — Settings</title>
+    <title>Nexa — Plugins</title>
     <link rel="stylesheet" href="/css/style.css?v=2" />
   </head>
   <body class="app-page">
@@ -23,51 +23,30 @@
       </a>
       <nav class="app-nav" aria-label="Main">
         <a href="/">Workspace</a>
-        <a href="/plugins.html">Plugins</a>
-        <a href="/settings.html" aria-current="page">Settings</a>
+        <a href="/plugins.html" aria-current="page">Plugins</a>
+        <a href="/settings.html">Settings</a>
       </nav>
     </header>
 
     <main>
       <div id="error" class="error-banner" role="alert"></div>
-      <div id="success" class="success-banner" role="status"></div>
 
-      <section class="card">
-        <h2>Profile</h2>
-        <label>Display name
-          <input type="text" id="display-name" maxlength="60" />
-        </label>
-      </section>
-
-      <section class="card">
-        <h2>Default model</h2>
-        <p class="hint">Four OpenRouter models tuned for organisation &amp; workflow.</p>
-        <div id="model-list" class="model-list"></div>
-      </section>
-
-      <section class="card">
-        <h2>Custom instructions</h2>
-        <p class="hint">Steer how Nexa plans for you. Leave blank for the default style.</p>
-        <textarea id="custom-prompt" rows="5" maxlength="2000" placeholder="E.g. I run a 2-person studio. Default to weekly sprints and Markdown checklists."></textarea>
-      </section>
-
-      <section class="card">
-        <h2>Appearance</h2>
-        <label class="toggle-row">
-          <input type="checkbox" id="dark-toggle" />
-          Dark mode
-        </label>
-      </section>
-
-      <div class="page-actions">
-        <button type="button" id="save-btn" class="btn">Save settings</button>
+      <div class="builder-head">
+        <h1 class="builder-title">Plugins</h1>
+        <p class="builder-sub">
+          Switch on capability packs. Each one sharpens Nexa for a way of working —
+          they shape how it plans, without changing the model.
+        </p>
       </div>
+
+      <div id="plugin-grid" class="plugin-grid"></div>
     </main>
 
     <script src="/js/app.js" defer></script>
     <script src="/js/api.js"></script>
     <script src="/js/motion.js"></script>
     <script src="/js/theme.js"></script>
-    <script src="/js/settings.js"></script>
+    <script src="/js/alive.js"></script>
+    <script src="/js/plugins.js"></script>
   </body>
 </html>

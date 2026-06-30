@@ -2867,6 +2867,19 @@ html[data-theme="light"] body.chat-layout main.chat-main {
     linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
 }
 
+/* Theme toggle — injected into header on every page */
+.theme-toggle {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+.theme-toggle:hover {
+  color: var(--text);
+}
+.app-header-actions .theme-toggle {
+  margin-left: 0;
+}
+
 /* ════════════════════════════════════════════════════════════
    BUILDER — autonomous agent with approval cards
 ════════════════════════════════════════════════════════════ */

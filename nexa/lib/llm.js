@@ -15,7 +15,7 @@ function stripThink(content) {
 }
 
 // Call an OpenRouter model. onStream(delta) => streaming; omit for one-shot.
-async function callModel(modelId, messages, { displayName, customPrompt, onStream } = {}) {
+async function callModel(modelId, messages, { displayName, customPrompt, plugins, onStream } = {}) {
   const m = getModel(modelId);
   const key = keyForModel(modelId);
   if (!key) {
@@ -24,7 +24,7 @@ async function callModel(modelId, messages, { displayName, customPrompt, onStrea
 
   const body = {
     model: m.model,
-    messages: [{ role: "system", content: systemPrompt(displayName, customPrompt) }, ...messages],
+    messages: [{ role: "system", content: systemPrompt(displayName, customPrompt, plugins) }, ...messages],
     temperature: 0.4,
     max_tokens: 3000,
   };

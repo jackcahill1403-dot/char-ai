@@ -27,7 +27,7 @@ function freshConversation() {
 function defaultData() {
   const conv = freshConversation();
   return {
-    settings: { displayName: "there", model: DEFAULT_MODEL, customPrompt: "", theme: "light" },
+    settings: { displayName: "there", model: DEFAULT_MODEL, customPrompt: "", theme: "light", plugins: [] },
     conversations: [conv],
     activeId: conv.id,
   };
