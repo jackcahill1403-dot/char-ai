@@ -3176,3 +3176,62 @@ html[data-theme="light"] body.chat-layout main.chat-main {
 .plugin-switch.is-on .plugin-knob {
   transform: translateX(17px);
 }
+
+/* ── Sidebar model folders ───────────────────────────────── */
+.model-folder { list-style: none; margin-bottom: 0.35rem; }
+
+.model-folder-details { border-radius: 8px; }
+
+.model-folder-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.35rem 0.45rem;
+  cursor: pointer;
+  border-radius: 6px;
+  list-style: none;
+  user-select: none;
+}
+.model-folder-head::-webkit-details-marker { display: none; }
+.model-folder-head:hover { background: rgba(255, 255, 255, 0.04); }
+html[data-theme="light"] .model-folder-head:hover { background: rgba(0, 0, 0, 0.04); }
+
+.model-folder-name {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.model-folder-name::before {
+  content: "▸";
+  color: var(--blue);
+  transition: transform 0.15s ease;
+  display: inline-block;
+}
+.model-folder-details[open] .model-folder-name::before { transform: rotate(90deg); }
+
+.model-folder-count {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--muted);
+  background: var(--accent-soft);
+  border-radius: 999px;
+  padding: 0.02rem 0.4rem;
+  flex-shrink: 0;
+}
+
+.model-folder-list {
+  list-style: none;
+  margin: 0.15rem 0 0.35rem;
+  padding: 0 0 0 0.5rem;
+}

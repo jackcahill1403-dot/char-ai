@@ -14,6 +14,8 @@ const convSearch = document.getElementById("conv-search");
 let activeId = null;
 let activeAbort = null;
 let modelProgrammatic = false;
+let modelLabels = {};
+let modelOrder = [];
 
 function esc(t) {
   return String(t ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -61,11 +63,35 @@ function renderConversations(conversations, currentId) {
     convListEl.innerHTML = '<li class="hint">No plans yet</li>';
     return;
   }
-  convListEl.innerHTML = conversations.map((c) => {
-    const active = c.id === currentId ? " is-active" : "";
-    return `<li class="conversation-item${active}">
-      <button type="button" class="conversation-btn" data-id="${c.id}">${esc(c.title || "New plan")}</button>
-      <button type="button" class="conversation-del btn-icon" data-id="${c.id}" title="Delete">×</button>
+
+  // Group plans into a folder per model
+  const byModel = {};
+  for (const c of conversations) {
+    const key = c.model || "other";
+    (byModel[key] ||= []).push(c);
+  }
+  const order = modelOrder.length ? modelOrder : Object.keys(byModel);
+  const keys = [...new Set([...order, ...Object.keys(byModel)])].filter((k) => byModel[k]?.length);
+
+  convListEl.innerHTML = keys.map((key) => {
+    const items = byModel[key];
+    const hasActive = items.some((c) => c.id === currentId);
+    const label = modelLabels[key] || key;
+    const rows = items.map((c) => {
+      const active = c.id === currentId ? " is-active" : "";
+      return `<li class="conversation-item${active}">
+        <button type="button" class="conversation-btn" data-id="${c.id}">${esc(c.title || "New plan")}</button>
+        <button type="button" class="conversation-del btn-icon" data-id="${c.id}" title="Delete">×</button>
+      </li>`;
+    }).join("");
+    return `<li class="model-folder">
+      <details class="model-folder-details"${hasActive ? " open" : ""}>
+        <summary class="model-folder-head">
+          <span class="model-folder-name">${esc(label)}</span>
+          <span class="model-folder-count">${items.length}</span>
+        </summary>
+        <ul class="model-folder-list">${rows}</ul>
+      </details>
     </li>`;
   }).join("");
 
@@ -99,6 +125,8 @@ async function refreshConversations() {
 }
 
 function populateModels(models, active) {
+  modelLabels = Object.fromEntries(models.map((m) => [m.id, m.label]));
+  modelOrder = models.map((m) => m.id);
   modelProgrammatic = true;
   modelSelect.innerHTML = models.map((m) =>
     `<option value="${m.id}"${m.id === active ? " selected" : ""}${m.configured ? "" : " disabled"}>${esc(m.label)}${m.configured ? "" : " (no key)"}</option>`

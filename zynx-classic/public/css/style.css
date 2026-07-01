@@ -2867,6 +2867,63 @@ html[data-theme="light"] body.chat-layout main.chat-main {
     linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
 }
 
+/* ── Sidebar model folders ───────────────────────────────── */
+.model-folder { list-style: none; margin-bottom: 0.3rem; }
+
+.model-folder-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.32rem 0.4rem;
+  cursor: pointer;
+  border-radius: 6px;
+  list-style: none;
+  user-select: none;
+}
+.model-folder-head::-webkit-details-marker { display: none; }
+.model-folder-head:hover { background: rgba(255, 255, 255, 0.04); }
+html[data-theme="light"] .model-folder-head:hover { background: rgba(0, 0, 0, 0.04); }
+
+.model-folder-name {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.model-folder-name::before {
+  content: "▸";
+  color: var(--blue);
+  transition: transform 0.15s ease;
+  display: inline-block;
+}
+.model-folder-details[open] .model-folder-name::before { transform: rotate(90deg); }
+
+.model-folder-count {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--muted);
+  background: var(--accent-soft);
+  border-radius: 999px;
+  padding: 0.02rem 0.4rem;
+  flex-shrink: 0;
+}
+
+.model-folder-list {
+  list-style: none;
+  margin: 0.1rem 0 0.3rem;
+  padding: 0 0 0 0.5rem;
+}
+
 /* ── Plugins: Nexa-style card grid + toggle switch ──────── */
 .plugin-grid {
   display: grid;

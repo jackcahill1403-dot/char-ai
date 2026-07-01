@@ -168,6 +168,11 @@ function writeMemory(userId, data) {
   ensureUserDir(id);
   const { messages, ...toSave } = data;
   fs.writeFileSync(memoryFile(id), JSON.stringify(toSave, null, 2), "utf8");
+  try {
+    require("./model-folders").mirrorConversations(id, toSave);
+  } catch {
+    /* per-model folder mirror is best-effort */
+  }
 }
 
 module.exports = { readMemory, writeMemory, DEFAULT, FORCED_MODE, applyDevTeam };

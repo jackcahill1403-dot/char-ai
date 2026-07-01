@@ -16,6 +16,7 @@ const chatModelSelect = document.getElementById("chat-model");
 
 let agentsEnabled = false;
 let activeConversationId = null;
+let modelLabelMap = {};
 let currentMessages = [];
 let activeAbort = null;
 let pendingAttachment = null;
@@ -153,13 +154,40 @@ function renderConversationList(conversations, activeId) {
     conversationListEl.innerHTML = '<li class="hint">No chats yet</li>';
     return;
   }
-  conversationListEl.innerHTML = conversations
-    .map((c) => {
-      const active = c.id === activeId ? " is-active" : "";
-      const title = escapeHtml(c.title || "New chat");
-      return `<li class="conversation-item${active}">
-        <button type="button" class="conversation-btn" data-id="${c.id}" title="Double-click to rename">${title}</button>
-        <button type="button" class="conversation-del btn-icon" data-id="${c.id}" title="Delete">×</button>
+  const convItem = (c) => {
+    const active = c.id === activeId ? " is-active" : "";
+    const title = escapeHtml(c.title || "New chat");
+    return `<li class="conversation-item${active}">
+      <button type="button" class="conversation-btn" data-id="${c.id}" title="Double-click to rename">${title}</button>
+      <button type="button" class="conversation-del btn-icon" data-id="${c.id}" title="Delete">×</button>
+    </li>`;
+  };
+
+  // Group chats into a folder per model
+  const byModel = {};
+  for (const c of conversations) {
+    const key = c.model || "unassigned";
+    (byModel[key] ||= []).push(c);
+  }
+  const keys = Object.keys(byModel).sort((a, b) => {
+    if (a === "unassigned") return 1;
+    if (b === "unassigned") return -1;
+    return (modelLabelMap[a] || a).localeCompare(modelLabelMap[b] || b);
+  });
+
+  conversationListEl.innerHTML = keys
+    .map((key) => {
+      const items = byModel[key];
+      const hasActive = items.some((c) => c.id === activeId);
+      const label = escapeHtml(key === "unassigned" ? "Unassigned" : modelLabelMap[key] || key);
+      return `<li class="model-folder">
+        <details class="model-folder-details"${hasActive ? " open" : ""}>
+          <summary class="model-folder-head">
+            <span class="model-folder-name">${label}</span>
+            <span class="model-folder-count">${items.length}</span>
+          </summary>
+          <ul class="model-folder-list">${items.map(convItem).join("")}</ul>
+        </details>
       </li>`;
     })
     .join("");
@@ -217,6 +245,7 @@ let modelSelectProgrammatic = false;
 
 function populateModelSelect(models, active, autoRoute, pools) {
   if (!chatModelSelect) return;
+  for (const m of models || []) modelLabelMap[m.id] = m.label;
   const poolMap = Object.fromEntries((pools || []).map((p) => [p.modelId, p]));
   const orModels = (models || []).filter((m) => m.openrouter || m.configured);
   modelSelectProgrammatic = true;

@@ -34,7 +34,7 @@ app.get("/api/state", (req, res) => {
     app: APP_NAME,
     tagline: TAGLINE,
     settings: data.settings,
-    conversations: data.conversations.map((c) => ({ id: c.id, title: c.title })),
+    conversations: data.conversations.map((c) => ({ id: c.id, title: c.title, model: c.model })),
     activeId: data.activeId,
     messages: conv.messages,
   });
@@ -70,11 +70,11 @@ app.post("/api/plugins/toggle", (req, res) => {
 
 app.post("/api/conversations", (req, res) => {
   const data = read(req.userId);
-  const conv = freshConversation();
+  const conv = freshConversation(data.settings.model || DEFAULT_MODEL);
   data.conversations.unshift(conv);
   data.activeId = conv.id;
   write(req.userId, data);
-  res.json({ activeId: conv.id, conversations: data.conversations.map((c) => ({ id: c.id, title: c.title })) });
+  res.json({ activeId: conv.id, conversations: data.conversations.map((c) => ({ id: c.id, title: c.title, model: c.model })) });
 });
 
 app.post("/api/conversations/:id/activate", (req, res) => {
@@ -97,7 +97,7 @@ app.delete("/api/conversations/:id", (req, res) => {
   const conv = activeConversation(data);
   res.json({
     activeId: data.activeId,
-    conversations: data.conversations.map((c) => ({ id: c.id, title: c.title })),
+    conversations: data.conversations.map((c) => ({ id: c.id, title: c.title, model: c.model })),
     messages: conv.messages,
   });
 });
@@ -148,7 +148,7 @@ app.post("/api/chat/stream", async (req, res) => {
     send({
       done: true,
       messages: conv.messages,
-      conversations: data.conversations.map((c) => ({ id: c.id, title: c.title })),
+      conversations: data.conversations.map((c) => ({ id: c.id, title: c.title, model: c.model })),
       activeId: data.activeId,
     });
   } catch (err) {

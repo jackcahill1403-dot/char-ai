@@ -61,6 +61,16 @@ function setActiveMessages(mem, messages) {
   }
 }
 
+function conversationModel(c) {
+  const assistants = (c.messages || []).filter((m) => m.role === "assistant");
+  for (let i = assistants.length - 1; i >= 0; i--) {
+    const llm = assistants[i].llm;
+    const id = llm?.routedModel || llm?.model;
+    if (id) return id;
+  }
+  return "unassigned";
+}
+
 function listConversations(mem) {
   return (mem.conversations || [])
     .map((c) => ({
@@ -69,6 +79,7 @@ function listConversations(mem) {
       updatedAt: c.updatedAt,
       createdAt: c.createdAt,
       messageCount: (c.messages || []).length,
+      model: conversationModel(c),
       preview: (c.messages || []).find((m) => m.role === "user")?.content?.slice(0, 80) || "",
     }))
     .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
@@ -133,6 +144,7 @@ module.exports = {
   activeMessages,
   setActiveMessages,
   listConversations,
+  conversationModel,
   createConversation,
   switchConversation,
   renameConversation,
